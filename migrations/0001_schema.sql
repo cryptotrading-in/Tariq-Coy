@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS employees (
   domicile TEXT NOT NULL DEFAULT '',
   cnic TEXT NOT NULL DEFAULT '',
   tariq_coy_joining_date TEXT,
-  living_status TEXT NOT NULL DEFAULT 'IN' CHECK (living_status IN ('IN','OUT')),
+  living_status TEXT CHECK (living_status IN ('IN','OUT')),
   driving_license TEXT NOT NULL DEFAULT 'No' CHECK (driving_license IN ('Yes','No')),
   active INTEGER NOT NULL DEFAULT 1 CHECK (active IN (0,1)),
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
