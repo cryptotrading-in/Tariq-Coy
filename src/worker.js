@@ -76,7 +76,7 @@ function validMonth(value) {
 }
 function validDate(value, optional = false) {
   if ((value === null || value === undefined || value === "") && optional) return true;
-  if (typeof value !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(value)) return false;
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const date = new Date(value + "T00:00:00Z");
   return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
 }
@@ -163,7 +163,7 @@ async function handle(request, env) {
     const now = new Date();
     if (user?.locked_until && new Date(user.locked_until + (user.locked_until.includes("Z") ? "" : "Z")) > now) return json({ error: "Too many attempts. Try again later." }, 429);
     let verified = false;
-    if (user) verified = equalConstantTime(await derivePassword(body.password, user.password_salt), user.password_hash);
+    if (user?.password_salt) verified = equalConstantTime(await derivePassword(body.password, user.password_salt), user.password_hash);
     if (!user || !verified) {
       if (user) {
         const failures = Number(user.failed_login_count || 0) + 1;
@@ -255,12 +255,14 @@ async function handle(request, env) {
     if (!requireAdmin(user)) return json({ error: "Administrator permission required" }, 403);
     let body; try { body = await readJson(request); } catch { return json({ error: "Invalid JSON request" }, 400); }
     const { leave_type, from_date, to_date, days, balance = "", reason = "" } = body;
-    if (!["C_LEAVE", "E_LEAVE", "MEDICAL"].includes(leave_type) || !validDate(from_date) || !validDate(to_date) || to_date < from_date || !Number.isInteger(Number(days)) || Number(days) < 0) return json({ error: "Invalid leave type, dates, or days. Dates must be YYYY-MM-DD." }, 400);
+    const leaveTypeMap = { C_LEAVE: "C/Leave", E_LEAVE: "E/Leave", MEDICAL: "Medical", "C/Leave": "C/Leave", "E/Leave": "E/Leave", Medical: "Medical" };
+    const storedLeaveType = leaveTypeMap[leave_type];
+    if (!storedLeaveType || !validDate(from_date) || !validDate(to_date) || to_date < from_date || !Number.isInteger(Number(days)) || Number(days) < 0) return json({ error: "Invalid leave type, dates, or days. Dates must be YYYY-MM-DD." }, 400);
     const employee = await env.DB.prepare("SELECT id FROM employees WHERE id=? AND active=1").bind(leaveMatch[1]).first();
     if (!employee) return json({ error: "Employee not found" }, 404);
     const id = crypto.randomUUID();
     await env.DB.prepare("INSERT INTO leave_records (id, employee_id, leave_type, from_date, to_date, days, balance, reason) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
-      .bind(id, leaveMatch[1], leave_type, from_date, to_date, Number(days), String(balance).slice(0, 100), String(reason).slice(0, 500)).run();
+      .bind(id, leaveMatch[1], storedLeaveType, from_date, to_date, Number(days), String(balance).slice(0, 100), String(reason).slice(0, 500)).run();
     await audit(env.DB, user.id, "LEAVE_CREATED", "leave_record", id, { employee_id: leaveMatch[1], leave_type });
     return json({ ok: true, id }, 201);
   }
@@ -382,8 +384,8 @@ async function handle(request, env) {
       }
       const rows = rankFromForceSort(employees.results || []).map((e, i) => ({
         sr_no: i + 1, force_no: e.force_no, rank: e.rank, name: e.name,
-        c_leave: map.get(e.id)?.C_LEAVE || 0, e_leave: map.get(e.id)?.E_LEAVE || 0,
-        medical: map.get(e.id)?.MEDICAL || 0, remarks: ""
+        c_leave: map.get(e.id)?.["C/Leave"] || 0, e_leave: map.get(e.id)?.["E/Leave"] || 0,
+        medical: map.get(e.id)?.Medical || 0, remarks: ""
       }));
       return json({ rows });
     }
