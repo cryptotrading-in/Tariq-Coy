@@ -292,6 +292,26 @@ async function handle(request, env) {
     return json({ ok: true });
   }
 
+  if (path === "/api/history" && request.method === "GET") {
+    const month = url.searchParams.get("month");
+    const employeeId = url.searchParams.get("employee_id");
+    const status = url.searchParams.get("status");
+    const limitRaw = Number(url.searchParams.get("limit") || 100);
+    const offsetRaw = Number(url.searchParams.get("offset") || 0);
+    if (month && !validMonth(month)) return json({ error: "Month must use YYYY-MM." }, 400);
+    if (status && !["PAID", "PENDING"].includes(status)) return json({ error: "Status must be PAID or PENDING." }, 400);
+    if (!Number.isInteger(limitRaw) || limitRaw < 1 || limitRaw > 500 || !Number.isInteger(offsetRaw) || offsetRaw < 0) return json({ error: "Invalid pagination values." }, 400);
+    const clauses = [];
+    const values = [];
+    if (month) { clauses.push("c.month_key=?"); values.push(month); }
+    if (employeeId) { clauses.push("c.employee_id=?"); values.push(employeeId); }
+    if (status) { clauses.push("c.payment_status=?"); values.push(status); }
+    const where = clauses.length ? "WHERE " + clauses.join(" AND ") : "";
+    const rows = await env.DB.prepare(`SELECT c.*, e.force_no, e.name, e.rank FROM monthly_collections c JOIN employees e ON e.id=c.employee_id ${where} ORDER BY c.month_key DESC, e.rank, e.force_no LIMIT ? OFFSET ?`)
+      .bind(...values, limitRaw, offsetRaw).all();
+    return json({ collections: rankFromForceSort(rows.results || []), limit: limitRaw, offset: offsetRaw });
+  }
+
   if (path === "/api/collections" && request.method === "GET") {
     const month = url.searchParams.get("month");
     if (!validMonth(month)) return json({ error: "Month query is required in YYYY-MM format." }, 400);
@@ -356,8 +376,14 @@ async function handle(request, env) {
     const record = await env.DB.prepare("SELECT * FROM monthly_collections WHERE id=?").bind(id).first();
     if (!record) return json({ error: "Collection not found" }, 404);
     if (record.payment_status === "PAID") return json({ error: "This collection is already marked paid." }, 409);
-    await env.DB.prepare("UPDATE monthly_collections SET payment_status='PAID', payment_date=?, payment_method=?, updated_at=CURRENT_TIMESTAMP WHERE id=? AND payment_status='PENDING'")
-      .bind(paymentDate, paymentMethod, id).run();
+    const paymentId = crypto.randomUUID();
+    const batchResults = await env.DB.batch([
+      env.DB.prepare("UPDATE monthly_collections SET payment_status='PAID', payment_date=?, payment_method=?, updated_at=CURRENT_TIMESTAMP WHERE id=? AND payment_status='PENDING'")
+        .bind(paymentDate, paymentMethod, id),
+      env.DB.prepare("INSERT INTO payments (id, collection_id, amount, payment_date, payment_method, received_by) SELECT ?, id, total_due, ?, ?, ? FROM monthly_collections WHERE id=? AND payment_status='PAID' AND NOT EXISTS (SELECT 1 FROM payments WHERE collection_id=?)")
+        .bind(paymentId, paymentDate, paymentMethod, user.id, id, id),
+    ]);
+    if (!batchResults[0]?.meta?.changes) return json({ error: "This collection is already marked paid." }, 409);
     await audit(env.DB, user.id, "FULL_PAYMENT_RECEIVED", "monthly_collection", id, { month_key: record.month_key, total_due: record.total_due, payment_method: paymentMethod });
     return json({ ok: true, message: "Full payment marked received." });
   }
