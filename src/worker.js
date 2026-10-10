@@ -117,6 +117,7 @@ function employeeInput(body, partial = false) {
   if (result.living_status !== undefined && !["IN", "OUT"].includes(result.living_status)) throw new Error("Living status must be IN or OUT.");
   if (result.driving_license !== undefined && !["Yes", "No"].includes(result.driving_license)) throw new Error("Driving License must be Yes or No.");
   if (result.no_of_children !== undefined && (!Number.isInteger(Number(result.no_of_children)) || Number(result.no_of_children) < 0)) throw new Error("Number of children must be a non-negative integer.");
+  if (result.active !== undefined && ![0, 1, true, false].includes(result.active)) throw new Error("Active status must be true/false or 1/0.");
   for (const field of ["date_of_birth", "joining_date", "current_rank_date", "fsd_joining_date", "tariq_coy_joining_date"]) {
     if (result[field] !== undefined && !validDate(result[field], true)) throw new Error(`${field} must use YYYY-MM-DD internally.`);
   }
@@ -320,7 +321,9 @@ async function handle(request, env) {
     try { mess = calculateMess({ monthKey: month_key, leaveDays: Number(leave_days), rank: employee.rank, livingStatus: employee.living_status, messBase }); }
     catch (e) { return json({ error: e.message }, 400); }
     let leaveDeduction = mess.leaveDeduction;
+    let leaveDeductionMode = "automatic";
     if (manual_leave_deduction !== undefined && manual_leave_deduction !== null && manual_leave_deduction !== "") {
+      leaveDeductionMode = "manual";
       if (!validMoney(manual_leave_deduction) || Number(manual_leave_deduction) > messBase) return json({ error: "Manual leave deduction must be between zero and the mess base amount." }, 400);
       const exempt = employee.living_status === "OUT" || ["DD", "AD", "INSP"].includes(employee.rank);
       leaveDeduction = exempt ? 0 : roundMoney(Number(manual_leave_deduction));
@@ -329,8 +332,8 @@ async function handle(request, env) {
     const totalDue = roundMoney(contributionTotal + mess.messAmount);
     const id = crypto.randomUUID();
     try {
-      const writeResult = await env.DB.prepare("INSERT INTO monthly_collections (id, employee_id, month_key, welfare, mod_amount, med, barber, waiter, wman, contribution_total, living_status_snapshot, rank_snapshot, mess_base, leave_days, leave_deduction, mess_amount, total_due) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(employee_id, month_key) DO UPDATE SET welfare=excluded.welfare, mod_amount=excluded.mod_amount, med=excluded.med, barber=excluded.barber, waiter=excluded.waiter, wman=excluded.wman, contribution_total=excluded.contribution_total, living_status_snapshot=excluded.living_status_snapshot, rank_snapshot=excluded.rank_snapshot, mess_base=excluded.mess_base, leave_days=excluded.leave_days, leave_deduction=excluded.leave_deduction, mess_amount=excluded.mess_amount, total_due=excluded.total_due, updated_at=CURRENT_TIMESTAMP WHERE monthly_collections.payment_status='PENDING'")
-        .bind(id, employee_id, month_key, amounts.welfare, amounts.mod_amount, amounts.med, amounts.barber, amounts.waiter, amounts.wman, contributionTotal, employee.living_status, employee.rank, messBase, Number(leave_days), leaveDeduction, mess.messAmount, totalDue).run();
+      const writeResult = await env.DB.prepare("INSERT INTO monthly_collections (id, employee_id, month_key, welfare, mod_amount, med, barber, waiter, wman, contribution_total, living_status_snapshot, rank_snapshot, mess_base, leave_days, leave_deduction, leave_deduction_mode, mess_amount, total_due) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(employee_id, month_key) DO UPDATE SET welfare=excluded.welfare, mod_amount=excluded.mod_amount, med=excluded.med, barber=excluded.barber, waiter=excluded.waiter, wman=excluded.wman, contribution_total=excluded.contribution_total, living_status_snapshot=excluded.living_status_snapshot, rank_snapshot=excluded.rank_snapshot, mess_base=excluded.mess_base, leave_days=excluded.leave_days, leave_deduction=excluded.leave_deduction, leave_deduction_mode=excluded.leave_deduction_mode, mess_amount=excluded.mess_amount, total_due=excluded.total_due, updated_at=CURRENT_TIMESTAMP WHERE monthly_collections.payment_status='PENDING'")
+        .bind(id, employee_id, month_key, amounts.welfare, amounts.mod_amount, amounts.med, amounts.barber, amounts.waiter, amounts.wman, contributionTotal, employee.living_status, employee.rank, messBase, Number(leave_days), leaveDeduction, leaveDeductionMode, mess.messAmount, totalDue).run();
       if (!writeResult.meta?.changes) return json({ error: "This month has already been paid and cannot be edited." }, 409);
       const saved = await env.DB.prepare("SELECT * FROM monthly_collections WHERE employee_id=? AND month_key=?").bind(employee_id, month_key).first();
       if (!saved) return json({ error: "Collection could not be saved." }, 500);
