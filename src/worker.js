@@ -317,9 +317,10 @@ async function handle(request, env) {
     catch (e) { return json({ error: e.message }, 400); }
     let leaveDeduction = mess.leaveDeduction;
     if (manual_leave_deduction !== undefined && manual_leave_deduction !== null && manual_leave_deduction !== "") {
-      if (!validMoney(manual_leave_deduction)) return json({ error: "Manual leave deduction must be a non-negative amount." }, 400);
-      leaveDeduction = roundMoney(Number(manual_leave_deduction));
-      mess = { ...mess, leaveDeduction, messAmount: (employee.living_status === "OUT" || ["DD", "AD", "INSP"].includes(employee.rank)) ? 0 : roundMoney(Math.max(0, messBase - leaveDeduction)) };
+      if (!validMoney(manual_leave_deduction) || Number(manual_leave_deduction) > messBase) return json({ error: "Manual leave deduction must be between zero and the mess base amount." }, 400);
+      const exempt = employee.living_status === "OUT" || ["DD", "AD", "INSP"].includes(employee.rank);
+      leaveDeduction = exempt ? 0 : roundMoney(Number(manual_leave_deduction));
+      mess = { ...mess, leaveDeduction, messAmount: exempt ? 0 : roundMoney(Math.max(0, messBase - leaveDeduction)) };
     }
     const totalDue = roundMoney(contributionTotal + mess.messAmount);
     const id = crypto.randomUUID();
