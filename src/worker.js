@@ -137,7 +137,7 @@ async function handle(request, env) {
     try { await env.DB.prepare("SELECT 1 AS ok").first(); return json({ ok: true, database: true }); }
     catch { return json({ ok: false, database: false }, 503); }
   }
-  if (!path.startsWith("/api/")) return json({ error: "Not found" }, 404);
+  if (!path.startsWith("/api/")) return env.ASSETS ? env.ASSETS.fetch(request) : json({ error: "Not found" }, 404);
   if (["POST", "PUT", "PATCH", "DELETE"].includes(request.method) && !sameOrigin(request)) return json({ error: "Origin check failed" }, 403);
 
   if (path === "/api/setup-admin" && request.method === "POST") {
