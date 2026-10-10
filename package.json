@@ -1,0 +1,16 @@
+{
+  "name": "tariq-coy-personnel",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "dev": "wrangler dev",
+    "db:migrate:local": "wrangler d1 migrations apply tariq-coy-personnel-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply tariq-coy-personnel-db --remote",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
