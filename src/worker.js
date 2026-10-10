@@ -382,15 +382,17 @@ async function handle(request, env) {
     const record = await env.DB.prepare("SELECT * FROM monthly_collections WHERE id=?").bind(id).first();
     if (!record) return json({ error: "Collection not found" }, 404);
     if (record.payment_status === "PAID") return json({ error: "This collection is already marked paid." }, 409);
+    const previousPayment = await env.DB.prepare("SELECT amount, payment_date, payment_method FROM payments WHERE collection_id=?").bind(id).first();
     const paymentId = crypto.randomUUID();
     const batchResults = await env.DB.batch([
       env.DB.prepare("UPDATE monthly_collections SET payment_status='PAID', payment_date=?, payment_method=?, updated_at=CURRENT_TIMESTAMP WHERE id=? AND payment_status='PENDING'")
         .bind(paymentDate, paymentMethod, id),
-      env.DB.prepare("INSERT INTO payments (id, collection_id, amount, payment_date, payment_method, received_by) SELECT ?, id, total_due, ?, ?, ? FROM monthly_collections WHERE id=? AND payment_status='PAID' AND NOT EXISTS (SELECT 1 FROM payments WHERE collection_id=?)")
-        .bind(paymentId, paymentDate, paymentMethod, user.id, id, id),
+      env.DB.prepare("INSERT INTO payments (id, collection_id, amount, payment_date, payment_method, received_by) SELECT ?, id, total_due, ?, ?, ? FROM monthly_collections WHERE id=? AND payment_status='PAID' ON CONFLICT(collection_id) DO UPDATE SET amount=excluded.amount, payment_date=excluded.payment_date, payment_method=excluded.payment_method, received_by=excluded.received_by")
+        .bind(paymentId, paymentDate, paymentMethod, user.id, id),
     ]);
     if (!batchResults[0]?.meta?.changes) return json({ error: "This collection is already marked paid." }, 409);
-    await audit(env.DB, user.id, "FULL_PAYMENT_RECEIVED", "monthly_collection", id, { month_key: record.month_key, total_due: record.total_due, payment_method: paymentMethod });
+    const legacyPartial = previousPayment && Number(previousPayment.amount) < Number(record.total_due) - 0.01 ? previousPayment : null;
+    await audit(env.DB, user.id, "FULL_PAYMENT_RECEIVED", "monthly_collection", id, { month_key: record.month_key, total_due: record.total_due, payment_method: paymentMethod, legacy_partial_payment_replaced: legacyPartial });
     return json({ ok: true, message: "Full payment marked received." });
   }
 
