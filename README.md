@@ -56,6 +56,13 @@ Use decimal-safe currency rounding to two decimal places for the displayed deduc
 5. The client checks `GET /api/me` to restore login state after a page reload. A `401` means the user must sign in again. Logout uses `POST /api/logout`, revokes the server-side session and clears the cookie.
 6. Do not store authentication tokens or personnel data in localStorage as the source of truth. Always call the API from the same HTTPS origin so the browser sends the secure cookie.
 
+### Approved master data and living status
+
+- Migration `0003_seed_master_and_rates.sql` contains exactly the 61 employees in the approved Nominal Role PDF. It seeds them only if the employee table is completely empty; it never merges into, overwrites, or deletes a non-empty register.
+- Newly seeded employees start with living status `UNSET`. Confirm each employee as `IN` or `OUT` before creating a monthly collection. The API rejects collection saves while status is unset.
+- The same migration seeds the 14 rank/living-status contribution-rate combinations from the supplied September 2026 contribution report, effective from 2026-09. An exact existing rank/status/effective-date rate is never overwritten. Administrators can add later effective-month rates in Settings.
+- The source contribution report contains an extra employee compared with the approved 61-person Nominal Role. That extra person is deliberately not seeded; the Nominal Role remains the master employee list.
+
 ### Development and migration safety
 
 - Install dependencies: `npm install`
