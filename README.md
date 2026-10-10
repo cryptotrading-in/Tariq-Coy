@@ -47,6 +47,28 @@ Use decimal-safe currency rounding to two decimal places for the displayed deduc
 6. Test calculations, access controls, month isolation, exports, backups, and restore.
 7. Deploy to Cloudflare and verify production behavior.
 
+## Authentication lifecycle
+
+1. Configure a temporary Cloudflare Worker secret named `BOOTSTRAP_SECRET` using `npx wrangler secret put BOOTSTRAP_SECRET`. Generate a long random value and do not commit it or paste it into source files.
+2. After the D1 migrations have been reviewed and applied, send one HTTPS `POST /api/setup-admin` request with the chosen admin username/password, an `Origin` header matching the Worker origin, and the secret in `x-bootstrap-secret`. Use a password of at least 12 characters. Never send credentials in a URL or commit them.
+3. Immediately remove the one-time secret with `npx wrangler secret delete BOOTSTRAP_SECRET`. The endpoint permanently closes once an account already exists.
+4. The admin signs in at the application login screen (once the approved UI is connected). The Worker validates credentials and issues an `HttpOnly; Secure; SameSite=Strict` session cookie. Session tokens are stored only as SHA-256 hashes in D1. The default session lifetime is 8 hours.
+5. The client checks `GET /api/me` to restore login state after a page reload. A `401` means the user must sign in again. Logout uses `POST /api/logout`, revokes the server-side session and clears the cookie.
+6. Do not store authentication tokens or personnel data in localStorage as the source of truth. Always call the API from the same HTTPS origin so the browser sends the secure cookie.
+
+### Development and migration safety
+
+- Install dependencies: `npm install`
+- Run unit tests: `npm test`
+- Apply migrations to a local development database: `npm run db:migrate:local`
+- Before any remote migration, take a D1 backup/export and confirm the configured database ID in `wrangler.toml`. Then review the migration plan and run `npm run db:migrate:remote`.
+- Do not run remote migrations against production until the migration has passed CI and the current remote schema/backup has been verified.
+- CI runs unit tests, applies all D1 migrations to a local database, and performs a Worker dry run on pushes and pull requests to `main`.
+
+### Current implementation boundary
+
+The repository currently contains the Worker API, schema migrations, and calculation tests, but no HTML/CSS application entry point or approved UI asset files were found in the repository. Do not treat the API-only Worker as the finished user-facing app or replace the previously approved design with a newly invented interface. The approved UI must be recovered/added and connected to these endpoints before the application is considered complete.
+
 ## Sensitive data
 
 Do not commit real passwords, session secrets, API tokens, CNICs, phone numbers, or other private personnel details. Seed the approved master roster only after validating the source file and intended deployment access controls.
