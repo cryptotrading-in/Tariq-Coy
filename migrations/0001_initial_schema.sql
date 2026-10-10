@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS employees (
   domicile TEXT,
   cnic TEXT,
   tariq_coy_joining_date TEXT,
-  living_status TEXT NOT NULL DEFAULT 'IN' CHECK (living_status IN ('IN', 'OUT')),
+  living_status TEXT NOT NULL DEFAULT 'UNSET' CHECK (living_status IN ('IN', 'OUT', 'UNSET')),
   driving_license TEXT NOT NULL DEFAULT 'No' CHECK (driving_license IN ('Yes', 'No')),
   is_active INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
