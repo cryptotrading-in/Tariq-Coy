@@ -3,13 +3,10 @@
 -- Existing living status values are preserved; newly seeded personnel start as UNSET
 -- so nobody is accidentally treated as IN Living before an administrator confirms it.
 
-DROP INDEX IF EXISTS idx_employees_living_status;
-ALTER TABLE employees ADD COLUMN living_status_new TEXT NOT NULL DEFAULT 'UNSET'
-  CHECK (living_status_new IN ('IN', 'OUT', 'UNSET'));
-UPDATE employees SET living_status_new = living_status;
-ALTER TABLE employees DROP COLUMN living_status;
-ALTER TABLE employees RENAME COLUMN living_status_new TO living_status;
-CREATE INDEX IF NOT EXISTS idx_employees_living_status ON employees(living_status);
+-- Migration 0001 defines living_status with IN, OUT, and UNSET support.
+-- Avoid dropping/rebuilding the column here so existing employee-linked records remain untouched.
+
+
 
 INSERT INTO employees (id, force_no, rank, name, living_status, driving_license, active)
 SELECT lower(hex(randomblob(16))), seed.force_no, seed.rank, seed.name, 'UNSET', 'No', 1
