@@ -140,6 +140,12 @@ async function handle(request, env) {
   if (!path.startsWith("/api/")) return env.ASSETS ? env.ASSETS.fetch(request) : json({ error: "Not found" }, 404);
   if (["POST", "PUT", "PATCH", "DELETE"].includes(request.method) && !sameOrigin(request)) return json({ error: "Origin check failed" }, 403);
 
+  if (path === "/api/setup-status" && request.method === "GET") {
+    try {
+      const count = await env.DB.prepare("SELECT COUNT(*) AS n FROM app_users WHERE role='admin' AND password_salt IS NOT NULL").first();
+      return json({ setupRequired: Number(count?.n || 0) === 0, setupEnabled: Boolean(env.BOOTSTRAP_SECRET) });
+    } catch { return json({ error: "Database migrations are not ready." }, 503); }
+  }
   if (path === "/api/setup-admin" && request.method === "POST") {
     if (!env.BOOTSTRAP_SECRET) return json({ error: "Initial setup is not enabled. Configure BOOTSTRAP_SECRET temporarily." }, 403);
     if (!equalConstantTime(request.headers.get("x-bootstrap-secret") || "", env.BOOTSTRAP_SECRET)) return json({ error: "Forbidden" }, 403);
