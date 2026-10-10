@@ -73,7 +73,7 @@ UPDATE monthly_collections
 SET payment_status = 'PAID',
     payment_date = (SELECT p.payment_date FROM payments p WHERE p.collection_id = monthly_collections.id),
     payment_method = (SELECT p.payment_method FROM payments p WHERE p.collection_id = monthly_collections.id)
-WHERE EXISTS (SELECT 1 FROM payments p WHERE p.collection_id = monthly_collections.id);
+WHERE EXISTS (SELECT 1 FROM payments p WHERE p.collection_id = monthly_collections.id AND p.amount >= monthly_collections.total_due - 0.01);
 
 CREATE INDEX IF NOT EXISTS idx_collections_month_key ON monthly_collections(month_key);
 CREATE INDEX IF NOT EXISTS idx_collections_status_month ON monthly_collections(payment_status, month_key);
