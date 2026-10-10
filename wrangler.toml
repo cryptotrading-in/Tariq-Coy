@@ -2,12 +2,12 @@ name = "tariq-coy-personnel"
 main = "src/worker.js"
 compatibility_date = "2026-10-10"
 
-# Create a dedicated D1 database for Tariq Coy and replace the placeholder
-# with its database_id before running migrations or deploying.
+# Existing Cloudflare D1 database. Replace database_id with the actual ID
+# from the Cloudflare dashboard before remote migrations or deployment.
 [[d1_databases]]
 binding = "DB"
-database_name = "tariq-coy-personnel-db"
-database_id = "REPLACE_WITH_TARIQ_COY_D1_DATABASE_ID"
+database_name = "tariqcoydb"
+database_id = "REPLACE_WITH_TARIQCOYDB_DATABASE_ID"
 
 [vars]
 APP_ENV = "production"
