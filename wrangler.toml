@@ -7,7 +7,7 @@ compatibility_date = "2026-10-10"
 [[d1_databases]]
 binding = "DB"
 database_name = "tariqcoydb"
-database_id = "REPLACE_WITH_TARIQCOYDB_DATABASE_ID"
+database_id = "b3b5b12a-ce5c-4281-920a-15f59a8124cd"
 
 [vars]
 APP_ENV = "production"
