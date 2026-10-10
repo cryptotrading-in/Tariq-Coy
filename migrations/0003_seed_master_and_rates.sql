@@ -8,71 +8,73 @@
 
 
 
+WITH seed(force_no, rank, name) AS (
+  VALUES
+  ('SF-815', 'DD', 'Ghulam Rasool Anjum'),
+  ('SF-1353', 'AD', 'Abid Ali'),
+  ('SF-1519', 'AD', 'Abdul Hanan Dero'),
+  ('US-5500', 'INSP', 'Waseem Shehzad'),
+  ('US-6006', 'INSP', 'Saifoor Rehman'),
+  ('US-5753', 'INSP', 'M Dawood'),
+  ('US-6710', 'SI', 'Hazrat Usman'),
+  ('US-6923', 'SI', 'Safder Ali'),
+  ('US-7026', 'SI', 'Nisar Ahmed'),
+  ('US-7053', 'SI', 'Altaf Hussain'),
+  ('US-7555', 'SI', 'M Saleem'),
+  ('US-7664', 'SI', 'Ashiq Ali'),
+  ('US-9041', 'SI', 'Naveed Baloch'),
+  ('US-9101', 'SI', 'Allah Ditta Masih'),
+  ('US-10427', 'ASI', 'M Sajid'),
+  ('US-10481', 'ASI', 'M Sabir'),
+  ('US-11101', 'ASI', 'Sajid Ali'),
+  ('US-11112', 'ASI', 'Ali Zia'),
+  ('US-11398', 'ASI', 'Ahmed Ali'),
+  ('US-11472', 'ASI', 'Zaheer Ahmed'),
+  ('US-11483', 'ASI', 'Shahid Saeed'),
+  ('US-11515', 'ASI', 'M Shehbaz Khan'),
+  ('US-11955', 'ASI', 'M Asif Khan'),
+  ('US-12388', 'ASI', 'Abid Ali'),
+  ('S-12322', 'SGT', 'Shoaib Anwar'),
+  ('S-12824', 'SGT', 'M Saeed Akhtar'),
+  ('S-13619', 'SGT', 'M Asif'),
+  ('S-13698', 'SGT', 'Hafeez Ullah'),
+  ('S-14204', 'SGT', 'Khalid Hussain'),
+  ('S-14398', 'SGT', 'Shehzad Yaqoob'),
+  ('S-15494', 'SGT', 'Nadeem Abbas'),
+  ('S-15689', 'SGT', 'Shahid Rafique'),
+  ('S-15670', 'SGT', 'M Nabeel'),
+  ('C-15761', 'CPL', 'Shehbaz Mumtaz'),
+  ('C-15843', 'CPL', 'M Rehman'),
+  ('C-16231', 'CPL', 'Umar Niaz'),
+  ('C-16324', 'CPL', 'Tariq Zaman'),
+  ('C-16556', 'CPL', 'Nouman Shakeel'),
+  ('C-16566', 'CPL', 'Khalil Khan'),
+  ('C-16654', 'CPL', 'Shoukat Ali'),
+  ('C-17200', 'CPL', 'Muzammil Abbas'),
+  ('C-17459', 'CPL', 'M Irfan'),
+  ('C-17723', 'CPL', 'M Haroon'),
+  ('C-18311', 'CPL', 'Abdul Haseeb'),
+  ('C-18854', 'CPL', 'M Shakir'),
+  ('C-19289', 'CPL', 'Waseem Masih'),
+  ('C-19339', 'CPL', 'Haseeb Ahmed'),
+  ('C-19428', 'CPL', 'Awais Yaqoob'),
+  ('C-19448', 'CPL', 'M Imdad'),
+  ('C-19823', 'CPL', 'Zaheer Ud Din Babar'),
+  ('C-20028', 'CPL', 'Amanat Ali'),
+  ('C-20669', 'CPL', 'Tahir Mehmood'),
+  ('C-21409', 'CPL', 'Hussain Ahmed'),
+  ('C-21857', 'CPL', 'Mudassir Sharif'),
+  ('C-22015', 'CPL', 'Miraj Ali'),
+  ('C-22008', 'CPL', 'Hunain Rehman'),
+  ('C-22248', 'CPL', 'Pervaiz Ali'),
+  ('C-22126', 'CPL', 'Hussain Ali'),
+  ('C-22211', 'CPL', 'M Ali'),
+  ('C-21778', 'CPL', 'M Junaid'),
+  ('C-22024', 'CPL', 'Sibtain Hassan')
+)
 INSERT INTO employees (id, force_no, rank, name, living_status, driving_license, active)
 SELECT lower(hex(randomblob(16))), seed.force_no, seed.rank, seed.name, 'UNSET', 'No', 1
-FROM (
-  SELECT 'SF-815' AS force_no, 'DD' AS rank, 'Ghulam Rasool Anjum' AS name
-  UNION ALL SELECT 'SF-1353','AD','Abid Ali'
-  UNION ALL SELECT 'SF-1519','AD','Abdul Hanan Dero'
-  UNION ALL SELECT 'US-5500','INSP','Waseem Shehzad'
-  UNION ALL SELECT 'US-6006','INSP','Saifoor Rehman'
-  UNION ALL SELECT 'US-5753','INSP','M Dawood'
-  UNION ALL SELECT 'US-6710','SI','Hazrat Usman'
-  UNION ALL SELECT 'US-6923','SI','Safder Ali'
-  UNION ALL SELECT 'US-7026','SI','Nisar Ahmed'
-  UNION ALL SELECT 'US-7053','SI','Altaf Hussain'
-  UNION ALL SELECT 'US-7555','SI','M Saleem'
-  UNION ALL SELECT 'US-7664','SI','Ashiq Ali'
-  UNION ALL SELECT 'US-9041','SI','Naveed Baloch'
-  UNION ALL SELECT 'US-9101','SI','Allah Ditta Masih'
-  UNION ALL SELECT 'US-10427','ASI','M Sajid'
-  UNION ALL SELECT 'US-10481','ASI','M Sabir'
-  UNION ALL SELECT 'US-11101','ASI','Sajid Ali'
-  UNION ALL SELECT 'US-11112','ASI','Ali Zia'
-  UNION ALL SELECT 'US-11398','ASI','Ahmed Ali'
-  UNION ALL SELECT 'US-11472','ASI','Zaheer Ahmed'
-  UNION ALL SELECT 'US-11483','ASI','Shahid Saeed'
-  UNION ALL SELECT 'US-11515','ASI','M Shehbaz Khan'
-  UNION ALL SELECT 'US-11955','ASI','M Asif Khan'
-  UNION ALL SELECT 'US-12388','ASI','Abid Ali'
-  UNION ALL SELECT 'S-12322','SGT','Shoaib Anwar'
-  UNION ALL SELECT 'S-12824','SGT','M Saeed Akhtar'
-  UNION ALL SELECT 'S-13619','SGT','M Asif'
-  UNION ALL SELECT 'S-13698','SGT','Hafeez Ullah'
-  UNION ALL SELECT 'S-14204','SGT','Khalid Hussain'
-  UNION ALL SELECT 'S-14398','SGT','Shehzad Yaqoob'
-  UNION ALL SELECT 'S-15494','SGT','Nadeem Abbas'
-  UNION ALL SELECT 'S-15689','SGT','Shahid Rafique'
-  UNION ALL SELECT 'S-15670','SGT','M Nabeel'
-  UNION ALL SELECT 'C-15761','CPL','Shehbaz Mumtaz'
-  UNION ALL SELECT 'C-15843','CPL','M Rehman'
-  UNION ALL SELECT 'C-16231','CPL','Umar Niaz'
-  UNION ALL SELECT 'C-16324','CPL','Tariq Zaman'
-  UNION ALL SELECT 'C-16556','CPL','Nouman Shakeel'
-  UNION ALL SELECT 'C-16566','CPL','Khalil Khan'
-  UNION ALL SELECT 'C-16654','CPL','Shoukat Ali'
-  UNION ALL SELECT 'C-17200','CPL','Muzammil Abbas'
-  UNION ALL SELECT 'C-17459','CPL','M Irfan'
-  UNION ALL SELECT 'C-17723','CPL','M Haroon'
-  UNION ALL SELECT 'C-18311','CPL','Abdul Haseeb'
-  UNION ALL SELECT 'C-18854','CPL','M Shakir'
-  UNION ALL SELECT 'C-19289','CPL','Waseem Masih'
-  UNION ALL SELECT 'C-19339','CPL','Haseeb Ahmed'
-  UNION ALL SELECT 'C-19428','CPL','Awais Yaqoob'
-  UNION ALL SELECT 'C-19448','CPL','M Imdad'
-  UNION ALL SELECT 'C-19823','CPL','Zaheer Ud Din Babar'
-  UNION ALL SELECT 'C-20028','CPL','Amanat Ali'
-  UNION ALL SELECT 'C-20669','CPL','Tahir Mehmood'
-  UNION ALL SELECT 'C-21409','CPL','Hussain Ahmed'
-  UNION ALL SELECT 'C-21857','CPL','Mudassir Sharif'
-  UNION ALL SELECT 'C-22015','CPL','Miraj Ali'
-  UNION ALL SELECT 'C-22008','CPL','Hunain Rehman'
-  UNION ALL SELECT 'C-22248','CPL','Pervaiz Ali'
-  UNION ALL SELECT 'C-22126','CPL','Hussain Ali'
-  UNION ALL SELECT 'C-22211','CPL','M Ali'
-  UNION ALL SELECT 'C-21778','CPL','M Junaid'
-  UNION ALL SELECT 'C-22024','CPL','Sibtain Hassan'
-) AS seed
+FROM seed
 WHERE (SELECT COUNT(*) FROM employees) = 0;
 
 -- September 2026 contribution rates from the supplied monthly contribution report.
