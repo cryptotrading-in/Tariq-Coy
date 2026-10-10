@@ -8,100 +8,21 @@
 
 
 
-WITH seed(force_no, rank, name) AS (
-  VALUES
-  ('SF-815', 'DD', 'Ghulam Rasool Anjum'),
-  ('SF-1353', 'AD', 'Abid Ali'),
-  ('SF-1519', 'AD', 'Abdul Hanan Dero'),
-  ('US-5500', 'INSP', 'Waseem Shehzad'),
-  ('US-6006', 'INSP', 'Saifoor Rehman'),
-  ('US-5753', 'INSP', 'M Dawood'),
-  ('US-6710', 'SI', 'Hazrat Usman'),
-  ('US-6923', 'SI', 'Safder Ali'),
-  ('US-7026', 'SI', 'Nisar Ahmed'),
-  ('US-7053', 'SI', 'Altaf Hussain'),
-  ('US-7555', 'SI', 'M Saleem'),
-  ('US-7664', 'SI', 'Ashiq Ali'),
-  ('US-9041', 'SI', 'Naveed Baloch'),
-  ('US-9101', 'SI', 'Allah Ditta Masih'),
-  ('US-10427', 'ASI', 'M Sajid'),
-  ('US-10481', 'ASI', 'M Sabir'),
-  ('US-11101', 'ASI', 'Sajid Ali'),
-  ('US-11112', 'ASI', 'Ali Zia'),
-  ('US-11398', 'ASI', 'Ahmed Ali'),
-  ('US-11472', 'ASI', 'Zaheer Ahmed'),
-  ('US-11483', 'ASI', 'Shahid Saeed'),
-  ('US-11515', 'ASI', 'M Shehbaz Khan'),
-  ('US-11955', 'ASI', 'M Asif Khan'),
-  ('US-12388', 'ASI', 'Abid Ali'),
-  ('S-12322', 'SGT', 'Shoaib Anwar'),
-  ('S-12824', 'SGT', 'M Saeed Akhtar'),
-  ('S-13619', 'SGT', 'M Asif'),
-  ('S-13698', 'SGT', 'Hafeez Ullah'),
-  ('S-14204', 'SGT', 'Khalid Hussain'),
-  ('S-14398', 'SGT', 'Shehzad Yaqoob'),
-  ('S-15494', 'SGT', 'Nadeem Abbas'),
-  ('S-15689', 'SGT', 'Shahid Rafique'),
-  ('S-15670', 'SGT', 'M Nabeel'),
-  ('C-15761', 'CPL', 'Shehbaz Mumtaz'),
-  ('C-15843', 'CPL', 'M Rehman'),
-  ('C-16231', 'CPL', 'Umar Niaz'),
-  ('C-16324', 'CPL', 'Tariq Zaman'),
-  ('C-16556', 'CPL', 'Nouman Shakeel'),
-  ('C-16566', 'CPL', 'Khalil Khan'),
-  ('C-16654', 'CPL', 'Shoukat Ali'),
-  ('C-17200', 'CPL', 'Muzammil Abbas'),
-  ('C-17459', 'CPL', 'M Irfan'),
-  ('C-17723', 'CPL', 'M Haroon'),
-  ('C-18311', 'CPL', 'Abdul Haseeb'),
-  ('C-18854', 'CPL', 'M Shakir'),
-  ('C-19289', 'CPL', 'Waseem Masih'),
-  ('C-19339', 'CPL', 'Haseeb Ahmed'),
-  ('C-19428', 'CPL', 'Awais Yaqoob'),
-  ('C-19448', 'CPL', 'M Imdad'),
-  ('C-19823', 'CPL', 'Zaheer Ud Din Babar'),
-  ('C-20028', 'CPL', 'Amanat Ali'),
-  ('C-20669', 'CPL', 'Tahir Mehmood'),
-  ('C-21409', 'CPL', 'Hussain Ahmed'),
-  ('C-21857', 'CPL', 'Mudassir Sharif'),
-  ('C-22015', 'CPL', 'Miraj Ali'),
-  ('C-22008', 'CPL', 'Hunain Rehman'),
-  ('C-22248', 'CPL', 'Pervaiz Ali'),
-  ('C-22126', 'CPL', 'Hussain Ali'),
-  ('C-22211', 'CPL', 'M Ali'),
-  ('C-21778', 'CPL', 'M Junaid'),
-  ('C-22024', 'CPL', 'Sibtain Hassan')
-)
 INSERT INTO employees (id, force_no, rank, name, living_status, driving_license, active)
-SELECT lower(hex(randomblob(16))), seed.force_no, seed.rank, seed.name, 'UNSET', 'No', 1
-FROM seed
+SELECT lower(hex(randomblob(16))), json_extract(value, '$.force_no'), json_extract(value, '$.rank'), json_extract(value, '$.name'), 'UNSET', 'No', 1
+FROM json_each('[{"force_no":"SF-815","rank":"DD","name":"Ghulam Rasool Anjum"},{"force_no":"SF-1353","rank":"AD","name":"Abid Ali"},{"force_no":"SF-1519","rank":"AD","name":"Abdul Hanan Dero"},{"force_no":"US-5500","rank":"INSP","name":"Waseem Shehzad"},{"force_no":"US-6006","rank":"INSP","name":"Saifoor Rehman"},{"force_no":"US-5753","rank":"INSP","name":"M Dawood"},{"force_no":"US-6710","rank":"SI","name":"Hazrat Usman"},{"force_no":"US-6923","rank":"SI","name":"Safder Ali"},{"force_no":"US-7026","rank":"SI","name":"Nisar Ahmed"},{"force_no":"US-7053","rank":"SI","name":"Altaf Hussain"},{"force_no":"US-7555","rank":"SI","name":"M Saleem"},{"force_no":"US-7664","rank":"SI","name":"Ashiq Ali"},{"force_no":"US-9041","rank":"SI","name":"Naveed Baloch"},{"force_no":"US-9101","rank":"SI","name":"Allah Ditta Masih"},{"force_no":"US-10427","rank":"ASI","name":"M Sajid"},{"force_no":"US-10481","rank":"ASI","name":"M Sabir"},{"force_no":"US-11101","rank":"ASI","name":"Sajid Ali"},{"force_no":"US-11112","rank":"ASI","name":"Ali Zia"},{"force_no":"US-11398","rank":"ASI","name":"Ahmed Ali"},{"force_no":"US-11472","rank":"ASI","name":"Zaheer Ahmed"},{"force_no":"US-11483","rank":"ASI","name":"Shahid Saeed"},{"force_no":"US-11515","rank":"ASI","name":"M Shehbaz Khan"},{"force_no":"US-11955","rank":"ASI","name":"M Asif Khan"},{"force_no":"US-12388","rank":"ASI","name":"Abid Ali"},{"force_no":"S-12322","rank":"SGT","name":"Shoaib Anwar"},{"force_no":"S-12824","rank":"SGT","name":"M Saeed Akhtar"},{"force_no":"S-13619","rank":"SGT","name":"M Asif"},{"force_no":"S-13698","rank":"SGT","name":"Hafeez Ullah"},{"force_no":"S-14204","rank":"SGT","name":"Khalid Hussain"},{"force_no":"S-14398","rank":"SGT","name":"Shehzad Yaqoob"},{"force_no":"S-15494","rank":"SGT","name":"Nadeem Abbas"},{"force_no":"S-15689","rank":"SGT","name":"Shahid Rafique"},{"force_no":"S-15670","rank":"SGT","name":"M Nabeel"},{"force_no":"C-15761","rank":"CPL","name":"Shehbaz Mumtaz"},{"force_no":"C-15843","rank":"CPL","name":"M Rehman"},{"force_no":"C-16231","rank":"CPL","name":"Umar Niaz"},{"force_no":"C-16324","rank":"CPL","name":"Tariq Zaman"},{"force_no":"C-16556","rank":"CPL","name":"Nouman Shakeel"},{"force_no":"C-16566","rank":"CPL","name":"Khalil Khan"},{"force_no":"C-16654","rank":"CPL","name":"Shoukat Ali"},{"force_no":"C-17200","rank":"CPL","name":"Muzammil Abbas"},{"force_no":"C-17459","rank":"CPL","name":"M Irfan"},{"force_no":"C-17723","rank":"CPL","name":"M Haroon"},{"force_no":"C-18311","rank":"CPL","name":"Abdul Haseeb"},{"force_no":"C-18854","rank":"CPL","name":"M Shakir"},{"force_no":"C-19289","rank":"CPL","name":"Waseem Masih"},{"force_no":"C-19339","rank":"CPL","name":"Haseeb Ahmed"},{"force_no":"C-19428","rank":"CPL","name":"Awais Yaqoob"},{"force_no":"C-19448","rank":"CPL","name":"M Imdad"},{"force_no":"C-19823","rank":"CPL","name":"Zaheer Ud Din Babar"},{"force_no":"C-20028","rank":"CPL","name":"Amanat Ali"},{"force_no":"C-20669","rank":"CPL","name":"Tahir Mehmood"},{"force_no":"C-21409","rank":"CPL","name":"Hussain Ahmed"},{"force_no":"C-21857","rank":"CPL","name":"Mudassir Sharif"},{"force_no":"C-22015","rank":"CPL","name":"Miraj Ali"},{"force_no":"C-22008","rank":"CPL","name":"Hunain Rehman"},{"force_no":"C-22248","rank":"CPL","name":"Pervaiz Ali"},{"force_no":"C-22126","rank":"CPL","name":"Hussain Ali"},{"force_no":"C-22211","rank":"CPL","name":"M Ali"},{"force_no":"C-21778","rank":"CPL","name":"M Junaid"},{"force_no":"C-22024","rank":"CPL","name":"Sibtain Hassan"}]')
 WHERE (SELECT COUNT(*) FROM employees) = 0;
 
 -- September 2026 contribution rates from the supplied monthly contribution report.
 -- Each rate is inserted only if that exact rank/status/effective date is not already set.
 INSERT INTO contribution_rates
   (id, rank, living_status, effective_from, welfare, mod_amount, med, barber, waiter, wman)
-SELECT lower(hex(randomblob(16))), seed.rank, seed.living_status, '2026-09-01',
-       seed.welfare, seed.mod_amount, seed.med, seed.barber, seed.waiter, seed.wman
-FROM (
-  SELECT 'DD' AS rank, 'IN' AS living_status, 600 AS welfare, 600 AS mod_amount, 200 AS med, 0 AS barber, 0 AS waiter, 0 AS wman
-  UNION ALL SELECT 'DD','OUT',600,600,200,0,0,0
-  UNION ALL SELECT 'AD','IN',500,500,180,0,0,700
-  UNION ALL SELECT 'AD','OUT',500,500,180,0,0,0
-  UNION ALL SELECT 'INSP','IN',300,300,150,0,0,650
-  UNION ALL SELECT 'INSP','OUT',300,300,150,0,0,0
-  UNION ALL SELECT 'SI','IN',220,220,120,320,200,480
-  UNION ALL SELECT 'SI','OUT',220,220,120,320,0,0
-  UNION ALL SELECT 'ASI','IN',200,200,100,300,200,430
-  UNION ALL SELECT 'ASI','OUT',200,200,100,300,0,0
-  UNION ALL SELECT 'SGT','IN',175,175,80,250,200,350
-  UNION ALL SELECT 'SGT','OUT',175,175,80,250,0,0
-  UNION ALL SELECT 'CPL','IN',150,150,80,230,200,330
-  UNION ALL SELECT 'CPL','OUT',150,150,80,230,0,0
-) AS seed
+SELECT lower(hex(randomblob(16))), json_extract(value, '$.rank'), json_extract(value, '$.living_status'), '2026-09-01',
+       json_extract(value, '$.welfare'), json_extract(value, '$.mod_amount'), json_extract(value, '$.med'), json_extract(value, '$.barber'), json_extract(value, '$.waiter'), json_extract(value, '$.wman')
+FROM json_each('[{"rank":"DD","living_status":"IN","welfare":600,"mod_amount":600,"med":200,"barber":0,"waiter":0,"wman":0},{"rank":"DD","living_status":"OUT","welfare":600,"mod_amount":600,"med":200,"barber":0,"waiter":0,"wman":0},{"rank":"AD","living_status":"IN","welfare":500,"mod_amount":500,"med":180,"barber":0,"waiter":0,"wman":700},{"rank":"AD","living_status":"OUT","welfare":500,"mod_amount":500,"med":180,"barber":0,"waiter":0,"wman":0},{"rank":"INSP","living_status":"IN","welfare":300,"mod_amount":300,"med":150,"barber":0,"waiter":0,"wman":650},{"rank":"INSP","living_status":"OUT","welfare":300,"mod_amount":300,"med":150,"barber":0,"waiter":0,"wman":0},{"rank":"SI","living_status":"IN","welfare":220,"mod_amount":220,"med":120,"barber":320,"waiter":200,"wman":480},{"rank":"SI","living_status":"OUT","welfare":220,"mod_amount":220,"med":120,"barber":320,"waiter":0,"wman":0},{"rank":"ASI","living_status":"IN","welfare":200,"mod_amount":200,"med":100,"barber":300,"waiter":200,"wman":430},{"rank":"ASI","living_status":"OUT","welfare":200,"mod_amount":200,"med":100,"barber":300,"waiter":0,"wman":0},{"rank":"SGT","living_status":"IN","welfare":175,"mod_amount":175,"med":80,"barber":250,"waiter":200,"wman":350},{"rank":"SGT","living_status":"OUT","welfare":175,"mod_amount":175,"med":80,"barber":250,"waiter":0,"wman":0},{"rank":"CPL","living_status":"IN","welfare":150,"mod_amount":150,"med":80,"barber":230,"waiter":200,"wman":330},{"rank":"CPL","living_status":"OUT","welfare":150,"mod_amount":150,"med":80,"barber":230,"waiter":0,"wman":0}]') AS seed
 WHERE NOT EXISTS (
   SELECT 1 FROM contribution_rates existing
-  WHERE existing.rank = seed.rank
-    AND existing.living_status = seed.living_status
+  WHERE existing.rank = json_extract(seed.value, '$.rank')
+    AND existing.living_status = json_extract(seed.value, '$.living_status')
     AND existing.effective_from = '2026-09-01'
 );
