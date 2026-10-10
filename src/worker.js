@@ -247,6 +247,25 @@ async function handle(request, env) {
     }
   }
 
+  if (employeeMatch && request.method === "DELETE") {
+    if (!requireAdmin(user)) return json({ error: "Administrator permission required" }, 403);
+    const id = employeeMatch[1];
+    const result = await env.DB.prepare("UPDATE employees SET active=0, is_active=0, updated_at=CURRENT_TIMESTAMP WHERE id=? AND active=1").bind(id).run();
+    if (!result.meta?.changes) return json({ error: "Employee not found or already archived" }, 404);
+    await audit(env.DB, user.id, "EMPLOYEE_ARCHIVED", "employee", id);
+    return json({ ok: true, message: "Employee archived. Existing collection and leave history is retained." });
+  }
+
+  const restoreMatch = path.match(/^\/api\/employees\/([a-f0-9-]+)\/restore$/i);
+  if (restoreMatch && request.method === "POST") {
+    if (!requireAdmin(user)) return json({ error: "Administrator permission required" }, 403);
+    const id = restoreMatch[1];
+    const result = await env.DB.prepare("UPDATE employees SET active=1, is_active=1, updated_at=CURRENT_TIMESTAMP WHERE id=? AND active=0").bind(id).run();
+    if (!result.meta?.changes) return json({ error: "Archived employee not found" }, 404);
+    await audit(env.DB, user.id, "EMPLOYEE_RESTORED", "employee", id);
+    return json({ ok: true });
+  }
+
   const leaveMatch = path.match(/^\/api\/employees\/([a-f0-9-]+)\/leaves$/i);
   if (leaveMatch && request.method === "GET") {
     const rows = await env.DB.prepare("SELECT * FROM leave_records WHERE employee_id=? ORDER BY from_date DESC").bind(leaveMatch[1]).all();
