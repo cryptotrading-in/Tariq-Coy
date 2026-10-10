@@ -114,7 +114,7 @@ function employeeInput(body, partial = false) {
   }
   if (!partial && (!result.force_no || !result.name || !RANKS.includes(result.rank))) throw new Error("Force No, Name, and a valid Rank are required.");
   if (result.rank !== undefined && !RANKS.includes(result.rank)) throw new Error("Rank is invalid.");
-  if (result.living_status !== undefined && !["IN", "OUT"].includes(result.living_status)) throw new Error("Living status must be IN or OUT.");
+  if (result.living_status !== undefined && !["IN", "OUT", "UNSET"].includes(result.living_status)) throw new Error("Living status must be IN or OUT.");
   if (result.driving_license !== undefined && !["Yes", "No"].includes(result.driving_license)) throw new Error("Driving License must be Yes or No.");
   if (result.no_of_children !== undefined && (!Number.isInteger(Number(result.no_of_children)) || Number(result.no_of_children) < 0)) throw new Error("Number of children must be a non-negative integer.");
   if (result.active !== undefined && ![0, 1, true, false].includes(result.active)) throw new Error("Active status must be true/false or 1/0.");
@@ -331,7 +331,7 @@ async function handle(request, env) {
     if (!validMonth(month_key) || !employee_id) return json({ error: "Employee and month (YYYY-MM) are required." }, 400);
     const employee = await env.DB.prepare("SELECT * FROM employees WHERE id=? AND active=1").bind(employee_id).first();
     if (!employee) return json({ error: "Employee not found" }, 404);
-    if (!employee.living_status) return json({ error: "Set this employee's Living IN/OUT status before collection." }, 409);
+    if (!["IN", "OUT"].includes(employee.living_status)) return json({ error: "Set this employee's Living IN/OUT status before collection." }, 409);
     const rate = await getEffectiveRate(env, employee.rank, employee.living_status, month_key);
     if (!rate) return json({ error: "No saved contribution rate exists for this rank, living status, and month. Set rates in Settings first." }, 409);
     const amounts = {};
