@@ -51,7 +51,7 @@ Use decimal-safe currency rounding to two decimal places for the displayed deduc
 
 1. Configure a temporary Cloudflare Worker secret named `BOOTSTRAP_SECRET` using `npx wrangler secret put BOOTSTRAP_SECRET`. Generate a long random value and do not commit it or paste it into source files.
 2. After the D1 migrations have been reviewed and applied, send one HTTPS `POST /api/setup-admin` request with the chosen admin username/password, an `Origin` header matching the Worker origin, and the secret in `x-bootstrap-secret`. Use a password of at least 12 characters. Never send credentials in a URL or commit them.
-3. Immediately remove the one-time secret with `npx wrangler secret delete BOOTSTRAP_SECRET`. The endpoint permanently closes once an account already exists.
+3. Immediately remove the one-time secret with `npx wrangler secret delete BOOTSTRAP_SECRET`. The endpoint permanently closes once a valid admin account with a password salt exists.
 4. The admin signs in at the application login screen (once the approved UI is connected). The Worker validates credentials and issues an `HttpOnly; Secure; SameSite=Strict` session cookie. Session tokens are stored only as SHA-256 hashes in D1. The default session lifetime is 8 hours.
 5. The client checks `GET /api/me` to restore login state after a page reload. A `401` means the user must sign in again. Logout uses `POST /api/logout`, revokes the server-side session and clears the cookie.
 6. Do not store authentication tokens or personnel data in localStorage as the source of truth. Always call the API from the same HTTPS origin so the browser sends the secure cookie.
