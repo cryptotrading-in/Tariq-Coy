@@ -146,7 +146,7 @@ async function handle(request, env) {
     let body;
     try { body = await readJson(request); } catch { return json({ error: "Invalid JSON request" }, 400); }
     if (!validUsername(body.username) || !validPassword(body.password)) return json({ error: "Use a 3–50 character username and a password of at least 12 characters." }, 400);
-    const count = await env.DB.prepare("SELECT COUNT(*) AS n FROM app_users").first();
+    const count = await env.DB.prepare("SELECT COUNT(*) AS n FROM app_users WHERE role='admin' AND password_salt IS NOT NULL").first();
     if (Number(count?.n || 0) > 0) return json({ error: "Initial admin already exists; setup is permanently closed." }, 409);
     const salt = bytesToBase64(crypto.getRandomValues(new Uint8Array(16)));
     const passwordHash = await derivePassword(body.password, salt);
