@@ -6,8 +6,8 @@
   "scripts": {
     "test": "node --test",
     "dev": "wrangler dev",
-    "db:migrate:local": "wrangler d1 migrations apply tariq-coy-personnel-db --local",
-    "db:migrate:remote": "wrangler d1 migrations apply tariq-coy-personnel-db --remote",
+    "db:migrate:local": "wrangler d1 migrations apply tariqcoydb --local",
+    "db:migrate:remote": "wrangler d1 migrations apply tariqcoydb --remote",
     "deploy": "wrangler deploy"
   },
   "devDependencies": {
