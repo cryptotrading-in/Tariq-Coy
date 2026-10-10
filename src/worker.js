@@ -309,7 +309,13 @@ async function handle(request, env) {
     const where = clauses.length ? "WHERE " + clauses.join(" AND ") : "";
     const rows = await env.DB.prepare(`SELECT c.*, e.force_no, e.name, e.rank FROM monthly_collections c JOIN employees e ON e.id=c.employee_id ${where} ORDER BY c.month_key DESC, e.rank, e.force_no LIMIT ? OFFSET ?`)
       .bind(...values, limitRaw, offsetRaw).all();
-    return json({ collections: rankFromForceSort(rows.results || []), limit: limitRaw, offset: offsetRaw });
+    const grouped = new Map();
+    for (const row of rows.results || []) {
+      if (!grouped.has(row.month_key)) grouped.set(row.month_key, []);
+      grouped.get(row.month_key).push(row);
+    }
+    const collections = [...grouped.keys()].sort((a, b) => b.localeCompare(a)).flatMap(key => rankFromForceSort(grouped.get(key)));
+    return json({ collections, limit: limitRaw, offset: offsetRaw });
   }
 
   if (path === "/api/collections" && request.method === "GET") {
