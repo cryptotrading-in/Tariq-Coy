@@ -69,5 +69,11 @@ ALTER TABLE monthly_collections ADD COLUMN wman REAL NOT NULL DEFAULT 0 CHECK (w
 ALTER TABLE monthly_collections ADD COLUMN payment_status TEXT NOT NULL DEFAULT 'PENDING' CHECK (payment_status IN ('PENDING', 'PAID'));
 ALTER TABLE monthly_collections ADD COLUMN payment_date TEXT;
 ALTER TABLE monthly_collections ADD COLUMN payment_method TEXT CHECK (payment_method IN ('Cash', 'Bank Transfer', 'Other'));
+UPDATE monthly_collections
+SET payment_status = 'PAID',
+    payment_date = (SELECT p.payment_date FROM payments p WHERE p.collection_id = monthly_collections.id),
+    payment_method = (SELECT p.payment_method FROM payments p WHERE p.collection_id = monthly_collections.id)
+WHERE EXISTS (SELECT 1 FROM payments p WHERE p.collection_id = monthly_collections.id);
+
 CREATE INDEX IF NOT EXISTS idx_collections_month_key ON monthly_collections(month_key);
 CREATE INDEX IF NOT EXISTS idx_collections_status_month ON monthly_collections(payment_status, month_key);
