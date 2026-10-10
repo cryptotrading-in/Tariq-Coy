@@ -2,8 +2,7 @@ name = "tariq-coy-personnel"
 main = "src/worker.js"
 compatibility_date = "2026-10-10"
 
-# Existing Cloudflare D1 database. Replace database_id with the actual ID
-# from the Cloudflare dashboard before remote migrations or deployment.
+# Existing Cloudflare D1 database: tariqcoydb.
 [[d1_databases]]
 binding = "DB"
 database_name = "tariqcoydb"
