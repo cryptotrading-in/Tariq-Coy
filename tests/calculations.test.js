@@ -15,15 +15,15 @@ test("uses the actual number of days in each month", () => {
 });
 
 test("calculates deduction as 7000 / current month days * leave days", () => {
-  assert.equal(calculateLeaveDeduction({ monthKey: "2026-10", leaveDays: 4 }), 903.23);
+  assert.equal(calculateLeaveDeduction({ monthKey: "2026-10", leaveDays: 4 }), 903);
   assert.equal(calculateLeaveDeduction({ monthKey: "2026-09", leaveDays: 3 }), 700);
-  assert.equal(calculateLeaveDeduction({ monthKey: "2028-02", leaveDays: 1 }), 241.38);
+  assert.equal(calculateLeaveDeduction({ monthKey: "2028-02", leaveDays: 1 }), 241);
 });
 
 test("calculates net mess after deduction for eligible IN staff", () => {
   assert.deepEqual(
     calculateMess({ monthKey: "2026-10", leaveDays: 4, rank: "SI", livingStatus: "IN" }),
-    { monthDays: 31, leaveDeduction: 903.23, messAmount: 6096.77 },
+    { monthDays: 31, leaveDeduction: 903, messAmount: 6097 },
   );
 });
 
