@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS employees (
   mobile_no TEXT,
   emergency_no TEXT,
   marital_status TEXT,
-  no_of_children INTEGER CHECK (no_of_children IS NULL OR no_of_children >= 0),
+  no_of_children INTEGER,
   spouse_no TEXT,
   courses TEXT,
   present_address TEXT,
@@ -47,14 +47,12 @@ CREATE TABLE IF NOT EXISTS employees (
   tariq_coy_joining_date TEXT,
   living_status TEXT NOT NULL DEFAULT 'UNSET' CHECK (living_status IN ('IN', 'OUT', 'UNSET')),
   driving_license TEXT NOT NULL DEFAULT 'No' CHECK (driving_license IN ('Yes', 'No')),
-  active INTEGER NOT NULL DEFAULT 1 CHECK (active IN (0, 1)),
   is_active INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
 CREATE INDEX IF NOT EXISTS idx_employees_rank_force ON employees(rank, force_no);
 CREATE INDEX IF NOT EXISTS idx_employees_living_status ON employees(living_status);
-CREATE INDEX IF NOT EXISTS idx_employees_active ON employees(active);
 
 CREATE TABLE IF NOT EXISTS leave_records (
   id TEXT PRIMARY KEY,
@@ -75,49 +73,39 @@ CREATE INDEX IF NOT EXISTS idx_leave_type_dates ON leave_records(leave_type, fro
 CREATE TABLE IF NOT EXISTS contribution_rates (
   id TEXT PRIMARY KEY,
   rank TEXT NOT NULL CHECK (rank IN ('DD', 'AD', 'INSP', 'SI', 'ASI', 'SGT', 'CPL')),
-  living_status TEXT NOT NULL CHECK (living_status IN ('IN', 'OUT')),
-  effective_from TEXT NOT NULL,
-  welfare REAL NOT NULL DEFAULT 0 CHECK (welfare >= 0),
-  mod_amount REAL NOT NULL DEFAULT 0 CHECK (mod_amount >= 0),
-  med REAL NOT NULL DEFAULT 0 CHECK (med >= 0),
-  barber REAL NOT NULL DEFAULT 0 CHECK (barber >= 0),
-  waiter REAL NOT NULL DEFAULT 0 CHECK (waiter >= 0),
-  wman REAL NOT NULL DEFAULT 0 CHECK (wman >= 0),
+  effective_month TEXT NOT NULL,
+  welfare REAL NOT NULL DEFAULT 0,
+  mod REAL NOT NULL DEFAULT 0,
+  med REAL NOT NULL DEFAULT 0,
+  barber REAL NOT NULL DEFAULT 0,
+  waiter REAL NOT NULL DEFAULT 0,
+  w_man REAL NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-  UNIQUE(rank, living_status, effective_from)
+  UNIQUE(rank, effective_month)
 );
-CREATE INDEX IF NOT EXISTS idx_contribution_rates_effective ON contribution_rates(effective_from, rank, living_status);
+CREATE INDEX IF NOT EXISTS idx_contribution_rates_month ON contribution_rates(effective_month, rank);
 
 CREATE TABLE IF NOT EXISTS monthly_collections (
   id TEXT PRIMARY KEY,
   employee_id TEXT NOT NULL REFERENCES employees(id) ON DELETE RESTRICT,
-  month_key TEXT NOT NULL,
-  welfare REAL NOT NULL DEFAULT 0 CHECK (welfare >= 0),
-  mod_amount REAL NOT NULL DEFAULT 0 CHECK (mod_amount >= 0),
-  med REAL NOT NULL DEFAULT 0 CHECK (med >= 0),
-  barber REAL NOT NULL DEFAULT 0 CHECK (barber >= 0),
-  waiter REAL NOT NULL DEFAULT 0 CHECK (waiter >= 0),
-  wman REAL NOT NULL DEFAULT 0 CHECK (wman >= 0),
-  contribution_total REAL NOT NULL DEFAULT 0 CHECK (contribution_total >= 0),
+  collection_month TEXT NOT NULL,
   living_status_snapshot TEXT NOT NULL CHECK (living_status_snapshot IN ('IN', 'OUT')),
   rank_snapshot TEXT NOT NULL CHECK (rank_snapshot IN ('DD', 'AD', 'INSP', 'SI', 'ASI', 'SGT', 'CPL')),
+  contribution_total REAL NOT NULL DEFAULT 0 CHECK (contribution_total >= 0),
   mess_base REAL NOT NULL DEFAULT 7000 CHECK (mess_base >= 0),
   leave_days REAL NOT NULL DEFAULT 0 CHECK (leave_days >= 0),
   leave_deduction REAL NOT NULL DEFAULT 0 CHECK (leave_deduction >= 0),
   leave_deduction_mode TEXT NOT NULL DEFAULT 'automatic' CHECK (leave_deduction_mode IN ('automatic', 'manual')),
-  mess_amount REAL NOT NULL DEFAULT 0 CHECK (mess_amount >= 0),
+  net_mess REAL NOT NULL DEFAULT 0 CHECK (net_mess >= 0),
   total_due REAL NOT NULL DEFAULT 0 CHECK (total_due >= 0),
-  payment_status TEXT NOT NULL DEFAULT 'PENDING' CHECK (payment_status IN ('PENDING', 'PAID')),
-  payment_date TEXT,
-  payment_method TEXT CHECK (payment_method IS NULL OR payment_method IN ('Cash', 'Bank Transfer', 'Other')),
+  notes TEXT,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-  UNIQUE(employee_id, month_key)
+  UNIQUE(employee_id, collection_month)
 );
-CREATE INDEX IF NOT EXISTS idx_collections_month ON monthly_collections(month_key);
-CREATE INDEX IF NOT EXISTS idx_collections_employee_month ON monthly_collections(employee_id, month_key);
-CREATE INDEX IF NOT EXISTS idx_collections_status_month ON monthly_collections(payment_status, month_key);
+CREATE INDEX IF NOT EXISTS idx_collections_month ON monthly_collections(collection_month);
+CREATE INDEX IF NOT EXISTS idx_collections_employee_month ON monthly_collections(employee_id, collection_month);
 
 CREATE TABLE IF NOT EXISTS payments (
   id TEXT PRIMARY KEY,
