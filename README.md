@@ -32,7 +32,8 @@ Use decimal-safe currency rounding to two decimal places for the displayed deduc
 - Source control: this GitHub repository.
 - Hosting and backend: Cloudflare Workers.
 - Persistent online data: Cloudflare D1, accessed only through server-side Worker APIs.
-- Authentication: secure server-validated sessions; no public access to personnel data.
+- Current temporary development branch: authentication is disabled so the application flow can be tested without accounts.
+- This no-login branch exposes personnel APIs to anyone who can reach the Worker. Never deploy it to a public URL or use it with real personnel data.
 - Security: server-side authorization on every protected endpoint, validation of all input, parameterized SQL, secure session cookies, no secrets in frontend code, audit trail for important changes.
 - Data protection: regular database exports/backups and a tested restore procedure.
 - Browser storage must not be the source of truth for employee, leave, collection, or payment records.
@@ -47,14 +48,9 @@ Use decimal-safe currency rounding to two decimal places for the displayed deduc
 6. Test calculations, access controls, month isolation, exports, backups, and restore.
 7. Deploy to Cloudflare and verify production behavior.
 
-## Authentication lifecycle
+## Temporary no-login development mode
 
-1. Configure a temporary Cloudflare Worker secret named `BOOTSTRAP_SECRET` using `npx wrangler secret put BOOTSTRAP_SECRET`. Generate a long random value and do not commit it or paste it into source files.
-2. After the D1 migrations have been reviewed and applied, send one HTTPS `POST /api/setup-admin` request with the chosen admin username/password, an `Origin` header matching the Worker origin, and the secret in `x-bootstrap-secret`. Use a password of at least 12 characters. Never send credentials in a URL or commit them.
-3. Immediately remove the one-time secret with `npx wrangler secret delete BOOTSTRAP_SECRET`. The endpoint permanently closes once a valid admin account with a password salt exists.
-4. The admin signs in at the application login screen (once the approved UI is connected). The Worker validates credentials and issues an `HttpOnly; Secure; SameSite=Strict` session cookie. Session tokens are stored only as SHA-256 hashes in D1. The default session lifetime is 8 hours.
-5. The client checks `GET /api/me` to restore login state after a page reload. A `401` means the user must sign in again. Logout uses `POST /api/logout`, revokes the server-side session and clears the cookie.
-6. Do not store authentication tokens or personnel data in localStorage as the source of truth. Always call the API from the same HTTPS origin so the browser sends the secure cookie.
+The `remove-login-temporarily` branch removes first-admin setup, sign-in, session checks, and logout so the UI and API flow can be reviewed. This is intentionally insecure and for private development only. Do not merge into the production branch or deploy to a public Cloudflare Worker while authentication is disabled. Restore server-side authentication and authorization before production use.
 
 ### Approved master data and living status
 
