@@ -339,7 +339,51 @@ async function handle(request, env) {
       if (!month) return json({ error: "Month query is required in YYYY-MM format." }, 400);
       const rows = await env.DB.prepare("SELECT c.*, e.force_no, e.name, e.rank FROM monthly_collections c JOIN employees e ON e.id=c.employee_id WHERE c.month_key=?").bind(month).all();
       const ordered = rankFromForceSort(rows.results || []);
-      return json({ rows: ordered.map((r, i) => ({ sr_no: i + 1, ...r })) });
+      const common = (r, i) => ({
+        "Sr. No.": i + 1,
+        "Force No.": r.force_no,
+        "Rank": r.rank_snapshot || r.rank,
+        "Name": r.name,
+        "Living Status": r.living_status_snapshot,
+      });
+      if (report === "monthly-contribution") {
+        return json({ rows: ordered.map((r, i) => ({
+          ...common(r, i),
+          "Welfare": r.welfare,
+          "MOD": r.mod_amount,
+          "MED": r.med,
+          "Barber": r.barber,
+          "Waiter": r.waiter,
+          "W.Man": r.wman,
+          "Contribution Total": r.contribution_total,
+          "Payment Status": r.payment_status,
+        })) });
+      }
+      if (report === "mess") {
+        return json({ rows: ordered.map((r, i) => ({
+          ...common(r, i),
+          "Leave Days": r.leave_days,
+          "Leave Deduction": r.leave_deduction,
+          "Mess Base": r.mess_base,
+          "Net Mess": r.mess_amount,
+        })) });
+      }
+      return json({ rows: ordered.map((r, i) => ({
+        ...common(r, i),
+        "Welfare": r.welfare,
+        "MOD": r.mod_amount,
+        "MED": r.med,
+        "Barber": r.barber,
+        "Waiter": r.waiter,
+        "W.Man": r.wman,
+        "Contribution Total": r.contribution_total,
+        "Leave Days": r.leave_days,
+        "Leave Deduction": r.leave_deduction,
+        "Mess Base": r.mess_base,
+        "Net Mess": r.mess_amount,
+        "Total Due": r.total_due,
+        "Payment Status": r.payment_status,
+      })) });
     }
     return json({ error: "Unknown report type." }, 404);
   }
