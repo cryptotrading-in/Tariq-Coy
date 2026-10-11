@@ -86,20 +86,9 @@ async function handle(request, env) {
 
   // TEMPORARY NO-LOGIN MODE: private development branch only.
   // Every API endpoint below is accessible without authentication. Never deploy publicly.
-  const user = await currentUser(request, env);
-    if (user) {
-      await env.DB.prepare("UPDATE auth_sessions SET revoked_at=CURRENT_TIMESTAMP WHERE id=?").bind(user.session_id).run();
-      await audit(env.DB, user.id, "LOGOUT", "user", user.id);
-    }
-    return json({ ok: true }, 200, { "set-cookie": clearCookie() });
-  }
-  if (path === "/api/me" && request.method === "GET") {
-    const user = await currentUser(request, env);
-    if (!user) return json({ authenticated: false }, 401);
-    return json({ authenticated: true, user: { id: user.id, username: user.username, role: user.role } });
-  }
+  const user = { id: null, username: "Working mode", role: "admin", session_id: null };
 
-  const user = currentUser();
+
 
   if (path === "/api/employees" && request.method === "GET") {
     const rows = await env.DB.prepare("SELECT * FROM employees WHERE active=1").all();
