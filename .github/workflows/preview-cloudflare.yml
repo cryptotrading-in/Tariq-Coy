@@ -1,0 +1,90 @@
+name: Isolated UI Preview
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install
+      - name: Create isolated preview database
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          DB_NAME="tariqcoy-preview-pr-$PR_NUMBER"
+          LIST="$(npx wrangler d1 list)"
+          DB_ID="$(printf '%s\n' "$LIST" | grep -F "$DB_NAME" | grep -Eo '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1 || true)"
+          if [ -z "$DB_ID" ]; then
+            CREATE_OUTPUT="$(npx wrangler d1 create "$DB_NAME")"
+            printf '%s\n' "$CREATE_OUTPUT"
+            DB_ID="$(printf '%s\n' "$CREATE_OUTPUT" | grep -Eo '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1 || true)"
+          fi
+          if [ -z "$DB_ID" ]; then echo "Could not resolve preview D1 database ID"; exit 1; fi
+          echo "PREVIEW_DB_NAME=$DB_NAME" >> "$GITHUB_ENV"
+          echo "PREVIEW_DB_ID=$DB_ID" >> "$GITHUB_ENV"
+      - name: Build isolated config
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          mkdir -p preview-migrations
+          cp migrations/0001_schema.sql preview-migrations/
+          cp migrations/0001_initial_schema.sql preview-migrations/
+          cp migrations/0002_align_worker_schema.sql preview-migrations/
+          cat > preview-migrations/0003_preview_sample_data.sql <<'SQL'
+          -- Fictional sample records only; production personnel are never copied.
+          INSERT INTO employees (id, force_no, rank, name, living_status, driving_license, active)
+          SELECT lower(hex(randomblob(16))), json_extract(value,'$.force_no'), json_extract(value,'$.rank'), json_extract(value,'$.name'), json_extract(value,'$.living_status'), 'No', 1
+          FROM json_each('[{"force_no":"SF-101","rank":"DD","name":"Sample Officer One","living_status":"IN"},{"force_no":"SF-102","rank":"AD","name":"Sample Officer Two","living_status":"IN"},{"force_no":"US-201","rank":"INSP","name":"Sample Inspector","living_status":"OUT"},{"force_no":"US-301","rank":"SI","name":"Sample Sub Inspector","living_status":"IN"},{"force_no":"US-401","rank":"ASI","name":"Sample Assistant SI","living_status":"IN"},{"force_no":"S-501","rank":"SGT","name":"Sample Sergeant","living_status":"OUT"},{"force_no":"C-601","rank":"CPL","name":"Sample Corporal","living_status":"IN"}]');
+          INSERT INTO contribution_rates (id, rank, living_status, effective_from, welfare, mod_amount, med, barber, waiter, wman)
+          SELECT lower(hex(randomblob(16))), json_extract(value,'$.rank'), json_extract(value,'$.living_status'), '2026-10-01', json_extract(value,'$.welfare'), json_extract(value,'$.mod_amount'), json_extract(value,'$.med'), json_extract(value,'$.barber'), json_extract(value,'$.waiter'), json_extract(value,'$.wman')
+          FROM json_each('[{"rank":"DD","living_status":"IN","welfare":600,"mod_amount":600,"med":200,"barber":0,"waiter":0,"wman":0},{"rank":"DD","living_status":"OUT","welfare":600,"mod_amount":600,"med":200,"barber":0,"waiter":0,"wman":0},{"rank":"AD","living_status":"IN","welfare":500,"mod_amount":500,"med":180,"barber":0,"waiter":0,"wman":700},{"rank":"AD","living_status":"OUT","welfare":500,"mod_amount":500,"med":180,"barber":0,"waiter":0,"wman":0},{"rank":"INSP","living_status":"IN","welfare":300,"mod_amount":300,"med":150,"barber":0,"waiter":0,"wman":650},{"rank":"INSP","living_status":"OUT","welfare":300,"mod_amount":300,"med":150,"barber":0,"waiter":0,"wman":0},{"rank":"SI","living_status":"IN","welfare":220,"mod_amount":220,"med":120,"barber":320,"waiter":200,"wman":480},{"rank":"SI","living_status":"OUT","welfare":220,"mod_amount":220,"med":120,"barber":320,"waiter":0,"wman":0},{"rank":"ASI","living_status":"IN","welfare":200,"mod_amount":200,"med":100,"barber":300,"waiter":200,"wman":430},{"rank":"ASI","living_status":"OUT","welfare":200,"mod_amount":200,"med":100,"barber":300,"waiter":0,"wman":0},{"rank":"SGT","living_status":"IN","welfare":175,"mod_amount":175,"med":80,"barber":250,"waiter":200,"wman":350},{"rank":"SGT","living_status":"OUT","welfare":175,"mod_amount":175,"med":80,"barber":250,"waiter":0,"wman":0},{"rank":"CPL","living_status":"IN","welfare":150,"mod_amount":150,"med":80,"barber":230,"waiter":200,"wman":330},{"rank":"CPL","living_status":"OUT","welfare":150,"mod_amount":150,"med":80,"barber":230,"waiter":0,"wman":0}]');
+          SQL
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          let c=fs.readFileSync('wrangler.toml','utf8');
+          c=c.replace(/^name = .*$/m,'name = "tariq-coy-preview-pr-'+process.env.PR_NUMBER+'"');
+          c=c.replace(/^database_name = .*$/m,'database_name = "'+process.env.PREVIEW_DB_NAME+'"');
+          c=c.replace(/^database_id = .*$/m,'database_id = "'+process.env.PREVIEW_DB_ID+'"');
+          c=c.replace(/^APP_ENV = .*$/m,'APP_ENV = "preview"');
+          c=c.replace(/^\[\[d1_databases\]\]$/m,'[[d1_databases]]\nmigrations_dir = "preview-migrations"');
+          if(!/^workers_dev\s*=/m.test(c)) c=c.replace(/^main = .*$/m,'$&\nworkers_dev = true');
+          fs.writeFileSync('wrangler.preview.toml',c);
+          NODE
+      - name: Migrate isolated preview database
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler d1 migrations apply "$PREVIEW_DB_NAME" --remote --config wrangler.preview.toml
+      - name: Deploy preview Worker
+        id: deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          npx wrangler deploy --config wrangler.preview.toml 2>&1 | tee /tmp/deploy.log
+          URL="$(grep -Eo 'https://[A-Za-z0-9.-]+\.workers\.dev' /tmp/deploy.log | tail -1 || true)"
+          test -n "$URL"
+          echo "preview_url=$URL" >> "$GITHUB_OUTPUT"
+      - name: Publish preview link
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = '${{ steps.deploy.outputs.preview_url }}';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: 'UI preview URL: ' + url + '\n\nThis is an isolated Worker with a separate empty D1 database; it does not use production records. Create a preview-only admin account on first visit. Production is unchanged.'
+            });
