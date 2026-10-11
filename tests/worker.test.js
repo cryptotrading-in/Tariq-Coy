@@ -133,3 +133,44 @@ test("logout revokes the current session and clears the session cookie", async (
   assert.match(response.headers.get("set-cookie"), /Max-Age=0/);
   assert.ok(env.__calls.some(x => x.sql.includes("UPDATE auth_sessions SET revoked_at")));
 });
+
+test("receipt reversal endpoint requires an authenticated administrator", async () => {
+  const response = await worker.fetch(new Request("https://tariq.example/api/collections/collection-1/reverse", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Origin": "https://tariq.example",
+      "Cookie": "__Host-tariq_session=test-session-token",
+    },
+    body: JSON.stringify({
+      employee_id: "employee-1",
+      month_key: "2026-10",
+      amount: 7000,
+      reason: "Wrong employee",
+      confirmation: "REVERSE",
+    }),
+  }), testEnv());
+  assert.equal(response.status, 401);
+  assert.deepEqual(await response.json(), { error: "Authentication required" });
+});
+
+test("receipt reversal requires an exact typed confirmation and a reason", async () => {
+  const response = await worker.fetch(new Request("https://tariq.example/api/collections/collection-1/reverse", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Origin": "https://tariq.example",
+      "Cookie": "__Host-tariq_session=test-session-token",
+    },
+    body: JSON.stringify({
+      employee_id: "employee-1",
+      month_key: "2026-10",
+      amount: 7000,
+      reason: "Wrong employee",
+      confirmation: "reverse",
+    }),
+  }), testEnv({ authenticated: true }));
+  assert.equal(response.status, 400);
+  assert.match((await response.json()).error, /REVERSE confirmation/);
+});
+
