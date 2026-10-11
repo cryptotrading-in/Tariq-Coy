@@ -25,7 +25,7 @@ function flowEnv({ employee = {}, rate = {}, saved = {}, paymentRecord = null } 
           },
           async all() {
             calls.push({ kind: "all", sql, values });
-            if (sql.includes("FROM employees WHERE active=1")) return { results: [{ force_no: "US-9", rank: "SI", name: "Test Employee" }] };
+            if (sql.includes("FROM employees WHERE active=1")) return { results: [{ force_no: "US-9", rank: "SI", name: "Test Employee", remarks: "" }] };
             return { results: [] };
           },
           async run() {
@@ -54,7 +54,7 @@ test("collection save calculates October leave deduction using 31 days and persi
   const env = flowEnv({
     employee: { id: "employee-1", active: 1, rank: "SI", living_status: "IN" },
     rate: { id: "rate-1", rank: "SI", living_status: "IN", welfare: 220, mod_amount: 220, med: 120, barber: 320, waiter: 200, wman: 480 },
-    saved: { id: "collection-1", employee_id: "employee-1", month_key: "2026-10", leave_deduction: 903.23, mess_amount: 6096.77, contribution_total: 1560, total_due: 7656.77 },
+    saved: { id: "c011ec71-0000-4000-8000-000000000001", employee_id: "employee-1", month_key: "2026-10", leave_deduction: 903.23, mess_amount: 6096.77, contribution_total: 1560, total_due: 7656.77 },
   });
   const response = await worker.fetch(post("https://tariq.example/api/collections", {
     employee_id: "employee-1", month_key: "2026-10", leave_days: 4,
@@ -99,9 +99,9 @@ test("collection cannot be saved when living status has not been confirmed", asy
 
 test("full payment uses the stored total and writes collection and payment in a D1 batch", async () => {
   const env = flowEnv({
-    paymentRecord: { id: "collection-1", month_key: "2026-10", total_due: 7656.77, payment_status: "PENDING" },
+    paymentRecord: { id: "c011ec71-0000-4000-8000-000000000001", month_key: "2026-10", total_due: 7656.77, payment_status: "PENDING" },
   });
-  const response = await worker.fetch(post("https://tariq.example/api/collections/collection-1/receive", {
+  const response = await worker.fetch(post("https://tariq.example/api/collections/c011ec71-0000-4000-8000-000000000001/receive", {
     payment_date: "2026-10-11", payment_method: "Cash",
   }), env);
   assert.equal(response.status, 200);
@@ -114,9 +114,9 @@ test("full payment uses the stored total and writes collection and payment in a 
 
 test("payment endpoint rejects partial-payment amounts", async () => {
   const env = flowEnv({
-    paymentRecord: { id: "collection-1", month_key: "2026-10", total_due: 7636.77, payment_status: "PENDING" },
+    paymentRecord: { id: "c011ec71-0000-4000-8000-000000000001", month_key: "2026-10", total_due: 7636.77, payment_status: "PENDING" },
   });
-  const response = await worker.fetch(post("https://tariq.example/api/collections/collection-1/receive", {
+  const response = await worker.fetch(post("https://tariq.example/api/collections/c011ec71-0000-4000-8000-000000000001/receive", {
     payment_date: "2026-10-11", payment_method: "Cash", amount: 1000,
   }), env);
   assert.equal(response.status, 400);
