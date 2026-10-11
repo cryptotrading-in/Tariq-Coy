@@ -76,7 +76,7 @@ async function openCollectionPopup(employeeId){
   '<div class="amountline"><span>Leave Deduction</span><b>Rs '+money(r.leave_deduction)+'</b></div>'+
   '<div class="amountline"><span>Mess / Ration</span><b>Rs '+money(r.mess_amount)+'</b></div>'+
   '<div class="amountline total"><span>Total Amount</span><span>Rs '+money(r.total_due)+'</span></div>'+
-  '<p class="muted" id="pop-note">'+(r?"Amount saved for this month.":esc(initialError||"Enter leave days and select Calculate Amount."))+'</p><div class="modalactions"><button id="pop-close" class="btn">Close</button>'+
+  '<p class="muted" id="pop-note">'+(r&&r.last_reversal_reason?"Previous receipt reversed: "+esc(r.last_reversal_reason):(r?"Amount saved for this month.":esc(initialError||"Enter leave days and select Calculate Amount.")))+'</p><div class="modalactions"><button id="pop-close" class="btn">Close</button>'+
   (!isPaid?'<button id="pop-calc" class="btn">'+(r?'Update Amount':'Calculate Amount')+'</button>':'')+
   (r&&!isPaid?'<button id="pop-receive" class="btn primary">Receive</button>':'')+(isPaid?'<button id="pop-reverse" class="btn" style="border-color:#b42318;color:#b42318">Reverse Receipt</button>':'')+'</div></div>';
   $("#pop-close").onclick=()=>host.remove();
