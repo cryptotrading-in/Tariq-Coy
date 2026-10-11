@@ -23,12 +23,14 @@ jobs:
         run: |
           set -euo pipefail
           DB_NAME="tariqcoy-preview-pr-$PR_NUMBER"
-          npx wrangler d1 list --json > /tmp/dbs.json
-          DB_ID="$(DB_NAME="$DB_NAME" node -e 'const d=require("/tmp/dbs.json");const a=Array.isArray(d)?d:(d.result||[]);const x=a.find(v=>v.name===process.env.DB_NAME);process.stdout.write(x?(x.uuid||x.database_id||""):"")')"
+          LIST="$(npx wrangler d1 list)"
+          DB_ID="$(printf '%s\n' "$LIST" | grep -F "$DB_NAME" | grep -Eo '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1 || true)"
           if [ -z "$DB_ID" ]; then
-            npx wrangler d1 create "$DB_NAME" --json > /tmp/newdb.json
-            DB_ID="$(node -e 'const d=require("/tmp/newdb.json");const x=d.result||d;process.stdout.write(x.uuid||x.database_id||"")')"
+            CREATE_OUTPUT="$(npx wrangler d1 create "$DB_NAME")"
+            printf '%s\n' "$CREATE_OUTPUT"
+            DB_ID="$(printf '%s\n' "$CREATE_OUTPUT" | grep -Eo '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1 || true)"
           fi
+          if [ -z "$DB_ID" ]; then echo "Could not resolve preview D1 database ID"; exit 1; fi
           echo "PREVIEW_DB_NAME=$DB_NAME" >> "$GITHUB_ENV"
           echo "PREVIEW_DB_ID=$DB_ID" >> "$GITHUB_ENV"
       - name: Build isolated config
