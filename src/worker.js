@@ -356,7 +356,7 @@ async function handle(request, env) {
   if (path === "/api/collections" && request.method === "GET") {
     const month = url.searchParams.get("month");
     if (!validMonth(month)) return json({ error: "Month query is required in YYYY-MM format." }, 400);
-    const rows = await env.DB.prepare("SELECT c.*, e.force_no, e.name, e.rank FROM monthly_collections c JOIN employees e ON e.id=c.employee_id WHERE c.month_key=? ORDER BY e.rank, e.force_no").bind(month).all();
+    const rows = await env.DB.prepare("SELECT c.*, e.force_no, e.name, e.rank, (SELECT pe.reason FROM payment_receipt_events pe WHERE pe.collection_id=c.id AND pe.event_type='REVERSED' ORDER BY pe.created_at DESC, pe.rowid DESC LIMIT 1) AS last_reversal_reason, (SELECT pe.created_at FROM payment_receipt_events pe WHERE pe.collection_id=c.id AND pe.event_type='REVERSED' ORDER BY pe.created_at DESC, pe.rowid DESC LIMIT 1) AS last_reversed_at FROM monthly_collections c JOIN employees e ON e.id=c.employee_id WHERE c.month_key=? ORDER BY e.rank, e.force_no").bind(month).all();
     return json({ month, collections: rankFromForceSort(rows.results || []) });
   }
   if (path === "/api/collections" && request.method === "POST") {
