@@ -418,16 +418,54 @@ async function handle(request, env) {
     if (record.payment_status === "PAID") return json({ error: "This collection is already marked paid." }, 409);
     const previousPayment = await env.DB.prepare("SELECT amount, payment_date, payment_method FROM payments WHERE collection_id=?").bind(id).first();
     const paymentId = crypto.randomUUID();
+    const eventId = crypto.randomUUID();
     const batchResults = await env.DB.batch([
       env.DB.prepare("UPDATE monthly_collections SET payment_status='PAID', payment_date=?, payment_method=?, updated_at=CURRENT_TIMESTAMP WHERE id=? AND payment_status='PENDING'")
         .bind(paymentDate, paymentMethod, id),
-      env.DB.prepare("INSERT INTO payments (id, collection_id, amount, payment_date, payment_method, received_by) SELECT ?, id, total_due, ?, ?, ? FROM monthly_collections WHERE id=? AND payment_status='PAID' ON CONFLICT(collection_id) DO UPDATE SET amount=excluded.amount, payment_date=excluded.payment_date, payment_method=excluded.payment_method, received_by=excluded.received_by")
+      env.DB.prepare("INSERT INTO payments (id, collection_id, amount, payment_date, payment_method, received_by) SELECT ?, id, total_due, ?, ?, ? FROM monthly_collections WHERE id=? AND payment_status='PAID' AND changes()=1 ON CONFLICT(collection_id) DO UPDATE SET id=excluded.id, amount=excluded.amount, payment_date=excluded.payment_date, payment_method=excluded.payment_method, received_by=excluded.received_by")
         .bind(paymentId, paymentDate, paymentMethod, user.id, id),
+      env.DB.prepare("INSERT INTO payment_receipt_events (id, event_type, collection_id, receipt_id, employee_id, month_key, amount, payment_date, payment_method, reason, acted_by) SELECT ?, 'RECEIVED', c.id, p.id, c.employee_id, c.month_key, p.amount, p.payment_date, p.payment_method, '', ? FROM monthly_collections c JOIN payments p ON p.collection_id=c.id WHERE c.id=? AND c.payment_status='PAID' AND p.id=? AND changes()=1 AND NOT EXISTS (SELECT 1 FROM payment_receipt_events e WHERE e.receipt_id=p.id AND e.event_type='RECEIVED')")
+        .bind(eventId, user.id, id, paymentId),
     ]);
     if (!batchResults[0]?.meta?.changes) return json({ error: "This collection is already marked paid." }, 409);
     const legacyPartial = previousPayment && Number(previousPayment.amount) < Number(record.total_due) - 0.01 ? previousPayment : null;
-    await audit(env.DB, user.id, "FULL_PAYMENT_RECEIVED", "monthly_collection", id, { month_key: record.month_key, total_due: record.total_due, payment_method: paymentMethod, legacy_partial_payment_replaced: legacyPartial });
+    await audit(env.DB, user.id, "FULL_PAYMENT_RECEIVED", "monthly_collection", id, { month_key: record.month_key, total_due: record.total_due, payment_method: paymentMethod, receipt_id: paymentId, legacy_partial_payment_replaced: legacyPartial });
     return json({ ok: true, message: "Full payment marked received." });
+  }
+
+  const reverseMatch = path.match(/^\/api\/collections\/([a-f0-9-]+)\/reverse$/i);
+  if (reverseMatch && request.method === "POST") {
+    if (!requireAdmin(user)) return json({ error: "Administrator permission required" }, 403);
+    let body; try { body = await readJson(request); } catch { return json({ error: "Invalid JSON request" }, 400); }
+    const id = reverseMatch[1];
+    const employeeId = String(body.employee_id || "");
+    const monthKey = String(body.month_key || "");
+    const amount = Number(body.amount);
+    const reason = typeof body.reason === "string" ? body.reason.trim().slice(0, 300) : "";
+    if (!employeeId || !validMonth(monthKey) || !validMoney(body.amount) || !reason || body.confirmation !== "REVERSE") {
+      return json({ error: "Employee, month, exact amount, reason, and REVERSE confirmation are required." }, 400);
+    }
+    const record = await env.DB.prepare("SELECT c.*, e.force_no, e.name FROM monthly_collections c JOIN employees e ON e.id=c.employee_id WHERE c.id=?").bind(id).first();
+    if (!record) return json({ error: "Collection not found" }, 404);
+    if (record.employee_id !== employeeId || record.month_key !== monthKey || Math.abs(Number(record.total_due) - amount) > 0.001) {
+      return json({ error: "Employee, month, or amount no longer matches this receipt. Refresh and try again." }, 409);
+    }
+    if (record.payment_status !== "PAID") return json({ error: "This receipt is not currently marked Paid, or it has already been reversed." }, 409);
+    const receipt = await env.DB.prepare("SELECT * FROM payments WHERE collection_id=?").bind(id).first();
+    if (!receipt) return json({ error: "The original receipt record could not be found." }, 409);
+    const eventId = crypto.randomUUID();
+    const batchResults = await env.DB.batch([
+      env.DB.prepare("UPDATE monthly_collections SET payment_status='PENDING', payment_date=NULL, payment_method=NULL, updated_at=CURRENT_TIMESTAMP WHERE id=? AND employee_id=? AND month_key=? AND payment_status='PAID' AND total_due=?")
+        .bind(id, employeeId, monthKey, amount),
+      env.DB.prepare("INSERT INTO payment_receipt_events (id, event_type, collection_id, receipt_id, employee_id, month_key, amount, payment_date, payment_method, reason, acted_by) SELECT ?, 'REVERSED', c.id, p.id, c.employee_id, c.month_key, p.amount, p.payment_date, p.payment_method, ?, ? FROM monthly_collections c JOIN payments p ON p.collection_id=c.id WHERE c.id=? AND c.employee_id=? AND c.month_key=? AND c.payment_status='PENDING' AND p.id=? AND changes()=1 AND NOT EXISTS (SELECT 1 FROM payment_receipt_events e WHERE e.receipt_id=p.id AND e.event_type='REVERSED')")
+        .bind(eventId, reason, user.id, id, employeeId, monthKey, receipt.id),
+    ]);
+    if (!batchResults[0]?.meta?.changes) return json({ error: "This receipt was changed or reversed already. Refresh the Collection screen." }, 409);
+    await audit(env.DB, user.id, "PAYMENT_RECEIPT_REVERSED", "monthly_collection", id, {
+      employee_id: employeeId, employee_name: record.name, force_no: record.force_no,
+      month_key: monthKey, amount, receipt_amount: Number(receipt.amount), receipt_id: receipt.id, reason,
+    });
+    return json({ ok: true, message: "Receipt reversed. The employee is now Pending again." });
   }
 
   if (path.startsWith("/api/reports/") && request.method === "GET") {
