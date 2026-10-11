@@ -2,7 +2,7 @@ name = "tariq-coy-personnel"
 main = "src/worker.js"
 compatibility_date = "2026-10-10"
 
-# Existing Cloudflare D1 database: tariqcoydb.
+# Production D1 database; do not use this binding for preview.
 [[d1_databases]]
 binding = "DB"
 database_name = "tariqcoydb"
@@ -11,6 +11,16 @@ database_id = "b3b5b12a-ce5c-4281-920a-15f59a8124cd"
 [vars]
 APP_ENV = "production"
 SESSION_TTL_HOURS = "8"
+
+# Preview must use a separate D1 database with synthetic/test data only.
+[previews.vars]
+APP_ENV = "preview"
+SESSION_TTL_HOURS = "8"
+
+[[previews.d1_databases]]
+binding = "DB"
+database_name = "tariqcoy-preview"
+database_id = "839b8b8d-e01d-42a5-bf6c-a753facc1bda"
 
 [assets]
 directory = "./public"
