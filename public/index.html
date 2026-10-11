@@ -57,7 +57,7 @@ async function collection(){
  layout(title("Monthly Collection","Select an employee name to view the amount and receive payment",'<input id="month" class="field" type="month" value="'+month+'">')+
  '<div class="cards"><div class="card"><label>Total Employees</label><strong>'+sorted.length+'</strong></div><div class="card"><label>Paid</label><strong>'+paid+'</strong></div><div class="card"><label>Unpaid</label><strong>'+(sorted.length-paid)+'</strong></div><div class="card"><label>Total Received Amount</label><strong>Rs '+money(received)+'</strong></div></div>'+
  '<div class="panel"><div class="tablewrap"><table class="collection-table"><thead><tr><th>Sr. No.</th><th>Force Number</th><th>Name</th><th>Received Amount</th><th>Status</th></tr></thead><tbody>'+
- sorted.map((e,i)=>{let r=byId.get(e.id),isPaid=r&&r.payment_status==="PAID",receivedAmount=isPaid?Number(r.total_due||0):0;return '<tr><td>'+(i+1)+'</td><td>'+esc(e.force_no)+'</td><td><button class="name-link" data-collect="'+e.id+'">'+esc(e.name)+'</button></td><td>Rs '+money(receivedAmount)+'</td><td><span class="pill '+(isPaid?'':'status-unpaid')+'">'+(isPaid?'Paid':'Unpaid')+'</span></td></tr>'}).join("")+
+ sorted.map((e,i)=>{let r=byId.get(e.id),isPaid=r&&r.payment_status==="PAID",receivedAmount=isPaid?Number(r.total_due||0):0;return '<tr><td>'+(i+1)+'</td><td>'+esc(e.force_no)+'</td><td><button class="name-link" data-collect="'+e.id+'">'+esc(e.name)+'</button>'+(isPaid?'<span class="pill" style="margin-left:6px;padding:2px 6px;font-size:10px">Paid</span>':'')+'</td><td>Rs '+money(receivedAmount)+'</td><td><span class="pill '+(isPaid?'':'status-unpaid')+'">'+(isPaid?'Paid':'Unpaid')+'</span></td></tr>'}).join("")+
  '</tbody></table></div></div>');
  $("#month").onchange=e=>{month=e.target.value;render()};
  document.querySelectorAll("[data-collect]").forEach(b=>b.onclick=()=>openCollectionPopup(b.dataset.collect));
@@ -69,7 +69,7 @@ async function openCollectionPopup(employeeId){
  const host=document.createElement("div");host.id="collection-modal";host.className="modalback";
  function draw(){
   const r=record||{},isPaid=r.payment_status==="PAID";
-  host.innerHTML='<div class="modal" role="dialog" aria-modal="true"><h2>'+esc(employee.name)+'</h2><div class="muted">'+esc(employee.force_no)+' · '+esc(employee.rank)+' · '+esc(month)+'</div>'+
+  host.innerHTML='<div class="modal" role="dialog" aria-modal="true"><h2>'+esc(employee.name)+(isPaid?' <span class="pill" style="font-size:10px;vertical-align:middle">Paid</span>':'')+'</h2><div class="muted">'+esc(employee.force_no)+' · '+esc(employee.rank)+' · '+esc(month)+'</div>'+
   (!["IN","OUT"].includes(employee.living_status)?'<p class="muted">Pehle Employee record mein Living Status (IN/OUT) set karein.</p>':'')+
   '<div class="fieldrow"><label>Number of Leaves<input id="pop-leaves" type="number" min="0" max="'+daysInSelectedMonth()+'" value="'+(r.leave_days||0)+'" '+(isPaid?'disabled':'')+'></label><label>Leave Deduction (Rs)<input id="pop-manual" type="number" min="0" max="7000" step="1" placeholder="Auto calculate" value="'+(r.leave_deduction_mode==="manual"?money(r.leave_deduction):"")+'" '+(isPaid?'disabled':'')+'></label></div>'+
   '<div class="amountline"><span>Monthly Contribution</span><b>Rs '+money(r.contribution_total)+'</b></div>'+
@@ -78,7 +78,7 @@ async function openCollectionPopup(employeeId){
   '<div class="amountline total"><span>Total Amount</span><span>Rs '+money(r.total_due)+'</span></div>'+
   '<p class="muted" id="pop-note">'+(r?"Amount saved for this month.":esc(initialError||"Enter leave days and select Calculate Amount."))+'</p><div class="modalactions"><button id="pop-close" class="btn">Close</button>'+
   (!isPaid?'<button id="pop-calc" class="btn">'+(r?'Update Amount':'Calculate Amount')+'</button>':'')+
-  (r&&!isPaid?'<button id="pop-receive" class="btn primary">Receive</button>':(isPaid?'<span class="pill">Paid</span>':''))+'</div></div>';
+  (r&&!isPaid?'<button id="pop-receive" class="btn primary">Receive</button>':'')+(isPaid?'<button id="pop-reverse" class="btn" style="border-color:#b42318;color:#b42318">Reverse Receipt</button>':'')+'</div></div>';
   $("#pop-close").onclick=()=>host.remove();
   const calc=$("#pop-calc");if(calc)calc.onclick=async()=>{
    const leaves=Number($("#pop-leaves").value||0),manual=$("#pop-manual").value;
@@ -93,6 +93,26 @@ async function openCollectionPopup(employeeId){
    receive.disabled=true;
    try{await post("/collections/"+r.id+"/receive",{payment_date:new Date().toISOString().slice(0,10),payment_method:"Cash"});host.remove();await collection();notify("Payment received successfully.")}
    catch(e){const note=$("#pop-note");if(note)note.textContent=e.message;receive.disabled=false}
+  };
+  const reverse=$("#pop-reverse");if(reverse)reverse.onclick=()=>{
+   const prompt=document.createElement("div");prompt.className="modalback confirm-modal";prompt.style.zIndex="1100";
+   prompt.innerHTML='<div class="modal" role="dialog" aria-modal="true" aria-labelledby="reverse-title"><h2 id="reverse-title">Reverse Receipt</h2><p class="confirm-message">This will mark the selected receipt as reversed and return this employee to Pending. The original receipt will remain in D1 history.</p><div class="confirm-details"><b>'+esc(employee.name)+'</b><br>Force Number: '+esc(employee.force_no)+'<br>Month: '+esc(month)+'<br><b>Receipt amount: Rs '+money(r.total_due)+'</b></div><div class="fieldrow"><label>Reason<select id="reverse-reason" class="field"><option value="">Select reason</option><option>Wrong employee</option><option>Wrong amount</option><option>Duplicate receipt</option><option>Other</option></select></label><label>Additional details<input id="reverse-details" class="field" maxlength="250" placeholder="Optional details"></label></div><label style="display:grid;gap:6px;margin-top:10px">Type REVERSE to confirm<input id="reverse-word" class="field" autocomplete="off" placeholder="REVERSE" maxlength="20"></label><p class="muted" id="reverse-error">Please verify the employee, month and amount before continuing.</p><div class="modalactions"><button type="button" class="btn" data-reverse-cancel>Cancel</button><button type="button" class="btn danger" data-reverse-ok disabled>Confirm Reverse</button></div></div>';
+   const reasonInput=prompt.querySelector("#reverse-reason"),detailInput=prompt.querySelector("#reverse-details"),wordInput=prompt.querySelector("#reverse-word"),confirmBtn=prompt.querySelector("[data-reverse-ok]");
+   const updateReady=()=>{confirmBtn.disabled=!(reasonInput.value&&wordInput.value.trim()==="REVERSE"&&(reasonInput.value!=="Other"||detailInput.value.trim()))};
+   reasonInput.onchange=updateReady;detailInput.oninput=updateReady;wordInput.oninput=updateReady;
+   const closePrompt=()=>prompt.remove();
+   prompt.querySelector("[data-reverse-cancel]").onclick=closePrompt;
+   prompt.addEventListener("click",ev=>{if(ev.target===prompt)closePrompt()});
+   confirmBtn.onclick=async()=>{
+    if(confirmBtn.disabled)return;
+    const reason=reasonInput.value+(detailInput.value.trim()?": "+detailInput.value.trim():"");
+    confirmBtn.disabled=true;confirmBtn.textContent="Reversing…";
+    try{
+     await post("/collections/"+r.id+"/reverse",{employee_id:employeeId,month_key:month,amount:Number(r.total_due),reason,confirmation:wordInput.value.trim()});
+     closePrompt();host.remove();await collection();notify("Receipt reversed successfully. Employee is Pending again.");
+    }catch(err){const errorBox=prompt.querySelector("#reverse-error");if(errorBox)errorBox.textContent=err.message;confirmBtn.textContent="Confirm Reverse";updateReady();notify(err.message,"error")}
+   };
+   document.body.appendChild(prompt);wordInput.focus();
   };
  }
  document.body.appendChild(host);draw();
