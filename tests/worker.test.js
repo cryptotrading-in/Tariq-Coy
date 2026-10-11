@@ -135,7 +135,7 @@ test("logout revokes the current session and clears the session cookie", async (
 });
 
 test("receipt reversal endpoint requires an authenticated administrator", async () => {
-  const response = await worker.fetch(new Request("https://tariq.example/api/collections/collection-1/reverse", {
+  const response = await worker.fetch(new Request("https://tariq.example/api/collections/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa/reverse", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -155,7 +155,7 @@ test("receipt reversal endpoint requires an authenticated administrator", async 
 });
 
 test("receipt reversal requires an exact typed confirmation and a reason", async () => {
-  const response = await worker.fetch(new Request("https://tariq.example/api/collections/collection-1/reverse", {
+  const response = await worker.fetch(new Request("https://tariq.example/api/collections/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa/reverse", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
