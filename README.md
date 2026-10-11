@@ -70,7 +70,7 @@ The `remove-login-temporarily` branch removes first-admin setup, sign-in, sessio
 
 ### Current implementation boundary
 
-The repository currently contains the Worker API, schema migrations, and calculation tests, but no HTML/CSS application entry point or approved UI asset files were found in the repository. Do not treat the API-only Worker as the finished user-facing app or replace the previously approved design with a newly invented interface. The approved UI must be recovered/added and connected to these endpoints before the application is considered complete.
+The repository includes the Worker API, D1 migrations, calculation tests, and the current mobile-friendly HTML/CSS application in `public/index.html`. Home, Employees, Collection, History, Reports, Contribution Rates, and Settings are present. The Collection screen previews leave deduction, mess, contribution, and total as leave days/manual deduction change. This branch is still under validation: do not deploy publicly while no-login mode is active, and do not treat the app as production-ready until migration, end-to-end CRUD/payment/report checks, and access control restoration have passed.
 
 ## Sensitive data
 
