@@ -26,26 +26,21 @@ function rateForm(){layout(title("Add Contribution Rate","Rate effective month",
 function settings(){layout(title("Settings","Application and account information")+'<div class="cards"><div class="card"><label>Account</label><strong style="font-size:18px">'+esc(user.username)+'</strong></div><div class="card"><label>Role</label><strong style="font-size:18px">'+esc(user.role)+'</strong></div><div class="card"><label>Session</label><strong style="font-size:18px">Secure</strong></div><div class="card"><label>Storage</label><strong style="font-size:18px">Cloudflare D1</strong></div></div>')}
 async function load(){employees=(await api("/employees")).employees||[]}async function render(){try{if(page==="Home"){layout(home());$("#add").onclick=()=>employeeForm()}else if(page==="Employees"){layout(title("Employees","Personnel master register",'<button id="add" class="btn primary">+ Add employee</button>')+list());$("#add").onclick=()=>employeeForm();document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openEmployee(b.dataset.open))}else if(page==="Collection")await collection();else if(page==="History")await history();else if(page==="Reports")reports();else if(page==="Contribution Rates")await rates();else settings()}catch(e){layout(title(page,"Unable to load section")+'<p>'+esc(e.message)+'</p>')}}
 async function login(){
- let status={setupRequired:false,setupEnabled:false,setupSecretRequired:false};
- try{status=await api("/setup-status")}catch{}
- if(status.setupRequired){
-  const secretField=status.setupSecretRequired?'<label>Bootstrap secret<input name="secret" type="password" required autocomplete="off"></label>':"";
-  const note=status.setupSecretRequired?"Enter the Cloudflare bootstrap secret to authorize initial setup.":"Create the first administrator account. This setup closes automatically after the first account is created.";
-  $("#app").innerHTML='<div class="login"><form id="setup"><h1>Tariq Coy</h1><p class="muted">First-time administrator setup</p><p>'+esc(note)+'</p><label>Admin username<input name="username" required minlength="3" maxlength="50" autocomplete="username"></label><label>Password (minimum 12 characters)<input name="password" type="password" required minlength="12" maxlength="256" autocomplete="new-password"></label>'+secretField+'<button class="btn primary">Create admin account</button><p id="err"></p></form></div>';
+ let status=null,statusError="";
+ try{status=await api("/setup-status")}catch(e){statusError=e.message||"Unable to check first-time setup."}
+ const showSetup=async()=>{
+  let secretRequired=Boolean(status&&status.setupSecretRequired);
+  $("#app").innerHTML='<div class="login"><form id="setup"><h1>Tariq Coy</h1><p class="muted">First-time administrator setup</p><p>Create the first administrator account. Setup automatically closes after the first account is created.</p>'+(statusError?'<p class="error">'+esc(statusError)+'</p>':'')+'<label>Admin username<input name="username" required minlength="3" maxlength="50" autocomplete="username"></label><label>Password (minimum 12 characters)<input name="password" type="password" required minlength="12" maxlength="256" autocomplete="new-password"></label>'+(secretRequired?'<label>Bootstrap secret<input name="secret" type="password" required autocomplete="off"></label>':'')+'<button class="btn primary">Create admin account</button><p id="err" class="error"></p><button type="button" id="backlogin" class="btn">Back to sign in</button></form></div>';
+  $("#backlogin").onclick=()=>login(true);
   $("#setup").onsubmit=async e=>{
-   e.preventDefault();
-   const form=e.currentTarget, f=new FormData(form), headers={"Content-Type":"application/json"};
+   e.preventDefault();const form=e.currentTarget,f=new FormData(form),headers={"Content-Type":"application/json"};
    if(form.elements.secret)headers["x-bootstrap-secret"]=f.get("secret");
-   try{
-    const r=await fetch("/api/setup-admin",{method:"POST",headers,body:JSON.stringify({username:f.get("username"),password:f.get("password")})});
-    const d=await r.json();if(!r.ok)throw Error(d.error||"Setup failed");
-    alert("Administrator account created. Sign in with your new username and password.");
-    login();
-   }catch(x){$("#err").textContent=x.message}
+   try{const r=await fetch("/api/setup-admin",{method:"POST",headers,body:JSON.stringify({username:f.get("username"),password:f.get("password")})});const d=await r.json();if(!r.ok)throw Error(d.error||"Setup failed");alert("First administrator account created. Please sign in.");login(true)}catch(x){$("#err").textContent=x.message}
   };
-  return;
- }
- $("#app").innerHTML='<div class="login"><form id="login"><h1>Tariq Coy</h1><p class="muted">Personnel Record Management System</p><label>Username<input name="username" required autocomplete="username"></label><label>Password<input type="password" name="password" required autocomplete="current-password"></label><button class="btn primary">Sign in</button><p id="err"></p></form></div>';
+ };
+ if(!status||status.setupRequired){await showSetup();return;}
+ $("#app").innerHTML='<div class="login"><form id="login"><h1>Tariq Coy</h1><p class="muted">Personnel Record Management System</p><label>Username<input name="username" required autocomplete="username"></label><label>Password<input type="password" name="password" required autocomplete="current-password"></label><button class="btn primary">Sign in</button><p id="err" class="error"></p><button type="button" id="firstsetup" class="btn">First-time account setup</button></form></div>';
+ $("#firstsetup").onclick=async()=>{statusError="";await showSetup()};
  $("#login").onsubmit=async e=>{e.preventDefault();try{user=(await post("/login",Object.fromEntries(new FormData(e.currentTarget).entries()))).user;await load();page="Home";render()}catch(x){$("#err").textContent=x.message}}
 }
 async function logout(){try{await api("/logout",{method:"POST"})}finally{user=null;login()}}async function start(){try{user=(await api("/me")).user;await load();render()}catch{login()}}start();
