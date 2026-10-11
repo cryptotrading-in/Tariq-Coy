@@ -1,7 +1,5 @@
 import { calculateMess, roundMoney, sortByRankAndForceNo, daysInMonth } from "./lib/calculations.js";
 
-const COOKIE_NAME = "__Host-tariq_session";
-const PBKDF2_ITERATIONS = 100000;
 const RANKS = ["DD", "AD", "INSP", "SI", "ASI", "SGT", "CPL"];
 const EMPLOYEE_FIELDS = [
   "force_no", "rank", "name", "father_name", "date_of_birth", "education", "religion", "caste",
@@ -17,46 +15,6 @@ function json(data, status = 200, headers = {}) {
     status,
     headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", "x-content-type-options": "nosniff", "referrer-policy": "same-origin", ...headers },
   });
-}
-function randomHex(bytes = 32) {
-  return Array.from(crypto.getRandomValues(new Uint8Array(bytes)), x => x.toString(16).padStart(2, "0")).join("");
-}
-async function sha256(value) {
-  const digest = await crypto.subtle.digest("SHA-256", encoder.encode(value));
-  return Array.from(new Uint8Array(digest), x => x.toString(16).padStart(2, "0")).join("");
-}
-function bytesToBase64(bytes) {
-  let s = "";
-  for (const b of bytes) s += String.fromCharCode(b);
-  return btoa(s);
-}
-function base64ToBytes(value) {
-  return Uint8Array.from(atob(value), c => c.charCodeAt(0));
-}
-async function derivePassword(password, saltB64) {
-  const key = await crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveBits"]);
-  const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: base64ToBytes(saltB64), iterations: PBKDF2_ITERATIONS }, key, 256);
-  return bytesToBase64(new Uint8Array(bits));
-}
-function equalConstantTime(a, b) {
-  if (typeof a !== "string" || typeof b !== "string" || a.length !== b.length) return false;
-  let mismatch = 0;
-  for (let i = 0; i < a.length; i++) mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return mismatch === 0;
-}
-function cookieValue(request, name) {
-  const raw = request.headers.get("Cookie") || "";
-  for (const part of raw.split(";")) {
-    const idx = part.indexOf("=");
-    if (idx > -1 && part.slice(0, idx).trim() === name) return part.slice(idx + 1).trim();
-  }
-  return "";
-}
-function sessionCookie(value, maxAge) {
-  return `${COOKIE_NAME}=${value}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${maxAge}`;
-}
-function clearCookie() {
-  return `${COOKIE_NAME}=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0`;
 }
 async function readJson(request) {
   if (!(request.headers.get("content-type") || "").includes("application/json")) throw new Error("Content-Type must be application/json");
@@ -86,13 +44,6 @@ function validMoney(value) {
 async function audit(db, userId, action, entityType, entityId = "", details = {}) {
   await db.prepare("INSERT INTO audit_log (id, user_id, action, entity_type, entity_id, details_json) VALUES (?, ?, ?, ?, ?, ?)")
     .bind(crypto.randomUUID(), userId || null, action, entityType, entityId, JSON.stringify(details)).run();
-}
-function currentUser() { return { id: null, username: "Working mode", role: "admin", session_id: null }; }
-function validUsername(value) {
-  return typeof value === "string" && /^[a-zA-Z0-9._-]{3,50}$/.test(value);
-}
-function validPassword(value) {
-  return typeof value === "string" && value.length >= 12 && value.length <= 256;
 }
 function requireAdmin(user) {
   return user.role === "admin";
