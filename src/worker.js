@@ -501,27 +501,26 @@ async function handle(request, env) {
     }
     if (["monthly-contribution", "mess", "full-collection"].includes(report)) {
       if (!month) return json({ error: "Month query is required in YYYY-MM format." }, 400);
-      if (report === "monthly-contribution") {
-        // Include every active employee for the selected month. Unreceived or reversed
-        // contributions are displayed as zero and never included in report totals.
-        const rows = await env.DB.prepare(`
-          SELECT e.force_no, e.rank, e.name,
-            CASE WHEN c.payment_status='PAID' THEN COALESCE(c.welfare,0) ELSE 0 END AS welfare,
-            CASE WHEN c.payment_status='PAID' THEN COALESCE(c.mod_amount,0) ELSE 0 END AS mod_amount,
-            CASE WHEN c.payment_status='PAID' THEN COALESCE(c.med,0) ELSE 0 END AS med,
-            CASE WHEN c.payment_status='PAID' THEN COALESCE(c.barber,0) ELSE 0 END AS barber,
-            CASE WHEN c.payment_status='PAID' THEN COALESCE(c.waiter,0) ELSE 0 END AS waiter,
-            CASE WHEN c.payment_status='PAID' THEN COALESCE(c.wman,0) ELSE 0 END AS wman,
-            CASE WHEN c.payment_status='PAID' THEN COALESCE(c.contribution_total,0) ELSE 0 END AS contribution_total,
-            COALESCE(c.payment_status,'PENDING') AS payment_status
-          FROM employees e
-          LEFT JOIN monthly_collections c ON c.employee_id=e.id AND c.month_key=?
-          WHERE e.active=1
-        `).bind(month).all();
-        const ordered = rankFromForceSort(rows.results || []);
-        return json({ rows: ordered.map((r, i) => ({ sr_no: i + 1, ...r })) });
-      }
-      const rows = await env.DB.prepare("SELECT c.*, e.force_no, e.name, e.rank FROM monthly_collections c JOIN employees e ON e.id=c.employee_id WHERE c.month_key=?").bind(month).all();
+      // Reports always include all active employees for the selected month.
+      // Only PAID collections contribute monetary values to these reports.
+      const rows = await env.DB.prepare(`
+        SELECT e.id AS employee_id, e.force_no, e.rank, e.name,
+          COALESCE(c.payment_status,'PENDING') AS payment_status,
+          CASE WHEN c.payment_status='PAID' THEN COALESCE(c.welfare,0) ELSE 0 END AS welfare,
+          CASE WHEN c.payment_status='PAID' THEN COALESCE(c.mod_amount,0) ELSE 0 END AS mod_amount,
+          CASE WHEN c.payment_status='PAID' THEN COALESCE(c.med,0) ELSE 0 END AS med,
+          CASE WHEN c.payment_status='PAID' THEN COALESCE(c.barber,0) ELSE 0 END AS barber,
+          CASE WHEN c.payment_status='PAID' THEN COALESCE(c.waiter,0) ELSE 0 END AS waiter,
+          CASE WHEN c.payment_status='PAID' THEN COALESCE(c.wman,0) ELSE 0 END AS wman,
+          CASE WHEN c.payment_status='PAID' THEN COALESCE(c.contribution_total,0) ELSE 0 END AS contribution_total,
+          CASE WHEN c.payment_status='PAID' THEN COALESCE(c.leave_days,0) ELSE COALESCE(c.leave_days,0) END AS leave_days,
+          CASE WHEN c.payment_status='PAID' THEN COALESCE(c.leave_deduction,0) ELSE 0 END AS leave_deduction,
+          CASE WHEN c.payment_status='PAID' THEN COALESCE(c.mess_amount,0) ELSE 0 END AS mess_amount,
+          CASE WHEN c.payment_status='PAID' THEN COALESCE(c.total_due,0) ELSE 0 END AS total_due
+        FROM employees e
+        LEFT JOIN monthly_collections c ON c.employee_id=e.id AND c.month_key=?
+        WHERE e.active=1
+      `).bind(month).all();
       const ordered = rankFromForceSort(rows.results || []);
       return json({ rows: ordered.map((r, i) => ({ sr_no: i + 1, ...r })) });
     }
