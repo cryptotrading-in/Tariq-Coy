@@ -10,7 +10,7 @@ export function daysInMonth(monthKey) {
 
 export function roundMoney(value) {
   if (!Number.isFinite(value)) throw new Error("Amount must be a finite number.");
-  return Math.round((value + Number.EPSILON) * 100) / 100;
+  return Math.round(value + Number.EPSILON);
 }
 
 export function calculateLeaveDeduction({ monthKey, leaveDays, messBase = 7000 }) {
