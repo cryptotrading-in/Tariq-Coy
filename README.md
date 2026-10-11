@@ -1,6 +1,6 @@
 # Tariq Coy Personnel Record Management System
 
-A secure, mobile-friendly personnel and monthly collection application for Tariq Coy, Faisalabad Airport.
+A mobile-friendly personnel and monthly collection application for Tariq Coy, Faisalabad Airport.
 
 ## Project rules
 
@@ -34,7 +34,7 @@ Use decimal-safe currency rounding to two decimal places for the displayed deduc
 - Persistent online data: Cloudflare D1, accessed only through server-side Worker APIs.
 - Current temporary development branch: authentication is disabled so the application flow can be tested without accounts.
 - This no-login branch exposes personnel APIs to anyone who can reach the Worker. Never deploy it to a public URL or use it with real personnel data.
-- Security: server-side authorization on every protected endpoint, validation of all input, parameterized SQL, secure session cookies, no secrets in frontend code, audit trail for important changes.
+- Security: the temporary no-login branch intentionally has no authentication or authorization; this is not safe for public deployment.
 - Data protection: regular database exports/backups and a tested restore procedure.
 - Browser storage must not be the source of truth for employee, leave, collection, or payment records.
 
@@ -42,10 +42,10 @@ Use decimal-safe currency rounding to two decimal places for the displayed deduc
 
 1. Establish project baseline and verify the approved UI assets before changing visual files.
 2. Create D1 schema and migrations.
-3. Implement authentication and authorization.
+3. Authentication is temporarily removed on `remove-login-temporarily` for private development only; restore it before production deployment.
 4. Implement personnel, leave, rates, monthly collection, payment, history, and report APIs.
 5. Connect APIs to the locked UI without redesign.
-6. Test calculations, access controls, month isolation, exports, backups, and restore.
+6. Test calculations, month isolation, exports, backups, and restore. Re-test access controls when authentication is restored.
 7. Deploy to Cloudflare and verify production behavior.
 
 ## Temporary no-login development mode
