@@ -5,6 +5,92 @@
 @media print{body{background:#fff!important;color:#111!important;font-size:10pt}.shell{display:block!important}.side,.top,.noprint,#logout{display:none!important}.content{max-width:none!important;padding:0!important;margin:0!important}.report-sheet{display:block!important;border:0!important;border-radius:0!important;margin:0!important;overflow:visible!important}.report-heading{display:block!important;text-align:center;padding:12px 0 16px!important;border-bottom:2px solid #222!important;margin-bottom:12px!important}.report-heading h1{font-size:18pt!important;letter-spacing:.4px}.report-heading .report-subtitle{font-size:11pt!important;color:#333!important;margin-top:5px}.report-heading .report-meta{font-size:9pt!important;color:#555!important;margin-top:7px}.report-table{width:100%!important;white-space:normal!important;font-size:8pt!important;border-collapse:collapse!important}.report-table th,.report-table td{border:1px solid #777!important;padding:5px 6px!important;color:#111!important;background:#fff!important;white-space:normal!important;overflow-wrap:anywhere}.report-table th{font-size:7.5pt!important;text-transform:none!important;font-weight:700!important;background:#eee!important}.report-table tr{break-inside:avoid;page-break-inside:avoid}.report-foot{font-size:8pt!important;text-align:right;margin-top:10px}.panel{box-shadow:none!important} @page{size:landscape;margin:12mm}}
 /* Compact in-app confirmations and feedback */
 .toast-region{position:fixed;top:16px;right:16px;z-index:1200;display:grid;gap:8px;width:min(360px,calc(100vw - 32px));pointer-events:none}.toast{padding:12px 14px;border:1px solid #d4dfeb;border-left:4px solid #176b57;border-radius:10px;background:#fff;color:#183047;box-shadow:0 12px 32px #102a4326;font-size:13px;line-height:1.45;overflow-wrap:anywhere}.toast.error{border-left-color:#b42318}.toast.success{border-left-color:#176b57}.confirm-modal .modal{width:min(420px,100%);padding:22px}.confirm-modal .confirm-message{font-size:14px;line-height:1.55;margin:14px 0 8px}.confirm-modal .confirm-details{background:#f6f8fb;border:1px solid #e4ebf2;border-radius:9px;padding:11px 12px;margin-top:12px;line-height:1.6;font-size:13px;overflow-wrap:anywhere}.confirm-modal .btn.danger{background:#b42318;color:#fff;border-color:#b42318}.confirm-modal .btn:focus-visible{outline:3px solid #83c5b7;outline-offset:2px}
+
+/* Dark Slate + Emerald theme: visual layer only; existing API and business logic preserved. */
+.btn.danger{background:#7f1d1d;color:#fee2e2;border-color:#991b1b}.btn.danger:hover{background:#991b1b;border-color:#b91c1c;color:#fff}.delete-hint{padding:0 18px 16px;color:#9ca3af;font-size:11px;line-height:1.5}
+:root{color-scheme:dark;--tc-slate:#111827;--tc-panel:#1f2937;--tc-panel-raised:#243244;--tc-border:#374151;--tc-emerald:#10b981;--tc-emerald-dark:#065f46;--tc-muted:#9ca3af;--tc-text:#f3f4f6;--tc-canvas:#111827}
+html,body{background:var(--tc-slate);color:var(--tc-text)}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.shell{background:var(--tc-slate)}
+.side{background:linear-gradient(180deg,#0b1220 0%,#111827 100%);border-right:1px solid #263244;box-shadow:5px 0 24px #00000018}
+.brandmark{background:linear-gradient(145deg,#059669,#064e3b);border-color:#34d399;color:#ecfdf5;box-shadow:0 5px 18px #00000035}
+.brandlock b,.side>b{color:#f9fafb}
+.brandlock small,.unit-label,.side-foot{color:#9ca3af}
+.unit-label{border-color:#374151;background:#ffffff05}
+.nav button{color:#cbd5e1}
+.nav button:hover{background:#ffffff0b;color:#fff}
+.nav button.active{background:linear-gradient(90deg,#065f463b,#10b98110);border-color:#10b98140;color:#d1fae5}
+.nav button.active:before{background:#34d399}
+.nav-dot{background:#64748b}
+.nav button.active .nav-dot{background:#6ee7b7;box-shadow:0 0 0 4px #10b98120}
+.top{background:#111827;border-bottom:1px solid #374151;box-shadow:0 4px 18px #00000012}
+.top-left>div>b,.top>div:first-child>b{color:#f3f4f6}
+.top .muted,.top-left .muted{color:#9ca3af}
+.top-sep{color:#6b7280}
+.top-right,.user-chip{color:#d1d5db}
+.user-avatar{background:#064e3b;color:#d1fae5}
+.menu-toggle{background:#1f2937;border-color:#374151;color:#d1fae5}
+.content{color:#f3f4f6}
+h1,h2,.welcome-title{color:#f9fafb}
+.muted,.welcome-sub{color:#9ca3af}
+.eyebrow{color:#6ee7b7}
+.date-chip{background:#1f2937;border-color:#374151;color:#d1d5db}
+.card,.panel,.rank-strip{background:#1f2937;border-color:#374151;color:#f3f4f6;box-shadow:0 4px 18px #00000014}
+.card:hover{border-color:#4b5563;box-shadow:0 7px 22px #00000020}
+.card label,.stat-caption{color:#9ca3af}
+.card strong,.home-stats .card strong{color:#f9fafb}
+.stat-foot{color:#9ca3af}
+.stat-icon{background:#374151;color:#cbd5e1}
+.icon-green{background:#064e3b;color:#a7f3d0}
+.icon-amber{background:#78350f55;color:#fcd34d}
+.icon-slate{background:#374151;color:#d1d5db}
+.rank-strip-title{color:#e5e7eb}
+.rank-item{background:#111827;color:#9ca3af;border:1px solid #374151}
+.rank-item b{color:#a7f3d0}
+.panelhead,.employee-toolbar{background:#1f2937;border-color:#374151;color:#f3f4f6}
+.panelhead h2{color:#f9fafb}
+.btn,.field,.formgrid input,.formgrid select,.modal input,.modal select,.login input{background:#111827;color:#f3f4f6;border-color:#4b5563}
+.btn{color:#e5e7eb}
+.btn:hover{background:#273449;border-color:#6b7280;color:#fff}
+.btn.primary,.primary{background:#047857;border-color:#059669;color:#ecfdf5}
+.btn.primary:hover,.primary:hover{background:#065f46;border-color:#10b981;color:#fff}
+input::placeholder{color:#6b7280}
+input:focus,select:focus,.btn:focus-visible{outline:3px solid #10b98130;outline-offset:1px;border-color:#10b981}
+.searchbox{background:#111827;border-color:#374151;color:#9ca3af}
+.searchbox input{background:transparent;color:#f3f4f6}
+.filter-tab{color:#9ca3af}
+.filter-tab:hover{background:#273449;color:#e5e7eb}
+.filter-tab.active{background:#064e3b;border-color:#047857;color:#d1fae5}
+.tablewrap{background:#1f2937}
+table{color:#e5e7eb}
+th{background:#111827;color:#9ca3af;border-color:#374151}
+td{color:#d1d5db;border-color:#374151}
+tbody tr:hover td{background:#263244}
+.force-cell{color:#d1d5db}
+.rank-tag{background:#374151;color:#d1fae5}
+.employee-name{color:#f9fafb}
+.name-link{display:inline-block;border:0;background:transparent;color:#a7f3d0;text-decoration:none;font:inherit;font-weight:650;text-align:left;cursor:pointer;padding:3px 0;min-height:32px}
+.name-link:hover{color:#6ee7b7;text-decoration:underline;text-underline-offset:4px}
+.pill{background:#064e3b;color:#a7f3d0}
+.pill.out{background:#78350f55;color:#fcd34d}
+.pill.unset{background:#7f1d1d55;color:#fca5a5}
+.table-foot{background:#111827;color:#9ca3af;border-top:1px solid #374151}
+.empty{color:#9ca3af}
+.formgrid label,.modal label{color:#d1d5db}
+.formgrid input,.formgrid select,.modal input,.modal select{background:#111827;border-color:#4b5563;color:#f3f4f6}
+.modalback{background:#030712b8}
+.modal{background:#1f2937;border-color:#374151;color:#f3f4f6;box-shadow:0 24px 80px #00000070}
+.modal h2,.amountline.total{color:#f9fafb}
+.amountline{color:#d1d5db;border-color:#374151}
+.status-unpaid{background:#78350f55;color:#fcd34d}
+.login{background:#111827}
+.login form{background:#1f2937;border-color:#374151;color:#f3f4f6}
+.login h1,.login h2{color:#f9fafb}
+.login label{color:#d1d5db}
+.report-sheet{background:#1f2937;color:#f3f4f6}
+@media(max-width:800px){.side{background:#0b1220;border-color:#263244}.nav button.active:before{background:#34d399}.top{background:#111827}.content{background:#111827}.employee-toolbar{gap:10px}.searchbox{min-width:0;width:100%}.filter-tabs{width:100%}.filter-tab{flex:1}}
+@media(max-width:500px){.welcome-row{gap:10px}.date-chip{background:#1f2937;color:#d1d5db;border-color:#374151}.employee-toolbar{padding:12px}.panelhead{background:#1f2937}}
+@media print{html,body{background:#fff!important;color:#111!important}.side,.top,.noprint,#logout{display:none!important}.content{background:#fff!important;color:#111!important}.panel,.card,.rank-strip,.report-sheet{background:#fff!important;color:#111!important;box-shadow:none!important;border-color:#ddd!important}.panelhead,.table-foot{background:#fff!important;color:#111!important}.panelhead h2,h1,h2,.card strong,.rank-item b,.rank-strip-title,td,.muted{color:#111!important}.rank-item,th{background:#eee!important;color:#111!important}.name-link{color:#111!important;text-decoration:none!important}}
 </style></head><body><div id="app">Loading…</div>
 <script>
 const $=s=>document.querySelector(s);let user=null,employees=[],page="Home",month=new Date().toISOString().slice(0,7);
