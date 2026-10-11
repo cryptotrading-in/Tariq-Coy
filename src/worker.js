@@ -143,23 +143,32 @@ async function handle(request, env) {
   if (path === "/api/setup-status" && request.method === "GET") {
     try {
       const count = await env.DB.prepare("SELECT COUNT(*) AS n FROM app_users WHERE role='admin' AND password_salt IS NOT NULL").first();
-      return json({ setupRequired: Number(count?.n || 0) === 0, setupEnabled: Boolean(env.BOOTSTRAP_SECRET) });
+      return json({ setupRequired: Number(count?.n || 0) === 0, setupEnabled: true, setupSecretRequired: Boolean(env.BOOTSTRAP_SECRET) });
     } catch { return json({ error: "Database migrations are not ready." }, 503); }
   }
   if (path === "/api/setup-admin" && request.method === "POST") {
-    if (!env.BOOTSTRAP_SECRET) return json({ error: "Initial setup is not enabled. Configure BOOTSTRAP_SECRET temporarily." }, 403);
-    if (!equalConstantTime(request.headers.get("x-bootstrap-secret") || "", env.BOOTSTRAP_SECRET)) return json({ error: "Forbidden" }, 403);
+    if (env.BOOTSTRAP_SECRET && !equalConstantTime(request.headers.get("x-bootstrap-secret") || "", env.BOOTSTRAP_SECRET)) {
+      return json({ error: "Invalid setup secret" }, 403);
+    }
     let body;
     try { body = await readJson(request); } catch { return json({ error: "Invalid JSON request" }, 400); }
     if (!validUsername(body.username) || !validPassword(body.password)) return json({ error: "Use a 3–50 character username and a password of at least 12 characters." }, 400);
-    const count = await env.DB.prepare("SELECT COUNT(*) AS n FROM app_users WHERE role='admin' AND password_salt IS NOT NULL").first();
-    if (Number(count?.n || 0) > 0) return json({ error: "Initial admin already exists; setup is permanently closed." }, 409);
     const salt = bytesToBase64(crypto.getRandomValues(new Uint8Array(16)));
     const passwordHash = await derivePassword(body.password, salt);
     const id = crypto.randomUUID();
-    await env.DB.prepare("INSERT INTO app_users (id, username, password_hash, password_salt, role) VALUES (?, ?, ?, ?, 'admin')").bind(id, body.username, passwordHash, salt).run();
+    // One-time, database-guarded first-admin creation. Once an admin exists, setup closes.
+    let created;
+    try {
+      created = await env.DB.prepare(
+        "INSERT INTO app_users (id, username, password_hash, password_salt, role) SELECT ?, ?, ?, ?, 'admin' WHERE NOT EXISTS (SELECT 1 FROM app_users WHERE role='admin' AND password_salt IS NOT NULL)"
+      ).bind(id, body.username, passwordHash, salt).run();
+    } catch (e) {
+      if (String(e.message).includes("UNIQUE")) return json({ error: "That username is already in use." }, 409);
+      throw e;
+    }
+    if (Number(created?.meta?.changes || 0) !== 1) return json({ error: "Initial admin already exists; first-time setup is closed." }, 409);
     await audit(env.DB, id, "INITIAL_ADMIN_CREATED", "user", id, { username: body.username });
-    return json({ ok: true, message: "Initial administrator created. Remove BOOTSTRAP_SECRET from Worker secrets now." }, 201);
+    return json({ ok: true, message: "Initial administrator created. Sign in with your new account." }, 201);
   }
 
   if (path === "/api/login" && request.method === "POST") {
