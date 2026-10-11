@@ -58,7 +58,7 @@ async function openCollectionPopup(employeeId){
   const receive=$("#pop-receive");if(receive)receive.onclick=async()=>{
    if(!confirm('Receive full amount Rs '+Number(r.total_due||0).toLocaleString()+' from '+employee.name+'?'))return;
    receive.disabled=true;
-   try{await post("/collections/"+r.id+"/receive",{payment_date:new Date().toISOString().slice(0,10),payment_method:"Cash"});const latest=await api("/collections?month="+month);record=(latest.collections||[]).find(x=>x.employee_id===employeeId)||null;draw();await collection()}
+   try{await post("/collections/"+r.id+"/receive",{payment_date:new Date().toISOString().slice(0,10),payment_method:"Cash"});host.remove();await collection()}
    catch(e){const note=$("#pop-note");if(note)note.textContent=e.message;receive.disabled=false}
   };
  }
