@@ -147,7 +147,9 @@ async function handle(request, env) {
     } catch { return json({ error: "Database migrations are not ready." }, 503); }
   }
   if (path === "/api/setup-admin" && request.method === "POST") {
-    if (env.BOOTSTRAP_SECRET && !equalConstantTime(request.headers.get("x-bootstrap-secret") || "", env.BOOTSTRAP_SECRET)) {
+    // Fail closed: first-admin setup must be explicitly enabled by a configured secret.
+    if (!env.BOOTSTRAP_SECRET) return json({ error: "Initial administrator setup is disabled." }, 403);
+    if (!equalConstantTime(request.headers.get("x-bootstrap-secret") || "", env.BOOTSTRAP_SECRET)) {
       return json({ error: "Invalid setup secret" }, 403);
     }
     let body;
