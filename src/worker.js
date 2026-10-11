@@ -87,14 +87,7 @@ async function audit(db, userId, action, entityType, entityId = "", details = {}
   await db.prepare("INSERT INTO audit_log (id, user_id, action, entity_type, entity_id, details_json) VALUES (?, ?, ?, ?, ?, ?)")
     .bind(crypto.randomUUID(), userId || null, action, entityType, entityId, JSON.stringify(details)).run();
 }
-async function currentUser(request, env) {
-  const token = cookieValue(request, COOKIE_NAME);
-  if (!token) return null;
-  const tokenHash = await sha256(token);
-  return await env.DB.prepare(
-    "SELECT u.id, u.username, u.role, s.id AS session_id FROM auth_sessions s JOIN app_users u ON u.id=s.user_id WHERE s.token_hash=? AND s.revoked_at IS NULL AND s.expires_at > datetime('now') AND u.active=1"
-  ).bind(tokenHash).first() || null;
-}
+function currentUser() { return { id: null, username: "Working mode", role: "admin", session_id: null }; }
 function validUsername(value) {
   return typeof value === "string" && /^[a-zA-Z0-9._-]{3,50}$/.test(value);
 }
@@ -140,57 +133,9 @@ async function handle(request, env) {
   if (!path.startsWith("/api/")) return env.ASSETS ? env.ASSETS.fetch(request) : json({ error: "Not found" }, 404);
   if (["POST", "PUT", "PATCH", "DELETE"].includes(request.method) && !sameOrigin(request)) return json({ error: "Origin check failed" }, 403);
 
-  if (path === "/api/setup-status" && request.method === "GET") {
-    try {
-      const count = await env.DB.prepare("SELECT COUNT(*) AS n FROM app_users WHERE role='admin' AND password_salt IS NOT NULL").first();
-      return json({ setupRequired: Number(count?.n || 0) === 0, setupEnabled: Boolean(env.BOOTSTRAP_SECRET) });
-    } catch { return json({ error: "Database migrations are not ready." }, 503); }
-  }
-  if (path === "/api/setup-admin" && request.method === "POST") {
-    if (!env.BOOTSTRAP_SECRET) return json({ error: "Initial setup is not enabled. Configure BOOTSTRAP_SECRET temporarily." }, 403);
-    if (!equalConstantTime(request.headers.get("x-bootstrap-secret") || "", env.BOOTSTRAP_SECRET)) return json({ error: "Forbidden" }, 403);
-    let body;
-    try { body = await readJson(request); } catch { return json({ error: "Invalid JSON request" }, 400); }
-    if (!validUsername(body.username) || !validPassword(body.password)) return json({ error: "Use a 3–50 character username and a password of at least 12 characters." }, 400);
-    const count = await env.DB.prepare("SELECT COUNT(*) AS n FROM app_users WHERE role='admin' AND password_salt IS NOT NULL").first();
-    if (Number(count?.n || 0) > 0) return json({ error: "Initial admin already exists; setup is permanently closed." }, 409);
-    const salt = bytesToBase64(crypto.getRandomValues(new Uint8Array(16)));
-    const passwordHash = await derivePassword(body.password, salt);
-    const id = crypto.randomUUID();
-    await env.DB.prepare("INSERT INTO app_users (id, username, password_hash, password_salt, role) VALUES (?, ?, ?, ?, 'admin')").bind(id, body.username, passwordHash, salt).run();
-    await audit(env.DB, id, "INITIAL_ADMIN_CREATED", "user", id, { username: body.username });
-    return json({ ok: true, message: "Initial administrator created. Remove BOOTSTRAP_SECRET from Worker secrets now." }, 201);
-  }
-
-  if (path === "/api/login" && request.method === "POST") {
-    let body;
-    try { body = await readJson(request); } catch { return json({ error: "Invalid JSON request" }, 400); }
-    if (!validUsername(body.username) || typeof body.password !== "string" || body.password.length > 256) return json({ error: "Invalid username or password" }, 400);
-    const user = await env.DB.prepare("SELECT * FROM app_users WHERE username=? AND active=1").bind(body.username).first();
-    const now = new Date();
-    if (user?.locked_until && new Date(user.locked_until + (user.locked_until.includes("Z") ? "" : "Z")) > now) return json({ error: "Too many attempts. Try again later." }, 429);
-    let verified = false;
-    if (user?.password_salt) verified = equalConstantTime(await derivePassword(body.password, user.password_salt), user.password_hash);
-    if (!user || !verified) {
-      if (user) {
-        const failures = Number(user.failed_login_count || 0) + 1;
-        const lockedUntil = failures >= 5 ? new Date(now.getTime() + 15 * 60 * 1000).toISOString() : null;
-        await env.DB.prepare("UPDATE app_users SET failed_login_count=?, locked_until=?, updated_at=CURRENT_TIMESTAMP WHERE id=?").bind(failures >= 5 ? 0 : failures, lockedUntil, user.id).run();
-      }
-      return json({ error: "Invalid username or password" }, 401);
-    }
-    await env.DB.prepare("UPDATE app_users SET failed_login_count=0, locked_until=NULL, updated_at=CURRENT_TIMESTAMP WHERE id=?").bind(user.id).run();
-    const token = randomHex(32);
-    const tokenHash = await sha256(token);
-    const ttlHours = Math.max(1, Math.min(24, Number(env.SESSION_TTL_HOURS || 8)));
-    const expiresAt = new Date(now.getTime() + ttlHours * 3600000).toISOString().replace("T", " ").replace("Z", "");
-    await env.DB.prepare("INSERT INTO auth_sessions (id, user_id, token_hash, expires_at, user_agent_hint) VALUES (?, ?, ?, ?, ?)").bind(crypto.randomUUID(), user.id, tokenHash, expiresAt, (request.headers.get("User-Agent") || "").slice(0, 250)).run();
-    await audit(env.DB, user.id, "LOGIN", "user", user.id);
-    return json({ ok: true, user: { id: user.id, username: user.username, role: user.role }, expiresAt }, 200, { "set-cookie": sessionCookie(token, ttlHours * 3600) });
-  }
-
-  if (path === "/api/logout" && request.method === "POST") {
-    const user = await currentUser(request, env);
+  // TEMPORARY NO-LOGIN MODE: private development branch only.
+  // Every API endpoint below is accessible without authentication. Never deploy publicly.
+  const user = await currentUser(request, env);
     if (user) {
       await env.DB.prepare("UPDATE auth_sessions SET revoked_at=CURRENT_TIMESTAMP WHERE id=?").bind(user.session_id).run();
       await audit(env.DB, user.id, "LOGOUT", "user", user.id);
@@ -203,8 +148,7 @@ async function handle(request, env) {
     return json({ authenticated: true, user: { id: user.id, username: user.username, role: user.role } });
   }
 
-  const user = await currentUser(request, env);
-  if (!user) return json({ error: "Authentication required" }, 401);
+  const user = currentUser();
 
   if (path === "/api/employees" && request.method === "GET") {
     const rows = await env.DB.prepare("SELECT * FROM employees WHERE active=1").all();
