@@ -54,7 +54,7 @@ test("collection save calculates October leave deduction using 31 days and persi
   const env = flowEnv({
     employee: { id: "employee-1", active: 1, rank: "SI", living_status: "IN" },
     rate: { id: "rate-1", rank: "SI", living_status: "IN", welfare: 220, mod_amount: 220, med: 120, barber: 320, waiter: 200, wman: 480 },
-    saved: { id: "collection-1", employee_id: "employee-1", month_key: "2026-10", leave_deduction: 903.23, mess_amount: 6096.77, contribution_total: 1540, total_due: 7636.77 },
+    saved: { id: "collection-1", employee_id: "employee-1", month_key: "2026-10", leave_deduction: 903.23, mess_amount: 6096.77, contribution_total: 1560, total_due: 7656.77 },
   });
   const response = await worker.fetch(post("https://tariq.example/api/collections", {
     employee_id: "employee-1", month_key: "2026-10", leave_days: 4,
@@ -63,8 +63,8 @@ test("collection save calculates October leave deduction using 31 days and persi
   const body = await response.json();
   assert.equal(body.collection.leave_deduction, 903.23);
   assert.equal(body.collection.mess_amount, 6096.77);
-  assert.equal(body.collection.contribution_total, 1540);
-  assert.equal(body.collection.total_due, 7636.77);
+  assert.equal(body.collection.contribution_total, 1560);
+  assert.equal(body.collection.total_due, 7656.77);
   const insert = env.__calls.find(c => c.kind === "run" && c.sql.includes("INSERT INTO monthly_collections"));
   assert.ok(insert, "monthly collection insert/upsert should be executed");
   assert.equal(insert.values[2], "2026-10");
@@ -99,7 +99,7 @@ test("collection cannot be saved when living status has not been confirmed", asy
 
 test("full payment uses the stored total and writes collection and payment in a D1 batch", async () => {
   const env = flowEnv({
-    paymentRecord: { id: "collection-1", month_key: "2026-10", total_due: 7636.77, payment_status: "PENDING" },
+    paymentRecord: { id: "collection-1", month_key: "2026-10", total_due: 7656.77, payment_status: "PENDING" },
   });
   const response = await worker.fetch(post("https://tariq.example/api/collections/collection-1/receive", {
     payment_date: "2026-10-11", payment_method: "Cash",
