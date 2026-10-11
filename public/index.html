@@ -32,7 +32,8 @@ async function collection(){
 }
 async function openCollectionPopup(employeeId){
  const employee=employees.find(e=>e.id===employeeId);if(!employee)return;
- let d=await api("/collections?month="+month),record=(d.collections||[]).find(r=>r.employee_id===employeeId)||null;
+ let d=await api("/collections?month="+month),record=(d.collections||[]).find(r=>r.employee_id===employeeId)||null,initialError="";
+ if(!record&&["IN","OUT"].includes(employee.living_status)){try{await post("/collections",{employee_id:employeeId,month_key:month,leave_days:0});d=await api("/collections?month="+month);record=(d.collections||[]).find(r=>r.employee_id===employeeId)||null}catch(e){initialError=e.message}}
  const host=document.createElement("div");host.id="collection-modal";host.className="modalback";
  function draw(){
   const r=record||{},isPaid=r.payment_status==="PAID";
@@ -43,7 +44,7 @@ async function openCollectionPopup(employeeId){
   '<div class="amountline"><span>Leave Deduction</span><b>Rs '+Number(r.leave_deduction||0).toLocaleString()+'</b></div>'+
   '<div class="amountline"><span>Mess / Ration</span><b>Rs '+Number(r.mess_amount||0).toLocaleString()+'</b></div>'+
   '<div class="amountline total"><span>Total Amount</span><span>Rs '+Number(r.total_due||0).toLocaleString()+'</span></div>'+
-  '<p class="muted" id="pop-note">'+(r?"Amount saved for this month.":"Enter leave days and select Calculate Amount.")+'</p><div class="modalactions"><button id="pop-close" class="btn">Close</button>'+
+  '<p class="muted" id="pop-note">'+(r?"Amount saved for this month.":esc(initialError||"Enter leave days and select Calculate Amount."))+'</p><div class="modalactions"><button id="pop-close" class="btn">Close</button>'+
   (!isPaid?'<button id="pop-calc" class="btn">'+(r?'Update Amount':'Calculate Amount')+'</button>':'')+
   (r&&!isPaid?'<button id="pop-receive" class="btn primary">Receive</button>':(isPaid?'<span class="pill">Paid</span>':''))+'</div></div>';
   $("#pop-close").onclick=()=>host.remove();
