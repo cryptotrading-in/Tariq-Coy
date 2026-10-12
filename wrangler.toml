@@ -1,6 +1,7 @@
 name = "tariq-coy-personnel"
 main = "src/worker.js"
 compatibility_date = "2026-10-10"
+workers_dev = true
 
 # Existing Cloudflare D1 database: tariqcoydb.
 [[d1_databases]]
