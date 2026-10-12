@@ -75,6 +75,59 @@
 #newrate:hover{background:#125a49;transform:translateY(-1px)}
 @media(max-width:700px){.rate-rank>summary{min-height:69px;padding:12px;gap:10px}.rank-mark{width:40px;height:40px;flex-basis:40px}.rank-quick-status{gap:4px}.rank-quick-status>span{padding:5px 6px}.rank-summary-copy strong{font-size:13px}.rank-summary-copy small{font-size:9px}.rate-living-grid{gap:10px;padding:0 10px 10px}.rate-living-card{padding:14px}.rate-values{gap:6px}.rate-value{padding:9px 6px}.rate-value strong{font-size:12px}.rate-month-label{width:auto;justify-content:flex-start}.rate-month-label input{flex:1;max-width:155px}}
 @media(max-width:420px){.rank-quick-status{display:none}.rate-rank>summary{gap:9px}.rate-living-head{align-items:flex-start}.rate-effective{align-self:center}}
+
+/* Contribution Rates: motion and a proper in-context editor */
+.rate-rank>summary{transition:background .24s ease,color .24s ease}
+.rate-rank .rate-living-grid{transform-origin:top;animation:ratePanelIn .34s cubic-bezier(.2,.75,.25,1) both}
+@keyframes ratePanelIn{from{opacity:0;transform:translateY(-9px) scale(.99);filter:blur(2px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+.rate-modalback{background:rgba(9,24,37,.48);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);opacity:0;transition:opacity .2s ease;padding:18px;overflow-y:auto}
+.rate-modalback.is-visible{opacity:1}
+.rate-modalback.is-closing{opacity:0;pointer-events:none}
+.rate-editor.modal{width:min(610px,100%);max-height:min(92vh,900px);padding:0;border:1px solid rgba(255,255,255,.72);border-radius:22px;box-shadow:0 34px 100px rgba(8,26,39,.3),0 5px 20px rgba(8,26,39,.08);transform:translateY(18px) scale(.975);opacity:0;transition:transform .32s cubic-bezier(.18,.85,.25,1),opacity .22s ease;overflow:auto;scrollbar-width:thin}
+.rate-modalback.is-visible .rate-editor{transform:translateY(0) scale(1);opacity:1}
+.rate-modalback.is-closing .rate-editor{transform:translateY(8px) scale(.985);opacity:0}
+.rate-editor-top{display:flex;align-items:center;justify-content:space-between;padding:23px 26px 0}
+.rate-editor-kicker{display:flex;align-items:center;gap:9px;font-size:10px;font-weight:850;letter-spacing:.14em;color:#718293}
+.rate-editor-symbol{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:linear-gradient(145deg,#e6f6ed,#d2eadc);color:#176b57;font-size:15px;letter-spacing:0}
+.rate-close{display:grid;place-items:center;width:35px;height:35px;border:1px solid #e4eaf0;border-radius:11px;background:#fff;color:#708090;font-size:23px;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}
+.rate-close:hover{background:#f2f7f4;border-color:#cfe3d7;transform:rotate(90deg)}
+.rate-editor>h2{padding:0 26px;margin:17px 0 6px;font-size:25px;letter-spacing:-.045em;color:#152f43}
+.rate-editor-subtitle{padding:0 26px;margin:0;color:#7a8996;font-size:12px;line-height:1.65;max-width:510px}
+.rate-editor-meta{display:grid;grid-template-columns:.72fr 1.28fr;gap:12px;padding:22px 26px 18px}
+.rate-editor-meta label{display:grid;gap:7px;min-width:0;color:#657787;font-size:10px;font-weight:800;letter-spacing:.055em;text-transform:uppercase}
+.rate-editor-meta select,.rate-editor-meta input{width:100%;min-width:0;height:42px;border:1px solid #dfe7ec;border-radius:10px;background:#fbfcfd;padding:0 11px;color:#243e51;font:600 13px system-ui;outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.rate-editor-meta select:focus,.rate-editor-meta input:focus,.rate-editor-field input:focus{border-color:#69ad8d;box-shadow:0 0 0 3px rgba(45,138,103,.12);background:#fff}
+.rate-segment{display:flex;gap:4px;height:42px;padding:4px;border:1px solid #e0e8ed;border-radius:10px;background:#f3f6f8}
+.rate-segment button{flex:1;min-width:0;border:0;border-radius:7px;background:transparent;color:#87939e;font:750 10px system-ui;cursor:pointer;transition:color .18s,background .18s,box-shadow .18s}
+.rate-segment button.selected.in{background:#fff;color:#176b57;box-shadow:0 2px 7px rgba(20,49,39,.1)}
+.rate-segment button.selected.out{background:#fff;color:#9a6b1d;box-shadow:0 2px 7px rgba(20,49,39,.1)}
+.rate-effective-field{grid-column:1/-1}
+.rate-effective-field input{font-variant-numeric:tabular-nums}
+.rate-fields-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 26px;padding:12px 0;border-top:1px solid #edf1f3;border-bottom:1px solid #edf1f3;color:#536879;font-size:10px;font-weight:850;letter-spacing:.07em;text-transform:uppercase}
+.rate-fields-heading span+span{font-size:9px;color:#9aa5ae;letter-spacing:.045em}
+.rate-editor-fields{padding:3px 26px 4px}
+.rate-editor-field{display:grid;grid-template-columns:34px minmax(0,1fr) 23px minmax(90px,125px);align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid #f0f3f5}
+.rate-category-icon{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#edf7f1;color:#287856;font-size:11px;font-weight:850}
+.rate-category-1{background:#edf2fc;color:#4d6eaa}.rate-category-2{background:#f2edfb;color:#7b62aa}.rate-category-3{background:#fff4e4;color:#a36e20}.rate-category-4{background:#edf5f8;color:#4d7c91}.rate-category-5{background:#f8edf0;color:#a15e76}
+.rate-category-name{display:grid;gap:3px;color:#2d4558;font-size:12px;font-weight:750}
+.rate-category-name small{color:#9aa5ae;font-size:10px;font-weight:500}
+.rate-currency{color:#9aa5ae;font-size:10px;font-weight:750}
+.rate-editor-field input{width:100%;height:38px;min-width:0;border:1px solid #e1e8ed;border-radius:9px;background:#fbfcfd;padding:0 10px;text-align:right;color:#20394c;font:750 13px system-ui;font-variant-numeric:tabular-nums;outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.rate-editor-total{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:17px 26px 0;padding:16px 17px;border:1px solid #d9e9df;border-radius:13px;background:linear-gradient(110deg,#f1f9f4,#fbfdfb 75%)}
+.rate-editor-total>div{display:grid;gap:4px;color:#335847;font-size:12px;font-weight:800}.rate-editor-total small{font-size:10px;font-weight:500;color:#82968a}
+.rate-editor-total strong{color:#176b57;font-size:21px;font-weight:850;letter-spacing:-.04em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rate-editor-actions{display:flex;justify-content:flex-end;gap:9px;padding:20px 26px 17px}
+.rate-editor-actions .btn{min-height:42px;padding:0 17px;border-radius:10px;font-size:12px;font-weight:750;transition:transform .16s,box-shadow .16s,background .16s}
+.rate-editor-actions .btn:hover{transform:translateY(-1px)}
+.rate-editor-actions .rate-save{display:flex;align-items:center;justify-content:center;gap:12px;min-width:150px;background:linear-gradient(135deg,#1c7858,#145b45);border-color:#176b57;box-shadow:0 5px 13px rgba(23,107,87,.18)}
+.rate-editor-actions .rate-save:hover{box-shadow:0 8px 18px rgba(23,107,87,.24)}
+.rate-editor-actions .rate-save:disabled{opacity:.75;cursor:wait;transform:none}
+.rate-editor-foot{display:flex;align-items:center;gap:8px;padding:13px 26px;border-top:1px solid #edf1f3;background:#fbfcfd;color:#8b98a3;font-size:10px}
+.rate-foot-dot{width:6px;height:6px;border-radius:50%;background:#39916d;box-shadow:0 0 0 3px #e0f1e7}
+.rate-spinner{width:13px;height:13px;border:2px solid #ffffff70;border-top-color:#fff;border-radius:50%;animation:rateSpin .65s linear infinite}
+@keyframes rateSpin{to{transform:rotate(360deg)}}
+@media(max-width:560px){.rate-modalback{padding:10px;align-items:center}.rate-editor.modal{border-radius:18px;max-height:94vh}.rate-editor-top{padding:18px 17px 0}.rate-editor>h2{padding:0 17px;font-size:22px;margin-top:14px}.rate-editor-subtitle{padding:0 17px}.rate-editor-meta{grid-template-columns:1fr 1fr;gap:10px;padding:18px 17px 14px}.rate-editor-meta label{font-size:9px}.rate-effective-field{grid-column:1/-1}.rate-fields-heading{margin:0 17px}.rate-editor-fields{padding:3px 17px}.rate-editor-field{grid-template-columns:30px minmax(0,1fr) 18px minmax(80px,105px);gap:8px;padding:9px 0}.rate-category-icon{width:29px;height:29px}.rate-category-name{font-size:11px}.rate-category-name small{font-size:9px}.rate-editor-field input{height:36px;padding:0 7px;font-size:12px}.rate-editor-total{margin:14px 17px 0;padding:13px}.rate-editor-total strong{font-size:18px}.rate-editor-actions{padding:16px 17px 14px}.rate-editor-foot{padding:12px 17px;font-size:9px}}
+@media(prefers-reduced-motion:reduce){.rate-modalback,.rate-editor.modal,.rate-rank,.rate-rank>summary,.rate-value,.rate-segment button,.rate-editor-actions .btn{transition:none!important;animation:none!important}.rate-spinner{animation:none!important}}
 </style></head><body><div id="app">Loading…</div>
 <script>
 const $=s=>document.querySelector(s);let user=null,employees=[],page="Dashboard",month=new Date().toISOString().slice(0,7);
@@ -296,9 +349,22 @@ function reports(){let ts=[["nominal-role","Nominal Roll"],["driving-license","D
  layout(title("Contribution Rates","Monthly contribution rates by rank and living status",'<label class="rate-month-label"><span>MONTH</span><input id="month" class="field" type="month" value="'+month+'"></label> <button id="newrate" class="btn primary"><span>＋</span> Add rate</button>')+'<div class="rate-rank-list">'+rankCards+'</div>');
  $("#month").onchange=e=>{month=e.target.value;render()};
  $("#newrate").onclick=()=>rateForm();
- document.querySelectorAll("[data-add-rate]").forEach(b=>b.onclick=()=>{const [rank,living]=b.dataset.addRate.split("|");rateForm(rank,living)});
+ document.querySelectorAll("[data-add-rate]").forEach(b=>b.onclick=()=>{const [rank,living]=b.dataset.addRate.split("|");const existing=rs.find(x=>String(x.rank||"").toUpperCase()===rank&&String(x.living_status||"").toUpperCase()===living);rateForm(rank,living,existing||null)});
 }
-function rateForm(selectedRank="DD",selectedLiving="IN"){layout(title("Add Contribution Rate","Rate effective month",'<button id="back" class="btn">Cancel</button>')+'<div class="panel"><form id="rf"><div class="formgrid"><label>Rank<select name="rank">'+["DD","AD","INSP","SI","ASI","SGT","CPL"].map(x=>'<option'+(x===selectedRank?' selected':'')+'>'+x+'</option>').join("")+'</select></label><label>Living<select name="living_status"><option'+(selectedLiving==="IN"?' selected':'')+'>IN</option><option'+(selectedLiving==="OUT"?' selected':'')+'>OUT</option></select></label><label>Effective month<input name="effective_from" type="month" value="'+month+'" required></label>'+["welfare","mod_amount","med","barber","waiter","wman"].map(k=>'<label>'+k+'<input name="'+k+'" type="number" min="0" step=".01" value="0" required></label>').join("")+'</div><div class="panelhead"><button class="btn primary">Save Rate</button></div></form></div>');$("#back").onclick=()=>{page="Contribution Rates";render()};$("#rf").onsubmit=async e=>{e.preventDefault();let b=Object.fromEntries(new FormData(e.currentTarget).entries());for(let k of ["welfare","mod_amount","med","barber","waiter","wman"])b[k]=Number(b[k]);try{await post("/rates",b);render();notify("Contribution rate saved successfully.")}catch(x){notify(x.message,"error")}}}
+function rateForm(selectedRank="DD",selectedLiving="IN",existing=null){
+ const categories=[["welfare","Welfare"],["mod_amount","MOD"],["med","MED"],["barber","Barber"],["waiter","Waiter"],["wman","W.Man"]];
+ const host=document.createElement("div");host.className="modalback rate-modalback";host.setAttribute("role","presentation");
+ const total=()=>categories.reduce((sum,[key])=>sum+Math.round(Number(host.querySelector('[name="'+key+'"]')?.value)||0),0);
+ host.innerHTML='<section class="modal rate-editor" role="dialog" aria-modal="true" aria-labelledby="rate-editor-title"><div class="rate-editor-top"><div class="rate-editor-kicker"><span class="rate-editor-symbol">↗</span> CONTRIBUTION SETTINGS</div><button type="button" class="rate-close" aria-label="Close editor">×</button></div><h2 id="rate-editor-title">'+(existing?'Edit':'Configure')+' '+esc(selectedRank)+' rates</h2><p class="rate-editor-subtitle">Set the monthly contribution by living status. Changes take effect from the selected month.</p><form id="rf"><div class="rate-editor-meta"><label>Rank<select name="rank">'+["DD","AD","INSP","SI","ASI","SGT","CPL"].map(x=>'<option value="'+x+'"'+(x===selectedRank?' selected':'')+'>'+x+'</option>').join("")+'</select></label><label>Living status<div class="rate-segment"><button type="button" data-living="IN" class="'+(selectedLiving==="IN"?'selected in':'')+'">IN Living</button><button type="button" data-living="OUT" class="'+(selectedLiving==="OUT"?'selected out':'')+'">OUT Living</button></div><input type="hidden" name="living_status" value="'+esc(selectedLiving)+'"></label><label class="rate-effective-field">Effective month<input name="effective_from" type="month" value="'+esc(existing?.effective_from||month)+'" required></label></div><div class="rate-fields-heading"><span>Contribution categories</span><span>Monthly amount · PKR</span></div><div class="rate-editor-fields">'+categories.map(([key,label],i)=>'<label class="rate-editor-field"><span class="rate-category-icon rate-category-'+i+'">'+["W","M","M","B","W","W"][i]+'</span><span class="rate-category-name">'+label+'<small>Monthly contribution</small></span><span class="rate-currency">Rs</span><input name="'+key+'" aria-label="'+label+' amount" type="number" min="0" step="1" value="'+esc(existing?.[key]??0)+'" required></label>').join("")+'</div><div class="rate-editor-total"><div><span>Combined monthly total</span><small>Sum of all six categories</small></div><strong id="rate-live-total">Rs '+money(total())+'</strong></div><div class="rate-editor-actions"><button type="button" class="btn rate-cancel">Cancel</button><button type="submit" class="btn primary rate-save"><span>Save changes</span><span aria-hidden="true">↗</span></button></div></form><div class="rate-editor-foot"><span class="rate-foot-dot"></span> Rates are saved to the selected effective month</div></section>';
+ const finish=()=>{host.classList.add("is-closing");document.removeEventListener("keydown",onKey);setTimeout(()=>host.remove(),190)};
+ const onKey=e=>{if(e.key==="Escape")finish()};
+ host.addEventListener("click",e=>{if(e.target===host)finish()});
+ host.querySelector(".rate-close").onclick=finish;host.querySelector(".rate-cancel").onclick=finish;
+ host.querySelectorAll("[data-living]").forEach(btn=>btn.onclick=()=>{host.querySelector('[name="living_status"]').value=btn.dataset.living;host.querySelectorAll("[data-living]").forEach(b=>b.classList.toggle("selected",b===btn));host.querySelectorAll("[data-living]").forEach(b=>{b.classList.toggle("in",b.dataset.living==="IN"&&b===btn);b.classList.toggle("out",b.dataset.living==="OUT"&&b===btn)})});
+ host.querySelectorAll('.rate-editor-fields input').forEach(input=>input.addEventListener("input",()=>{host.querySelector("#rate-live-total").textContent="Rs "+money(total())}));
+ host.querySelector("#rf").onsubmit=async e=>{e.preventDefault();const form=e.currentTarget,save=form.querySelector(".rate-save");let b=Object.fromEntries(new FormData(form).entries());for(let k of categories.map(x=>x[0]))b[k]=Math.round(Number(b[k])||0);save.disabled=true;save.innerHTML='<span class="rate-spinner"></span> Saving…';try{await post("/rates",b);finish();await render();notify("Contribution rate saved successfully.")}catch(x){save.disabled=false;save.innerHTML='<span>Save changes</span><span aria-hidden="true">↗</span>';notify(x.message,"error")}};
+ document.addEventListener("keydown",onKey);document.body.appendChild(host);requestAnimationFrame(()=>host.classList.add("is-visible"));host.querySelector('select[name="rank"]').focus();
+}
 function settings(){layout(title("Settings","Application and account information")+'<div class="cards"><div class="card"><label>Account</label><strong style="font-size:18px">'+esc(user.username)+'</strong></div><div class="card"><label>Role</label><strong style="font-size:18px">'+esc(user.role)+'</strong></div><div class="card"><label>Session</label><strong style="font-size:18px">Secure</strong></div><div class="card"><label>Storage</label><strong style="font-size:18px">Cloudflare D1</strong></div></div>')}
 async function load(){employees=(await api("/employees")).employees||[]}async function render(){try{if(page==="Dashboard"){layout(home());$("#add").onclick=()=>employeeForm();wireEmployeeActions()}else if(page==="Collection")await collection();else if(page==="History")await history();else if(page==="Reports")reports();else if(page==="Contribution Rates")await rates();else settings()}catch(e){layout(title(page,"Unable to load section")+'<p>'+esc(e.message)+'</p>')}}
 function wireEmployeeActions(){document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openEmployee(b.dataset.open))}
