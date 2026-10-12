@@ -2,10 +2,6 @@ name: Deploy Tariq-Coy Preview
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - feature/contribution-rates-visual-refresh
-      - feature/premium-dashboard-employee-register
 
 permissions:
   contents: read
@@ -25,10 +21,49 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Deliberately do not run D1 migrations from the preview workflow.
-      # This deploys a separate Worker name, but it uses the D1 binding in wrangler.toml.
-      - name: Deploy preview Worker only
-        run: npx wrangler deploy --name tariq-coy-preview
+      # Keep preview isolated: never bind this Worker to production tariqcoydb.
+      - name: Find or create isolated preview database
+        id: preview-db
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx wrangler d1 list --json > /tmp/d1-list.json
+          DB_ID=$(node -e "const fs=require('fs'); const a=JSON.parse(fs.readFileSync('/tmp/d1-list.json','utf8')); const d=a.find(x=>x.name==='tariqcoy-preview-db'); if(d) process.stdout.write(d.uuid)")
+          if [ -z "$DB_ID" ]; then
+            npx wrangler d1 create tariqcoy-preview-db
+            npx wrangler d1 list --json > /tmp/d1-list.json
+            DB_ID=$(node -e "const fs=require('fs'); const a=JSON.parse(fs.readFileSync('/tmp/d1-list.json','utf8')); const d=a.find(x=>x.name==='tariqcoy-preview-db'); if(d) process.stdout.write(d.uuid)")
+          fi
+          if [ -z "$DB_ID" ]; then echo "Could not resolve isolated preview D1 database ID"; exit 1; fi
+          echo "id=$DB_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Generate isolated preview configuration
+        env:
+          PREVIEW_DB_ID: ${{ steps.preview-db.outputs.id }}
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          let config = fs.readFileSync('wrangler.toml', 'utf8');
+          config = config.replace('name = "tariq-coy-personnel"', 'name = "tariq-coy-preview"');
+          config = config.replace('database_name = "tariqcoydb"', 'database_name = "tariqcoy-preview-db"');
+          config = config.replaceAll('database_id = "b3b5b12a-ce5c-4281-920a-15f59a8124cd"', 'database_id = "' + process.env.PREVIEW_DB_ID + '"');
+          const previewBlock = config.indexOf('# Preview intentionally uses the existing database');
+          if (previewBlock !== -1) {
+            const previewEnd = config.indexOf('[assets]', previewBlock);
+            config = config.slice(0, previewBlock) + '[previews.vars]\nAPP_ENV = "preview"\nSESSION_TTL_HOURS = "8"\n\n' + config.slice(previewEnd);
+          }
+          fs.writeFileSync('wrangler.preview.toml', config);
+          NODE
+
+      - name: Apply migrations to preview database only
+        run: npx wrangler d1 migrations apply tariqcoy-preview-db --remote --config wrangler.preview.toml
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Deploy preview Worker
+        run: npx wrangler deploy --config wrangler.preview.toml
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
