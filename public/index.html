@@ -305,6 +305,63 @@
 .employee-card:hover .employee-arrow{background:#d8f0ed;color:#0f766e}
 @media(max-width:760px){.dashboard-cards{gap:7px}.dashboard-stat{padding:10px;gap:8px}.dashboard-stat-icon{width:31px;height:31px;flex-basis:31px}.dashboard-stat-icon svg{width:18px;height:18px}.dashboard-stat strong{font-size:19px}.employee-card{grid-template-columns:21px 36px minmax(0,1fr) 20px;gap:8px;padding:9px}.employee-insignia{width:36px;height:36px}.employee-insignia svg{width:32px;height:32px}.employee-name{font-size:12px}}
 @media(max-width:440px){.dashboard-stat{display:block;padding:9px 8px}.dashboard-stat-icon{width:27px;height:27px;margin-bottom:6px}.dashboard-stat-icon svg{width:16px;height:16px}.dashboard-stat label{font-size:9px}.dashboard-stat strong{font-size:18px}.employee-card{grid-template-columns:17px 31px minmax(0,1fr) 18px;gap:6px;padding:8px}.employee-insignia{width:31px;height:31px;border-radius:8px}.employee-insignia svg{width:28px;height:28px}.employee-name-line{gap:5px}.employee-status{padding:4px 6px;font-size:9px}.employee-arrow{width:22px;height:22px}}
+
+/* Approved prototype finish: compact four-color stats + dark premium employee surfaces */
+.dashboard-cards{gap:9px;margin:12px 0 18px}
+.dashboard-stat{padding:10px 12px;gap:9px;border-radius:11px;box-shadow:0 4px 12px #10243a12}
+.dashboard-stat-icon{width:33px;height:33px;flex-basis:33px;border-radius:9px}
+.dashboard-stat-icon svg{width:18px;height:18px}
+.dashboard-stat strong{font-size:20px}
+.employee-register{background:#101e30;border:1px solid #263950;border-radius:15px;box-shadow:0 12px 28px #07111f20}
+.employee-register-head{background:linear-gradient(120deg,#16283d,#122237);border-bottom-color:#293c52}
+.employee-register-title{color:#f1f5fa}
+.employee-register-title span{color:#91a4b9!important}
+.employee-register-sub{color:#91a4b9}
+.employee-register-tools{background:#122237;border-bottom-color:#263950}
+.employee-search{background:#0d1a2b;color:#edf3fa;border-color:#34485e}
+.employee-search::placeholder{color:#8295aa}
+.employee-search:focus{border-color:#0f9b88;box-shadow:0 0 0 3px #0f9b8830}
+.employee-search-icon,.employee-count{color:#91a4b9}
+.employee-list{background:#101e30;gap:7px;padding:10px}
+.employee-card{background:linear-gradient(115deg,#1b2d43,#17283d);border-color:#2c4057;color:#eaf0f7;border-radius:11px;padding:9px 11px;box-shadow:inset 0 1px #ffffff05}
+.employee-card:hover{background:linear-gradient(115deg,#213750,#1b3047);border-color:#3c6b69;box-shadow:0 5px 16px #07111f40}
+.employee-card:focus-visible{outline-color:#34b59d}
+.employee-sr{color:#8499af}
+.employee-insignia{background:linear-gradient(145deg,#263b53,#1c2d43);border-color:#40536a;box-shadow:inset 0 1px #ffffff12;color:#e8eef6}
+.employee-insignia svg{filter:drop-shadow(0 1px 1px #0005)}
+.employee-name{color:#f3f6fb}
+.employee-meta{color:#9aacc0}
+.employee-rank{background:#263a51;color:#c5d5e5;border:1px solid #344b63}
+.employee-force{color:#b1c0d0}
+.employee-status{padding:4px 6px;border-radius:6px;font-size:9px;line-height:1.1;flex:0 0 auto}
+.employee-status-in{background:#123e36;color:#66dfb0;border-color:#236d5a}
+.employee-status-out{background:#282653;color:#b7b3ff;border-color:#4c4690}
+.employee-status-unset{background:#4b3519;color:#ffd38a;border-color:#785322}
+.employee-arrow{background:#26384d;color:#a9bdd1}
+.employee-card:hover .employee-arrow{background:#164d48;color:#7ce4ca}
+.employee-empty{color:#9aacc0}
+@media(max-width:760px){
+ .dashboard-cards{gap:7px;margin:10px 0 15px}
+ .dashboard-stat{padding:9px;gap:7px}
+ .dashboard-stat-icon{width:29px;height:29px;flex-basis:29px}
+ .dashboard-stat strong{font-size:18px}
+ .employee-list{padding:8px;gap:7px}
+ .employee-card{padding:8px;gap:7px}
+}
+@media(max-width:440px){
+ .dashboard-stat{padding:8px 7px}
+ .dashboard-stat-icon{width:26px;height:26px;margin-bottom:5px}
+ .dashboard-stat label{font-size:8px}
+ .dashboard-stat strong{font-size:17px}
+ .employee-card{grid-template-columns:17px 31px minmax(0,1fr) 18px;gap:6px;padding:8px}
+ .employee-name-line{flex-wrap:nowrap;gap:5px;align-items:flex-start}
+ .employee-name{min-width:0;font-size:11px;overflow-wrap:anywhere}
+ .employee-status{padding:3px 5px;font-size:8px;margin-top:1px}
+ .employee-insignia{width:31px;height:31px}
+ .employee-insignia svg{width:27px;height:27px}
+ .employee-arrow{width:22px;height:22px}
+}
+
 </style></head><body><div id="app">Loading…</div>
 <script>
 const $=s=>document.querySelector(s);let user=null,employees=[],page="Dashboard",month=new Date().toISOString().slice(0,7);
