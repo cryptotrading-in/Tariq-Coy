@@ -362,6 +362,80 @@
  .employee-arrow{width:22px;height:22px}
 }
 
+
+/* Prototype match: saturated premium dashboard cards */
+.dashboard-stat{border:1px solid transparent!important;box-shadow:0 7px 18px #10243a20!important;color:#fff!important}
+.dashboard-stat:after{background:#ffffff!important;opacity:.2!important;width:3px!important}
+.stat-total{background:linear-gradient(135deg,#0f766e 0%,#115e59 100%)!important;border-color:#238c83!important;color:#fff!important}
+.stat-in{background:linear-gradient(135deg,#16835f 0%,#116344 100%)!important;border-color:#24966f!important;color:#fff!important}
+.stat-out{background:linear-gradient(135deg,#5b56c9 0%,#4338a8 100%)!important;border-color:#7771e0!important;color:#fff!important}
+.stat-unset{background:linear-gradient(135deg,#b7791f 0%,#8b5a12 100%)!important;border-color:#d49a39!important;color:#fff!important}
+.dashboard-stat .dashboard-stat-icon{background:#ffffff20!important;color:#fff!important;border:1px solid #ffffff24!important}
+.dashboard-stat .dashboard-stat-copy label{color:#ffffffc9!important}
+.dashboard-stat .dashboard-stat-copy strong{color:#fff!important;text-shadow:0 1px 1px #0002}
+
+/* Employee details opened from a register card: premium, readable dark profile */
+.employee-profile-view{padding:14px;background:#0b1726;border:1px solid #24384e;border-radius:16px;box-shadow:0 14px 34px #08132124}
+.employee-profile-view>.panelhead{background:linear-gradient(120deg,#15283d,#101e30);border:1px solid #2a4058;border-radius:12px;margin-bottom:12px;padding:16px}
+.employee-profile-view>.panelhead h1{color:#f4f7fb;font-size:22px;letter-spacing:-.035em}
+.employee-profile-view>.panelhead .muted{color:#9aadc1}
+.employee-profile-view .panel{background:#132338;border-color:#2a4058;border-radius:12px;box-shadow:0 3px 10px #07111c24}
+.employee-profile-view .panelhead{background:#172a40;border-bottom-color:#2a4058;padding:13px 16px}
+.employee-profile-view .panelhead h2{color:#eaf1f8;font-size:13px;letter-spacing:.01em}
+.employee-profile-view .profilegrid{gap:10px;padding:14px}
+.employee-profile-view .profilegrid label{color:#9fb2c7;font-size:11px;font-weight:650;gap:6px}
+.employee-profile-view .profilegrid label>div{background:#0e1c2d!important;border-color:#344a61!important;color:#edf4fb!important;border-radius:9px!important;min-height:40px!important;padding:10px!important}
+.employee-profile-view .profilegrid .muted{color:#72869c!important}
+.employee-profile-view .tablewrap{background:#132338}
+.employee-profile-view table{color:#e7eef6}
+.employee-profile-view th{background:#1a2d43;color:#9eb3c8;border-bottom-color:#30465c}
+.employee-profile-view td{border-bottom-color:#2a3d52;color:#dbe5ef}
+.employee-profile-view .empty{color:#8da2b8}
+.employee-profile-view .detail-edit{background:linear-gradient(135deg,#176e61,#11584f);border-color:#278b7d;color:#fff;box-shadow:0 3px 9px #07111c30}
+.employee-profile-view .detail-delete{background:#3a2029;border-color:#74404b;color:#ffb9bd}
+.employee-profile-view .detail-close{background:#1c3046;border-color:#3a5067;color:#e5edf5;box-shadow:none}
+.employee-profile-view .detail-close:hover{background:#263f58;color:#fff;border-color:#5b748c}
+.employee-profile-view .btn.primary{background:#13785d;border-color:#24916f;color:#fff}
+.employee-profile-view .detail-actions{gap:7px}
+.employee-profile-view .detail-actions .btn{min-height:38px}
+
+/* Add/Edit employee form: same visual language, with clear section hierarchy */
+.employee-form-shell{padding:14px;background:#0b1726;border:1px solid #24384e;border-radius:16px;box-shadow:0 14px 34px #08132124}
+.employee-form-shell>.panelhead{background:linear-gradient(120deg,#15283d,#101e30);border:1px solid #2a4058;border-radius:12px;margin-bottom:12px;padding:16px}
+.employee-form-shell>.panelhead h1{color:#f4f7fb;font-size:22px;letter-spacing:-.035em}
+.employee-form-shell>.panelhead .muted{color:#9aadc1}
+.employee-form-view .panel{background:#132338;border-color:#2a4058;border-radius:12px;box-shadow:0 3px 10px #07111c24}
+.employee-form-view .panelhead{background:#172a40;border-bottom-color:#2a4058;padding:13px 16px}
+.employee-form-view .panelhead h2{color:#eaf1f8;font-size:13px}
+.employee-form-view .formgrid{gap:13px;padding:15px}
+.employee-form-view .formgrid label{color:#a9bbce;font-size:11px;font-weight:650}
+.employee-form-view .formgrid input,.employee-form-view .formgrid select{background:#0e1c2d!important;border-color:#344a61!important;color:#edf4fb!important;border-radius:9px!important;min-height:40px}
+.employee-form-view .formgrid input::placeholder{color:#748aa1}
+.employee-form-view .date-input-wrap .calendar-btn{background:#1b3046;border-color:#344a61;color:#edf4fb}
+.employee-form-view .employee-form-save{justify-content:flex-end;background:#132338;border-top:1px solid #2a4058;border-radius:0 0 12px 12px}
+.employee-form-shell .employee-form-cancel{background:#1b3046;border-color:#3a5067;color:#e5edf5}
+.employee-form-shell .btn.primary{background:linear-gradient(135deg,#16835f,#116344);border-color:#24966f;color:#fff;font-weight:750}
+.employee-form-view .formgrid .field{background:#0e1c2d!important}
+@media(max-width:700px){
+ .employee-profile-view,.employee-form-shell{padding:8px;border-radius:12px}
+ .employee-profile-view>.panelhead,.employee-form-shell>.panelhead{padding:12px;align-items:flex-start}
+ .employee-profile-view>.panelhead h1,.employee-form-shell>.panelhead h1{font-size:18px}
+ .employee-profile-view .detail-actions{gap:5px}
+ .employee-profile-view .detail-actions .btn{padding:7px 9px;min-height:34px}
+ .employee-profile-view .profilegrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px}
+ .employee-profile-view .profilegrid label>div{padding:8px!important;font-size:11px!important}
+ .employee-form-view .formgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:10px}
+}
+@media(max-width:440px){
+ .employee-profile-view>.panelhead,.employee-form-shell>.panelhead{display:flex;flex-wrap:wrap}
+ .employee-profile-view>.panelhead>div:first-child,.employee-form-shell>.panelhead>div:first-child{min-width:0;flex:1 1 100%}
+ .employee-profile-view .detail-actions{width:100%;justify-content:flex-end}
+ .employee-profile-view .profilegrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .employee-form-view .formgrid{grid-template-columns:1fr}
+ .dashboard-stat{min-height:94px;align-items:flex-start}
+ .dashboard-stat .dashboard-stat-copy label{font-size:9px;letter-spacing:.01em}
+}
+
 </style></head><body><div id="app">Loading…</div>
 <script>
 const $=s=>document.querySelector(s);let user=null,employees=[],page="Dashboard",month=new Date().toISOString().slice(0,7);
@@ -428,8 +502,8 @@ function groupedFields(group,e,readOnly=false){
  }).join("")+'</div></div>';
 }
 function employeeForm(e=null){
- const body='<form id="ef">'+employeeFieldGroups.map(g=>groupedFields(g,e,false)).join("")+'<div class="panelhead"><button class="btn primary">Save Employee</button></div></form>';
- layout(title(e?"Edit Employee":"Add New Employee","Employee information arranged by section",'<button class="btn" id="back">Cancel</button>')+body);
+ const body='<div class="employee-form-view"><form id="ef">'+employeeFieldGroups.map(g=>groupedFields(g,e,false)).join("")+'<div class="panelhead employee-form-save"><button class="btn primary">Save Employee</button></div></form></div>';
+ layout('<div class="employee-form-shell">'+title(e?"Edit Employee":"Add New Employee","Employee information arranged by section",'<button class="btn employee-form-cancel" id="back">Cancel</button>')+body+'</div>');
  wireDatePickers();
  $("#back").onclick=()=>{if(e){openEmployee(e.id)}else{page="Dashboard";render()}};
  const cnic=$("#cnicInput");
@@ -456,10 +530,10 @@ async function openEmployee(id){
   const rows=records.length?records.map((l,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(fmtDate(l.from_date))+'</td><td>'+esc(fmtDate(l.to_date))+'</td><td>'+esc(l.days??"")+'</td>'+(g.hasBalance?'<td>'+esc(l.balance||"")+'</td>':'')+'<td>'+esc(l.reason||"")+'</td></tr>').join(""):'<tr><td colspan="'+(g.hasBalance?6:5)+'" class="empty">No records yet.</td></tr>';
   return '<div class="panel"><div class="panelhead"><h2>'+g.title+'</h2></div><div class="tablewrap"><table><thead><tr>'+cols+'</tr></thead><tbody>'+rows+'</tbody></table></div></div>';
  };
- layout(title(esc(e.name),esc(e.rank+" · "+e.force_no),'<div class="detail-actions"><button id="edit" class="btn detail-edit">Edit</button><button id="delete-employee" class="btn detail-delete">Delete</button><button id="back" class="btn detail-close" aria-label="Close employee details" title="Close">×</button></div>')+
+ layout('<div class="employee-profile-view">'+title(esc(e.name),esc(e.rank+" · "+e.force_no),'<div class="detail-actions"><button id="edit" class="btn detail-edit">Edit</button><button id="delete-employee" class="btn detail-delete">Delete</button><button id="back" class="btn detail-close" aria-label="Close employee details" title="Close">×</button></div>')+
  employeeFieldGroups.map(g=>groupedFields(g,e,true)).join("")+
  '<div class="panel"><div class="panelhead"><h2>Leave Records</h2><button id="addleave" class="btn primary">+ Add record</button></div></div>'+
- leaveTypes.map(leaveTable).join(""));
+ leaveTypes.map(leaveTable).join("")+'</div>');
  $("#back").onclick=()=>{page="Dashboard";render()};
  $("#edit").onclick=()=>employeeForm(e);
  $("#delete-employee").onclick=async()=>{
