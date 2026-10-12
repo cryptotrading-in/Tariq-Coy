@@ -436,6 +436,9 @@
  .dashboard-stat .dashboard-stat-copy label{font-size:9px;letter-spacing:.01em}
 }
 
+
+/* Search filtering must override employee-card display styles. */
+.employee-card[hidden],.employee-empty[hidden]{display:none!important}
 </style></head><body><div id="app">Loading…</div>
 <script>
 const $=s=>document.querySelector(s);let user=null,employees=[],page="Dashboard",month=new Date().toISOString().slice(0,7);
