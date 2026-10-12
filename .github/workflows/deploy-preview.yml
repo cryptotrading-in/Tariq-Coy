@@ -2,11 +2,6 @@ name: Deploy Tariq-Coy Preview
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - fix/nominal-roll-pdf-layout
-      - feature/contribution-rates-visual-refresh
-      - feature/premium-dashboard-employee-register
 
 permissions:
   contents: read
