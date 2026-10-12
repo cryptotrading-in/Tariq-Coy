@@ -8,6 +8,73 @@
 
 /* Contribution Rates: scoped visual refresh only */
 .rate-month-label{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:#607387}.rate-month-label input{margin-left:2px}.rate-intro{display:flex;align-items:center;gap:12px;background:#eaf5f0;border:1px solid #cfe7dc;color:#183047;border-radius:12px;padding:14px 16px;margin:16px 0}.rate-intro-icon{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;border-radius:10px;background:#176b57;color:#fff;font-size:14px;font-weight:800}.rate-intro strong{font-size:14px}.rate-intro p{margin:3px 0 0;color:#607387;font-size:12px;line-height:1.5}.rate-rank-list{display:grid;gap:12px;margin:14px 0 24px}.rate-rank{background:#fff;border:1px solid #dfe8e3;border-radius:13px;overflow:hidden;box-shadow:0 2px 8px #102a4308}.rate-rank>summary{display:flex;align-items:center;gap:12px;list-style:none;cursor:pointer;padding:14px 16px}.rate-rank>summary::-webkit-details-marker{display:none}.rate-rank>summary:hover{background:#f7faf8}.rank-mark{width:42px;height:42px;display:grid;place-items:center;flex:0 0 42px;border-radius:11px;background:#e1f2e9;color:#176b57;font-weight:800;font-size:13px}.rank-mark-1{background:#e8effb;color:#315c9a}.rank-mark-2{background:#eee9fb;color:#6952a1}.rank-mark-3{background:#e3f3f1;color:#236f69}.rank-mark-4{background:#f5eddb;color:#8b641a}.rank-mark-5{background:#fbe9df;color:#9c542a}.rank-mark-6{background:#e8edf1;color:#425466}.rank-summary-copy{display:grid;gap:3px;flex:1;min-width:0}.rank-summary-copy strong{font-size:14px;color:#183047}.rank-summary-copy small{font-size:11px;color:#718096}.rank-chevron{font-size:22px;color:#718096;transition:transform .18s}.rate-rank[open] .rank-chevron{transform:rotate(180deg)}.rate-living-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0 14px 14px}.rate-living-card{min-width:0;border:1px solid #e0e8ef;border-radius:11px;padding:13px;background:#fbfcfd}.rate-in{border-top:3px solid #2d8a67}.rate-out{border-top:3px solid #d19a37}.rate-living-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}.rate-status{display:inline-flex;align-items:center;border-radius:20px;padding:5px 9px;font-size:11px;font-weight:750}.rate-status-in{background:#dff3e7;color:#176b48}.rate-status-out{background:#fff0d4;color:#875814}.rate-effective,.rate-unset{font-size:10px;color:#718096}.rate-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.rate-value{min-width:0;padding:9px 8px;border-radius:8px;background:#fff;border:1px solid #edf1f5}.rate-value span{display:block;color:#718096;font-size:10px;margin-bottom:5px}.rate-value strong{display:block;color:#183047;font-size:12px;white-space:normal;overflow-wrap:anywhere}.rate-total{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid #e4ebe7;margin-top:12px;padding-top:11px;color:#607387;font-size:12px}.rate-total strong{color:#176b57;font-size:15px}.rate-add-inline,.rate-edit-inline{margin-top:12px;padding:7px 10px;font-size:11px}.rate-add-inline{background:#f0f7f3;color:#176b57;border-color:#cfe7dc}.rate-empty{line-height:1.5;margin:10px 0 2px}.rate-month-label input{max-width:155px}@media(max-width:700px){.rate-living-grid{grid-template-columns:1fr;padding:0 10px 10px}.rate-rank>summary{padding:12px}.rate-intro{align-items:flex-start}.rate-values{grid-template-columns:repeat(3,minmax(0,1fr))}.rate-value{padding:8px 6px}.rate-value strong{font-size:11px}.rate-month-label{width:100%;justify-content:space-between}.rate-month-label input{flex:1;max-width:180px}}
+
+/* Premium Contribution Rates finish: restrained fintech/editorial styling */
+.rate-month-label{gap:9px;color:#7b8998;font-size:10px;font-weight:800;letter-spacing:.12em}
+.rate-month-label input{font-size:13px;letter-spacing:0;font-weight:600;min-height:40px;border-color:#d8e1e9;box-shadow:0 1px 2px #102a4308}
+.rate-rank-list{gap:11px;margin:18px 0 28px}
+.rate-rank{position:relative;border:1px solid #dce5e9;border-radius:15px;box-shadow:0 3px 12px #153b2e05;transition:border-color .18s,box-shadow .18s,transform .18s}
+.rate-rank:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,#287b60,#a7d6bd);opacity:.0;transition:opacity .18s}
+.rate-rank:hover{border-color:#bfd4ca;box-shadow:0 9px 25px #153b2e0b;transform:translateY(-1px)}
+.rate-rank:hover:before,.rate-rank[open]:before{opacity:1}
+.rate-rank>summary{min-height:76px;padding:14px 17px 14px 19px;gap:14px}
+.rate-rank>summary:hover{background:linear-gradient(90deg,#f7faf8,#fff)}
+.rank-mark{position:relative;width:46px;height:46px;flex-basis:46px;border-radius:13px;background:linear-gradient(145deg,#e2f4ea,#d2e9dd);box-shadow:inset 0 0 0 1px #c9e4d6;font-size:13px;letter-spacing:.02em}
+.rank-mark:after{content:"";position:absolute;right:7px;bottom:7px;width:5px;height:5px;border-radius:50%;background:#247856;box-shadow:0 0 0 3px #ffffffb8}
+.rank-mark-1{background:linear-gradient(145deg,#eaf0fc,#dce6f9);box-shadow:inset 0 0 0 1px #d3dff4}.rank-mark-1:after{background:#5374b8}
+.rank-mark-2{background:linear-gradient(145deg,#f0eafd,#e4dcf8);box-shadow:inset 0 0 0 1px #dfd5f6}.rank-mark-2:after{background:#8063bb}
+.rank-mark-3{background:linear-gradient(145deg,#e2f5f1,#d4ebe6);box-shadow:inset 0 0 0 1px #cce7e1}.rank-mark-3:after{background:#277e73}
+.rank-mark-4{background:linear-gradient(145deg,#fbf1d9,#f1e4c2);box-shadow:inset 0 0 0 1px #eee1bf}.rank-mark-4:after{background:#a77a20}
+.rank-mark-5{background:linear-gradient(145deg,#fff0e5,#f6e0d2);box-shadow:inset 0 0 0 1px #f0d9c9}.rank-mark-5:after{background:#b86a39}
+.rank-mark-6{background:linear-gradient(145deg,#edf1f5,#dfe6ec);box-shadow:inset 0 0 0 1px #d8e0e7}.rank-mark-6:after{background:#617488}
+.rank-summary-copy{gap:5px}
+.rank-summary-copy strong{font-size:14px;letter-spacing:-.015em}
+.rank-summary-copy strong em{font-style:normal;color:#83909c;font-weight:500}
+.rank-summary-copy small{font-size:10px;letter-spacing:.035em;color:#8a97a3}
+.rank-quick-status{display:flex;align-items:center;gap:6px;margin-left:auto}
+.rank-quick-status>span{display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border:1px solid #e3e9ed;border-radius:7px;color:#9aa5ae;font-size:9px;font-weight:800;letter-spacing:.06em;background:#fbfcfd}
+.rank-quick-status i,.rate-state-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#bdc6cd}
+.rank-quick-status .is-configured{background:#edf7f1;border-color:#d5eade;color:#267653}
+.rank-quick-status .is-configured i,.rate-status-in .rate-state-dot{background:#2d8a67;box-shadow:0 0 0 3px #d7eee2}
+.rank-quick-status .is-missing{background:#fafbfc}
+.rank-chevron{display:grid;place-items:center;width:29px;height:29px;border:1px solid #e1e8ed;border-radius:9px;background:#fff;color:#718096;font-size:18px;line-height:1}
+.rate-rank[open] .rank-chevron{background:#eaf5ef;border-color:#cfe5d8;color:#176b57}
+.rate-living-grid{gap:14px;padding:0 14px 15px 17px}
+.rate-living-card{position:relative;padding:16px;border:1px solid #e2e9ed;border-radius:12px;background:linear-gradient(150deg,#fff 0%,#fbfcfd 100%);box-shadow:0 2px 6px #102a4304}
+.rate-in{border-top:0}.rate-out{border-top:0}
+.rate-in:before,.rate-out:before{content:"";position:absolute;top:0;left:14px;right:14px;height:3px;border-radius:0 0 5px 5px}
+.rate-in:before{background:linear-gradient(90deg,#267b5b,#9ed5b8)}
+.rate-out:before{background:linear-gradient(90deg,#bd8730,#f0d59c)}
+.rate-living-head{margin:0 0 15px;padding-top:2px}
+.rate-status{border-radius:7px;padding:7px 10px;font-size:10px;letter-spacing:.065em;text-transform:uppercase}
+.rate-status-in{background:#e9f6ee;color:#1f704c}
+.rate-status-out{background:#fff4df;color:#8d641e}
+.rate-status .rate-state-dot{margin-right:4px}
+.rate-status-out .rate-state-dot{background:#c68b2c;box-shadow:0 0 0 3px #f8e8c8}
+.rate-effective{font-size:10px;color:#8b97a2}
+.rate-effective b{font-weight:700;color:#536577}
+.rate-values{gap:8px}
+.rate-value{padding:11px 10px;border-radius:9px;background:#fff;border:1px solid #e8edf0;box-shadow:0 1px 2px #102a4304;transition:border-color .15s,background .15s}
+.rate-value:hover{border-color:#c8ddd1;background:#fcfefc}
+.rate-value span{font-size:10px;font-weight:650;color:#7b8996;letter-spacing:.01em}
+.rate-value strong{font-size:13px;font-weight:750;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.rate-value strong small{font-size:9px;font-weight:600;color:#8a98a3;letter-spacing:0}
+.rate-total{margin-top:14px;padding-top:13px;border-top:1px solid #e8edf0;color:#6d7e8c;font-size:11px}
+.rate-total>span{display:flex;align-items:center;gap:8px}
+.rate-total-icon{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:#eaf5ef;color:#176b57;font-size:13px;font-weight:800}
+.rate-total strong{font-size:18px;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.rate-edit-inline,.rate-add-inline{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;min-height:38px;margin-top:14px;padding:8px 11px;border-radius:8px;font-size:11px;font-weight:750;transition:background .15s,border-color .15s,transform .15s}
+.rate-edit-inline{background:#fff;border-color:#dfe7eb;color:#465a6c}
+.rate-edit-inline:hover{background:#f0f7f3;border-color:#c4dfd0;color:#176b57}
+.rate-add-inline{background:#f1f8f4;border-color:#d3e8db;color:#176b57}
+.rate-add-inline:hover{background:#e3f3e9;border-color:#b6dcc6}
+.rate-empty{font-size:12px;color:#81909c;margin:14px 0;line-height:1.65}
+.rate-unset{display:inline-flex;align-items:center;gap:8px;font-size:10px}
+.rate-unset .rate-state-dot{background:#c3cbd1}
+#newrate{min-height:40px;padding:9px 14px;border-radius:9px;box-shadow:0 2px 5px #176b571c;font-weight:700}
+#newrate:hover{background:#125a49;transform:translateY(-1px)}
+@media(max-width:700px){.rate-rank>summary{min-height:69px;padding:12px;gap:10px}.rank-mark{width:40px;height:40px;flex-basis:40px}.rank-quick-status{gap:4px}.rank-quick-status>span{padding:5px 6px}.rank-summary-copy strong{font-size:13px}.rank-summary-copy small{font-size:9px}.rate-living-grid{gap:10px;padding:0 10px 10px}.rate-living-card{padding:14px}.rate-values{gap:6px}.rate-value{padding:9px 6px}.rate-value strong{font-size:12px}.rate-month-label{width:auto;justify-content:flex-start}.rate-month-label input{flex:1;max-width:155px}}
+@media(max-width:420px){.rank-quick-status{display:none}.rate-rank>summary{gap:9px}.rate-living-head{align-items:flex-start}.rate-effective{align-self:center}}
 </style></head><body><div id="app">Loading…</div>
 <script>
 const $=s=>document.querySelector(s);let user=null,employees=[],page="Dashboard",month=new Date().toISOString().slice(0,7);
@@ -216,15 +283,17 @@ function reports(){let ts=[["nominal-role","Nominal Roll"],["driving-license","D
  const categories=[["welfare","Welfare"],["mod_amount","MOD"],["med","MED"],["barber","Barber"],["waiter","Waiter"],["wman","W.Man"]];
  const rankCards=RANK_ORDER.map((rank,index)=>{
   const rankRows=ratesRankSorted(rs.filter(r=>String(r.rank||"").toUpperCase()===rank));
+  const configuredIn=rankRows.some(r=>String(r.living_status||"").toUpperCase()==="IN");
+  const configuredOut=rankRows.some(r=>String(r.living_status||"").toUpperCase()==="OUT");
   const livingCards=["IN","OUT"].map(living=>{
    const r=rankRows.find(x=>String(x.living_status||"").toUpperCase()===living);
-   if(!r)return '<div class="rate-living-card '+(living==="IN"?"rate-in":"rate-out")+'"><div class="rate-living-head"><span class="rate-status '+(living==="IN"?"rate-status-in":"rate-status-out")+'">'+living+' Living</span><span class="rate-unset">Not configured</span></div><p class="muted rate-empty">No rate saved for this living status in the selected month.</p><button class="btn rate-add-inline" data-add-rate="'+rank+'|'+living+'">+ Add '+living+' rate</button></div>';
+   if(!r)return '<div class="rate-living-card '+(living==="IN"?"rate-in":"rate-out")+'"><div class="rate-living-head"><span class="rate-status '+(living==="IN"?"rate-status-in":"rate-status-out")+'">'+living+' Living</span><span class="rate-unset"><span class="rate-state-dot"></span>Not configured</span></div><div class="rate-empty">No rate saved for this living status in the selected month.</div><button class="btn rate-add-inline" data-add-rate="'+rank+'|'+living+'"><span>＋</span> Configure '+living+' rate</button></div>';
    const total=categories.reduce((sum,[key])=>sum+Number(r[key]||0),0);
-   return '<div class="rate-living-card '+(living==="IN"?"rate-in":"rate-out")+'"><div class="rate-living-head"><span class="rate-status '+(living==="IN"?"rate-status-in":"rate-status-out")+'">'+living+' Living</span><span class="rate-effective">Effective '+esc(r.effective_from||month)+'</span></div><div class="rate-values">'+categories.map(([key,label])=>'<div class="rate-value"><span>'+label+'</span><strong>Rs '+money(r[key])+'</strong></div>').join("")+'</div><div class="rate-total"><span>Total contribution</span><strong>Rs '+money(total)+'</strong></div><button class="btn rate-edit-inline" data-add-rate="'+rank+'|'+living+'">+ Add rate for this month</button></div>';
+   return '<div class="rate-living-card '+(living==="IN"?"rate-in":"rate-out")+'"><div class="rate-living-head"><span class="rate-status '+(living==="IN"?"rate-status-in":"rate-status-out")+'"><span class="rate-state-dot"></span>'+living+' Living</span><span class="rate-effective">Effective <b>'+esc(r.effective_from||month)+'</b></span></div><div class="rate-values">'+categories.map(([key,label],i)=>'<div class="rate-value"><span>'+label+'</span><strong><small>Rs</small> '+money(r[key])+'</strong></div>').join("")+'</div><div class="rate-total"><span><span class="rate-total-icon">Σ</span> Total contribution</span><strong>Rs '+money(total)+'</strong></div><button class="btn rate-edit-inline" data-add-rate="'+rank+'|'+living+'">Edit monthly rate <span aria-hidden="true">↗</span></button></div>';
   }).join("");
-  return '<details class="rate-rank" '+(index===0?'open':'')+'><summary><span class="rank-mark rank-mark-'+index+'">'+rank+'</span><span class="rank-summary-copy"><strong>'+rank+' Contribution</strong><small>'+rankRows.length+' saved rate set'+(rankRows.length===1?'':'s')+'</small></span><span class="rank-chevron" aria-hidden="true">⌄</span></summary><div class="rate-living-grid">'+livingCards+'</div></details>';
+  return '<details class="rate-rank" '+(index===0?'open':'')+'><summary><span class="rank-mark rank-mark-'+index+'"><span>'+rank+'</span><i></i></span><span class="rank-summary-copy"><strong>'+rank+' <em>Contribution</em></strong><small>'+rankRows.length+' configured rate '+(rankRows.length===1?'set':'sets')+'</small></span><span class="rank-quick-status"><span class="'+(configuredIn?'is-configured':'is-missing')+'"><i></i>IN</span><span class="'+(configuredOut?'is-configured':'is-missing')+'"><i></i>OUT</span></span><span class="rank-chevron" aria-hidden="true">⌄</span></summary><div class="rate-living-grid">'+livingCards+'</div></details>';
  }).join("");
- layout(title("Contribution Rates","Monthly contribution rates by rank and living status",'<label class="rate-month-label">Select month <input id="month" class="field" type="month" value="'+month+'"></label> <button id="newrate" class="btn primary">+ Add rate</button>')+'<div class="rate-rank-list">'+rankCards+'</div>');
+ layout(title("Contribution Rates","Monthly contribution rates by rank and living status",'<label class="rate-month-label"><span>MONTH</span><input id="month" class="field" type="month" value="'+month+'"></label> <button id="newrate" class="btn primary"><span>＋</span> Add rate</button>')+'<div class="rate-rank-list">'+rankCards+'</div>');
  $("#month").onchange=e=>{month=e.target.value;render()};
  $("#newrate").onclick=()=>rateForm();
  document.querySelectorAll("[data-add-rate]").forEach(b=>b.onclick=()=>{const [rank,living]=b.dataset.addRate.split("|");rateForm(rank,living)});
