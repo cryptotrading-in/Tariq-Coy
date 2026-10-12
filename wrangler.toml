@@ -1,6 +1,7 @@
 name = "tariq-coy-personnel"
 main = "src/worker.js"
 compatibility_date = "2026-10-10"
+workers_dev = true
 
 # Existing Cloudflare D1 database: tariqcoydb.
 [[d1_databases]]
@@ -11,6 +12,18 @@ database_id = "b3b5b12a-ce5c-4281-920a-15f59a8124cd"
 [vars]
 APP_ENV = "production"
 SESSION_TTL_HOURS = "8"
+
+# Preview intentionally uses the existing database so the preview has the
+# same employees, contribution rates, and login accounts as production.
+# Writes made in Preview will affect the same records as the live app.
+[previews.vars]
+APP_ENV = "production"
+SESSION_TTL_HOURS = "8"
+
+[[previews.d1_databases]]
+binding = "DB"
+database_name = "tariqcoydb"
+database_id = "b3b5b12a-ce5c-4281-920a-15f59a8124cd"
 
 [assets]
 directory = "./public"

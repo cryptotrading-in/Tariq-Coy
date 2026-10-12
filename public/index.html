@@ -5,6 +5,210 @@
 @media print{body{background:#fff!important;color:#111!important;font-size:10pt}.shell{display:block!important}.side,.top,.noprint,#logout{display:none!important}.content{max-width:none!important;padding:0!important;margin:0!important}.report-sheet{display:block!important;border:0!important;border-radius:0!important;margin:0!important;overflow:visible!important}.report-heading{display:block!important;text-align:center;padding:12px 0 16px!important;border-bottom:2px solid #222!important;margin-bottom:12px!important}.report-heading h1{font-size:18pt!important;letter-spacing:.4px}.report-heading .report-subtitle{font-size:11pt!important;color:#333!important;margin-top:5px}.report-heading .report-meta{font-size:9pt!important;color:#555!important;margin-top:7px}.report-table{width:100%!important;white-space:normal!important;font-size:8pt!important;border-collapse:collapse!important}.report-table th,.report-table td{border:1px solid #777!important;padding:5px 6px!important;color:#111!important;background:#fff!important;white-space:normal!important;overflow-wrap:anywhere}.report-table th{font-size:7.5pt!important;text-transform:none!important;font-weight:700!important;background:#eee!important}.report-table tr{break-inside:avoid;page-break-inside:avoid}.report-foot{font-size:8pt!important;text-align:right;margin-top:10px}.panel{box-shadow:none!important} @page{size:landscape;margin:12mm}}
 /* Compact in-app confirmations and feedback */
 .toast-region{position:fixed;top:16px;right:16px;z-index:1200;display:grid;gap:8px;width:min(360px,calc(100vw - 32px));pointer-events:none}.toast{padding:12px 14px;border:1px solid #d4dfeb;border-left:4px solid #176b57;border-radius:10px;background:#fff;color:#183047;box-shadow:0 12px 32px #102a4326;font-size:13px;line-height:1.45;overflow-wrap:anywhere}.toast.error{border-left-color:#b42318}.toast.success{border-left-color:#176b57}.confirm-modal .modal{width:min(420px,100%);padding:22px}.confirm-modal .confirm-message{font-size:14px;line-height:1.55;margin:14px 0 8px}.confirm-modal .confirm-details{background:#f6f8fb;border:1px solid #e4ebf2;border-radius:9px;padding:11px 12px;margin-top:12px;line-height:1.6;font-size:13px;overflow-wrap:anywhere}.confirm-modal .btn.danger{background:#b42318;color:#fff;border-color:#b42318}.confirm-modal .btn:focus-visible{outline:3px solid #83c5b7;outline-offset:2px}
+
+/* Contribution Rates: scoped visual refresh only */
+.rate-month-label{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:#607387}.rate-month-label input{margin-left:2px}.rate-intro{display:flex;align-items:center;gap:12px;background:#eaf5f0;border:1px solid #cfe7dc;color:#183047;border-radius:12px;padding:14px 16px;margin:16px 0}.rate-intro-icon{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;border-radius:10px;background:#176b57;color:#fff;font-size:14px;font-weight:800}.rate-intro strong{font-size:14px}.rate-intro p{margin:3px 0 0;color:#607387;font-size:12px;line-height:1.5}.rate-rank-list{display:grid;gap:12px;margin:14px 0 24px}.rate-rank{background:#fff;border:1px solid #dfe8e3;border-radius:13px;overflow:hidden;box-shadow:0 2px 8px #102a4308}.rate-rank>summary{display:flex;align-items:center;gap:12px;list-style:none;cursor:pointer;padding:14px 16px}.rate-rank>summary::-webkit-details-marker{display:none}.rate-rank>summary:hover{background:#f7faf8}.rank-mark{width:42px;height:42px;display:grid;place-items:center;flex:0 0 42px;border-radius:11px;background:#e1f2e9;color:#176b57;font-weight:800;font-size:13px}.rank-mark-1{background:#e8effb;color:#315c9a}.rank-mark-2{background:#eee9fb;color:#6952a1}.rank-mark-3{background:#e3f3f1;color:#236f69}.rank-mark-4{background:#f5eddb;color:#8b641a}.rank-mark-5{background:#fbe9df;color:#9c542a}.rank-mark-6{background:#e8edf1;color:#425466}.rank-summary-copy{display:grid;gap:3px;flex:1;min-width:0}.rank-summary-copy strong{font-size:14px;color:#183047}.rank-summary-copy small{font-size:11px;color:#718096}.rank-chevron{font-size:22px;color:#718096;transition:transform .18s}.rate-rank[open] .rank-chevron{transform:rotate(180deg)}.rate-living-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0 14px 14px}.rate-living-card{min-width:0;border:1px solid #e0e8ef;border-radius:11px;padding:13px;background:#fbfcfd}.rate-in{border-top:3px solid #2d8a67}.rate-out{border-top:3px solid #d19a37}.rate-living-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}.rate-status{display:inline-flex;align-items:center;border-radius:20px;padding:5px 9px;font-size:11px;font-weight:750}.rate-status-in{background:#dff3e7;color:#176b48}.rate-status-out{background:#fff0d4;color:#875814}.rate-effective,.rate-unset{font-size:10px;color:#718096}.rate-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.rate-value{min-width:0;padding:9px 8px;border-radius:8px;background:#fff;border:1px solid #edf1f5}.rate-value span{display:block;color:#718096;font-size:10px;margin-bottom:5px}.rate-value strong{display:block;color:#183047;font-size:12px;white-space:normal;overflow-wrap:anywhere}.rate-total{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid #e4ebe7;margin-top:12px;padding-top:11px;color:#607387;font-size:12px}.rate-total strong{color:#176b57;font-size:15px}.rate-add-inline,.rate-edit-inline{margin-top:12px;padding:7px 10px;font-size:11px}.rate-add-inline{background:#f0f7f3;color:#176b57;border-color:#cfe7dc}.rate-empty{line-height:1.5;margin:10px 0 2px}.rate-month-label input{max-width:155px}@media(max-width:700px){.rate-living-grid{grid-template-columns:1fr;padding:0 10px 10px}.rate-rank>summary{padding:12px}.rate-intro{align-items:flex-start}.rate-values{grid-template-columns:repeat(3,minmax(0,1fr))}.rate-value{padding:8px 6px}.rate-value strong{font-size:11px}.rate-month-label{width:100%;justify-content:space-between}.rate-month-label input{flex:1;max-width:180px}}
+
+/* Premium Contribution Rates finish: restrained fintech/editorial styling */
+.rate-month-label{gap:9px;color:#7b8998;font-size:10px;font-weight:800;letter-spacing:.12em}
+.rate-month-label input{font-size:13px;letter-spacing:0;font-weight:600;min-height:40px;border-color:#d8e1e9;box-shadow:0 1px 2px #102a4308}
+.rate-rank-list{gap:11px;margin:18px 0 28px}
+.rate-rank{position:relative;border:1px solid #dce5e9;border-radius:15px;box-shadow:0 3px 12px #153b2e05;transition:border-color .18s,box-shadow .18s,transform .18s}
+.rate-rank:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,#287b60,#a7d6bd);opacity:.0;transition:opacity .18s}
+.rate-rank:hover{border-color:#bfd4ca;box-shadow:0 9px 25px #153b2e0b;transform:translateY(-1px)}
+.rate-rank:hover:before,.rate-rank[open]:before{opacity:1}
+.rate-rank>summary{min-height:76px;padding:14px 17px 14px 19px;gap:14px}
+.rate-rank>summary:hover{background:linear-gradient(90deg,#f7faf8,#fff)}
+.rank-mark{position:relative;width:46px;height:46px;flex-basis:46px;border-radius:13px;background:linear-gradient(145deg,#e2f4ea,#d2e9dd);box-shadow:inset 0 0 0 1px #c9e4d6;font-size:13px;letter-spacing:.02em}
+.rank-mark:after{content:"";position:absolute;right:7px;bottom:7px;width:5px;height:5px;border-radius:50%;background:#247856;box-shadow:0 0 0 3px #ffffffb8}
+.rank-mark-1{background:linear-gradient(145deg,#eaf0fc,#dce6f9);box-shadow:inset 0 0 0 1px #d3dff4}.rank-mark-1:after{background:#5374b8}
+.rank-mark-2{background:linear-gradient(145deg,#f0eafd,#e4dcf8);box-shadow:inset 0 0 0 1px #dfd5f6}.rank-mark-2:after{background:#8063bb}
+.rank-mark-3{background:linear-gradient(145deg,#e2f5f1,#d4ebe6);box-shadow:inset 0 0 0 1px #cce7e1}.rank-mark-3:after{background:#277e73}
+.rank-mark-4{background:linear-gradient(145deg,#fbf1d9,#f1e4c2);box-shadow:inset 0 0 0 1px #eee1bf}.rank-mark-4:after{background:#a77a20}
+.rank-mark-5{background:linear-gradient(145deg,#fff0e5,#f6e0d2);box-shadow:inset 0 0 0 1px #f0d9c9}.rank-mark-5:after{background:#b86a39}
+.rank-mark-6{background:linear-gradient(145deg,#edf1f5,#dfe6ec);box-shadow:inset 0 0 0 1px #d8e0e7}.rank-mark-6:after{background:#617488}
+.rank-summary-copy{gap:5px}
+.rank-summary-copy strong{font-size:14px;letter-spacing:-.015em}
+.rank-summary-copy strong em{font-style:normal;color:#83909c;font-weight:500}
+.rank-summary-copy small{font-size:10px;letter-spacing:.035em;color:#8a97a3}
+.rank-quick-status{display:flex;align-items:center;gap:6px;margin-left:auto}
+.rank-quick-status>span{display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border:1px solid #e3e9ed;border-radius:7px;color:#9aa5ae;font-size:9px;font-weight:800;letter-spacing:.06em;background:#fbfcfd}
+.rank-quick-status i,.rate-state-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#bdc6cd}
+.rank-quick-status .is-configured{background:#edf7f1;border-color:#d5eade;color:#267653}
+.rank-quick-status .is-configured i,.rate-status-in .rate-state-dot{background:#2d8a67;box-shadow:0 0 0 3px #d7eee2}
+.rank-quick-status .is-missing{background:#fafbfc}
+.rank-chevron{display:grid;place-items:center;width:29px;height:29px;border:1px solid #e1e8ed;border-radius:9px;background:#fff;color:#718096;font-size:18px;line-height:1}
+.rate-rank[open] .rank-chevron{background:#eaf5ef;border-color:#cfe5d8;color:#176b57}
+.rate-living-grid{gap:14px;padding:0 14px 15px 17px}
+.rate-living-card{position:relative;padding:16px;border:1px solid #e2e9ed;border-radius:12px;background:linear-gradient(150deg,#fff 0%,#fbfcfd 100%);box-shadow:0 2px 6px #102a4304}
+.rate-in{border-top:0}.rate-out{border-top:0}
+.rate-in:before,.rate-out:before{content:"";position:absolute;top:0;left:14px;right:14px;height:3px;border-radius:0 0 5px 5px}
+.rate-in:before{background:linear-gradient(90deg,#267b5b,#9ed5b8)}
+.rate-out:before{background:linear-gradient(90deg,#bd8730,#f0d59c)}
+.rate-living-head{margin:0 0 15px;padding-top:2px}
+.rate-status{border-radius:7px;padding:7px 10px;font-size:10px;letter-spacing:.065em;text-transform:uppercase}
+.rate-status-in{background:#e9f6ee;color:#1f704c}
+.rate-status-out{background:#fff4df;color:#8d641e}
+.rate-status .rate-state-dot{margin-right:4px}
+.rate-status-out .rate-state-dot{background:#c68b2c;box-shadow:0 0 0 3px #f8e8c8}
+.rate-effective{font-size:10px;color:#8b97a2}
+.rate-effective b{font-weight:700;color:#536577}
+.rate-values{gap:8px}
+.rate-value{padding:11px 10px;border-radius:9px;background:#fff;border:1px solid #e8edf0;box-shadow:0 1px 2px #102a4304;transition:border-color .15s,background .15s}
+.rate-value:hover{border-color:#c8ddd1;background:#fcfefc}
+.rate-value span{font-size:10px;font-weight:650;color:#7b8996;letter-spacing:.01em}
+.rate-value strong{font-size:13px;font-weight:750;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.rate-value strong small{font-size:9px;font-weight:600;color:#8a98a3;letter-spacing:0}
+.rate-total{margin-top:14px;padding-top:13px;border-top:1px solid #e8edf0;color:#6d7e8c;font-size:11px}
+.rate-total>span{display:flex;align-items:center;gap:8px}
+.rate-total-icon{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:#eaf5ef;color:#176b57;font-size:13px;font-weight:800}
+.rate-total strong{font-size:18px;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.rate-edit-inline,.rate-add-inline{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;min-height:38px;margin-top:14px;padding:8px 11px;border-radius:8px;font-size:11px;font-weight:750;transition:background .15s,border-color .15s,transform .15s}
+.rate-edit-inline{background:#fff;border-color:#dfe7eb;color:#465a6c}
+.rate-edit-inline:hover{background:#f0f7f3;border-color:#c4dfd0;color:#176b57}
+.rate-add-inline{background:#f1f8f4;border-color:#d3e8db;color:#176b57}
+.rate-add-inline:hover{background:#e3f3e9;border-color:#b6dcc6}
+.rate-empty{font-size:12px;color:#81909c;margin:14px 0;line-height:1.65}
+.rate-unset{display:inline-flex;align-items:center;gap:8px;font-size:10px}
+.rate-unset .rate-state-dot{background:#c3cbd1}
+#newrate{min-height:40px;padding:9px 14px;border-radius:9px;box-shadow:0 2px 5px #176b571c;font-weight:700}
+#newrate:hover{background:#125a49;transform:translateY(-1px)}
+@media(max-width:700px){.rate-rank>summary{min-height:69px;padding:12px;gap:10px}.rank-mark{width:40px;height:40px;flex-basis:40px}.rank-quick-status{gap:4px}.rank-quick-status>span{padding:5px 6px}.rank-summary-copy strong{font-size:13px}.rank-summary-copy small{font-size:9px}.rate-living-grid{gap:10px;padding:0 10px 10px}.rate-living-card{padding:14px}.rate-values{gap:6px}.rate-value{padding:9px 6px}.rate-value strong{font-size:12px}.rate-month-label{width:auto;justify-content:flex-start}.rate-month-label input{flex:1;max-width:155px}}
+@media(max-width:420px){.rank-quick-status{display:none}.rate-rank>summary{gap:9px}.rate-living-head{align-items:flex-start}.rate-effective{align-self:center}}
+
+/* Contribution Rates: motion and a proper in-context editor */
+.rate-rank>summary{transition:background .24s ease,color .24s ease}
+.rate-rank .rate-living-grid{transform-origin:top;animation:ratePanelIn .34s cubic-bezier(.2,.75,.25,1) both}
+@keyframes ratePanelIn{from{opacity:0;transform:translateY(-9px) scale(.99);filter:blur(2px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+.rate-modalback{background:rgba(9,24,37,.48);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);opacity:0;transition:opacity .2s ease;padding:18px;overflow-y:auto}
+.rate-modalback.is-visible{opacity:1}
+.rate-modalback.is-closing{opacity:0;pointer-events:none}
+.rate-editor.modal{width:min(610px,100%);max-height:min(92vh,900px);padding:0;border:1px solid rgba(255,255,255,.72);border-radius:22px;box-shadow:0 34px 100px rgba(8,26,39,.3),0 5px 20px rgba(8,26,39,.08);transform:translateY(18px) scale(.975);opacity:0;transition:transform .32s cubic-bezier(.18,.85,.25,1),opacity .22s ease;overflow:auto;scrollbar-width:thin}
+.rate-modalback.is-visible .rate-editor{transform:translateY(0) scale(1);opacity:1}
+.rate-modalback.is-closing .rate-editor{transform:translateY(8px) scale(.985);opacity:0}
+.rate-editor-top{display:flex;align-items:center;justify-content:space-between;padding:23px 26px 0}
+.rate-editor-kicker{display:flex;align-items:center;gap:9px;font-size:10px;font-weight:850;letter-spacing:.14em;color:#718293}
+.rate-editor-symbol{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:linear-gradient(145deg,#e6f6ed,#d2eadc);color:#176b57;font-size:15px;letter-spacing:0}
+.rate-close{display:grid;place-items:center;width:35px;height:35px;border:1px solid #e4eaf0;border-radius:11px;background:#fff;color:#708090;font-size:23px;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}
+.rate-close:hover{background:#f2f7f4;border-color:#cfe3d7;transform:rotate(90deg)}
+.rate-editor>h2{padding:0 26px;margin:17px 0 6px;font-size:25px;letter-spacing:-.045em;color:#152f43}
+.rate-editor-subtitle{padding:0 26px;margin:0;color:#7a8996;font-size:12px;line-height:1.65;max-width:510px}
+.rate-editor-meta{display:grid;grid-template-columns:.72fr 1.28fr;gap:12px;padding:22px 26px 18px}
+.rate-editor-meta label{display:grid;gap:7px;min-width:0;color:#657787;font-size:10px;font-weight:800;letter-spacing:.055em;text-transform:uppercase}
+.rate-editor-meta select,.rate-editor-meta input{width:100%;min-width:0;height:42px;border:1px solid #dfe7ec;border-radius:10px;background:#fbfcfd;padding:0 11px;color:#243e51;font:600 13px system-ui;outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.rate-editor-meta select:focus,.rate-editor-meta input:focus,.rate-editor-field input:focus{border-color:#69ad8d;box-shadow:0 0 0 3px rgba(45,138,103,.12);background:#fff}
+.rate-segment{display:flex;gap:4px;height:42px;padding:4px;border:1px solid #e0e8ed;border-radius:10px;background:#f3f6f8}
+.rate-segment button{flex:1;min-width:0;border:0;border-radius:7px;background:transparent;color:#87939e;font:750 10px system-ui;cursor:pointer;transition:color .18s,background .18s,box-shadow .18s}
+.rate-segment button.selected.in{background:#fff;color:#176b57;box-shadow:0 2px 7px rgba(20,49,39,.1)}
+.rate-segment button.selected.out{background:#fff;color:#9a6b1d;box-shadow:0 2px 7px rgba(20,49,39,.1)}
+.rate-effective-field{grid-column:1/-1}
+.rate-effective-field input{font-variant-numeric:tabular-nums}
+.rate-fields-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 26px;padding:12px 0;border-top:1px solid #edf1f3;border-bottom:1px solid #edf1f3;color:#536879;font-size:10px;font-weight:850;letter-spacing:.07em;text-transform:uppercase}
+.rate-fields-heading span+span{font-size:9px;color:#9aa5ae;letter-spacing:.045em}
+.rate-editor-fields{padding:3px 26px 4px}
+.rate-editor-field{display:grid;grid-template-columns:34px minmax(0,1fr) 23px minmax(90px,125px);align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid #f0f3f5}
+.rate-category-icon{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#edf7f1;color:#287856;font-size:11px;font-weight:850}
+.rate-category-1{background:#edf2fc;color:#4d6eaa}.rate-category-2{background:#f2edfb;color:#7b62aa}.rate-category-3{background:#fff4e4;color:#a36e20}.rate-category-4{background:#edf5f8;color:#4d7c91}.rate-category-5{background:#f8edf0;color:#a15e76}
+.rate-category-name{display:grid;gap:3px;color:#2d4558;font-size:12px;font-weight:750}
+.rate-category-name small{color:#9aa5ae;font-size:10px;font-weight:500}
+.rate-currency{color:#9aa5ae;font-size:10px;font-weight:750}
+.rate-editor-field input{width:100%;height:38px;min-width:0;border:1px solid #e1e8ed;border-radius:9px;background:#fbfcfd;padding:0 10px;direction:ltr;text-align:right;caret-color:#176b57;color:#20394c;font:750 13px system-ui;font-variant-numeric:tabular-nums;outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.rate-editor-total{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:17px 26px 0;padding:16px 17px;border:1px solid #d9e9df;border-radius:13px;background:linear-gradient(110deg,#f1f9f4,#fbfdfb 75%)}
+.rate-editor-total>div{display:grid;gap:4px;color:#335847;font-size:12px;font-weight:800}.rate-editor-total small{font-size:10px;font-weight:500;color:#82968a}
+.rate-editor-total strong{color:#176b57;font-size:21px;font-weight:850;letter-spacing:-.04em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rate-editor-actions{display:flex;justify-content:flex-end;gap:9px;padding:20px 26px 17px}
+.rate-editor-actions .btn{min-height:42px;padding:0 17px;border-radius:10px;font-size:12px;font-weight:750;transition:transform .16s,box-shadow .16s,background .16s}
+.rate-editor-actions .btn:hover{transform:translateY(-1px)}
+.rate-editor-actions .rate-save{display:flex;align-items:center;justify-content:center;gap:12px;min-width:150px;background:linear-gradient(135deg,#1c7858,#145b45);border-color:#176b57;box-shadow:0 5px 13px rgba(23,107,87,.18)}
+.rate-editor-actions .rate-save:hover{box-shadow:0 8px 18px rgba(23,107,87,.24)}
+.rate-editor-actions .rate-save:disabled{opacity:.75;cursor:wait;transform:none}
+.rate-editor-foot{display:flex;align-items:center;gap:8px;padding:13px 26px;border-top:1px solid #edf1f3;background:#fbfcfd;color:#8b98a3;font-size:10px}
+.rate-foot-dot{width:6px;height:6px;border-radius:50%;background:#39916d;box-shadow:0 0 0 3px #e0f1e7}
+.rate-spinner{width:13px;height:13px;border:2px solid #ffffff70;border-top-color:#fff;border-radius:50%;animation:rateSpin .65s linear infinite}
+@keyframes rateSpin{to{transform:rotate(360deg)}}
+@media(max-width:560px){.rate-modalback{padding:10px;align-items:center}.rate-editor.modal{border-radius:18px;max-height:94vh}.rate-editor-top{padding:18px 17px 0}.rate-editor>h2{padding:0 17px;font-size:22px;margin-top:14px}.rate-editor-subtitle{padding:0 17px}.rate-editor-meta{grid-template-columns:1fr 1fr;gap:10px;padding:18px 17px 14px}.rate-editor-meta label{font-size:9px}.rate-effective-field{grid-column:1/-1}.rate-fields-heading{margin:0 17px}.rate-editor-fields{padding:3px 17px}.rate-editor-field{grid-template-columns:30px minmax(0,1fr) 18px minmax(80px,105px);gap:8px;padding:9px 0}.rate-category-icon{width:29px;height:29px}.rate-category-name{font-size:11px}.rate-category-name small{font-size:9px}.rate-editor-field input{height:36px;padding:0 7px;font-size:12px}.rate-editor-total{margin:14px 17px 0;padding:13px}.rate-editor-total strong{font-size:18px}.rate-editor-actions{padding:16px 17px 14px}.rate-editor-foot{padding:12px 17px;font-size:9px}}
+@media(prefers-reduced-motion:reduce){.rate-modalback,.rate-editor.modal,.rate-rank,.rate-rank>summary,.rate-value,.rate-segment button,.rate-editor-actions .btn{transition:none!important;animation:none!important}.rate-spinner{animation:none!important}}
+
+/* Final polish: refined accordion chevron and rose close control */
+.rank-chevron{width:34px;height:34px;flex:0 0 34px;border:1px solid #e2e9ed;border-radius:11px;background:linear-gradient(145deg,#fff,#f7f9fa);color:#718394;box-shadow:0 1px 2px rgba(20,42,58,.04);transition:transform .28s cubic-bezier(.2,.75,.25,1),color .2s,border-color .2s,background .2s,box-shadow .2s}
+.rank-chevron svg{display:block;transition:transform .28s cubic-bezier(.2,.75,.25,1)}
+.rate-rank[open] .rank-chevron{transform:none;background:linear-gradient(145deg,#e7f5ed,#f5fbf7);border-color:#c8e3d3;color:#207452;box-shadow:0 2px 7px rgba(32,116,82,.09)}
+.rate-rank[open] .rank-chevron svg{transform:rotate(180deg)}
+.rate-rank>summary:hover .rank-chevron{border-color:#c6d9ce;color:#267856;box-shadow:0 3px 9px rgba(32,90,66,.09)}
+.rate-close{width:37px;height:37px;border:1px solid #f2d4d7;border-radius:12px;background:linear-gradient(145deg,#fff8f8,#fff0f1);color:#c74750;font-size:25px;font-weight:500;line-height:1;box-shadow:0 2px 6px rgba(173,45,58,.06);transition:background .2s,border-color .2s,color .2s,transform .22s,box-shadow .2s}
+.rate-close:hover{background:linear-gradient(145deg,#ffe8e9,#ffdbde);border-color:#e8aeb4;color:#a92331;box-shadow:0 4px 12px rgba(173,45,58,.14);transform:rotate(90deg) scale(1.04)}
+.rate-close:focus-visible{outline:3px solid rgba(199,71,80,.22);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.rank-chevron,.rank-chevron svg,.rate-close{transition:none!important}}
+
+/* Color-rich premium finish — Contribution Rates section only */
+.rate-rank-list{gap:15px}
+.rate-rank{background:linear-gradient(115deg,#ffffff 0%,#f7faff 54%,#f3fbf7 100%);border-color:#d3e0e9;box-shadow:0 7px 22px #193b5a0b}
+.rate-rank:after{content:"";position:absolute;pointer-events:none;inset:0 0 auto;height:1px;background:linear-gradient(90deg,#3a78c4,#8d6bd1,#28a889,#e3ad4e);opacity:.72}
+.rate-rank:before{width:4px;background:linear-gradient(180deg,#3678d4,#9168d4,#29a783)}
+.rate-rank:hover{border-color:#9ebbd0;box-shadow:0 12px 28px #1b4d6c17}
+.rate-rank>summary{background:linear-gradient(100deg,#f2f7ff 0%,#ffffff 52%,#f1faf6 100%)}
+.rate-rank>summary:hover{background:linear-gradient(100deg,#eaf2ff 0%,#fff 48%,#e8f8f1 100%)}
+.rank-summary-copy strong{color:#172f48;font-weight:850}
+.rank-summary-copy small{color:#5c7187}
+.rank-quick-status>span{color:#586b80;background:#f0f4fa;border-color:#dce5f0}
+.rank-quick-status .is-configured{background:linear-gradient(135deg,#dcf8e9,#c7f0dd);border-color:#9dd8ba;color:#145d43}
+.rank-mark{border-radius:14px;box-shadow:0 5px 12px #294e7212,inset 0 0 0 1px #c4dfd3}
+.rank-mark-1{box-shadow:0 5px 12px #5374b81a,inset 0 0 0 1px #c8d8f4}
+.rank-mark-2{box-shadow:0 5px 12px #8063bb1a,inset 0 0 0 1px #d8c9f5}
+.rank-mark-3{box-shadow:0 5px 12px #277e731a,inset 0 0 0 1px #bfe5dc}
+.rank-mark-4{box-shadow:0 5px 12px #a77a201a,inset 0 0 0 1px #ebd6a5}
+.rank-mark-5{box-shadow:0 5px 12px #b86a391a,inset 0 0 0 1px #f0cbb6}
+.rank-mark-6{box-shadow:0 5px 12px #6174881a,inset 0 0 0 1px #d0dbe5}
+.rate-living-card{overflow:hidden;background:linear-gradient(145deg,#fff 0%,#f7faff 100%);border-color:#d9e4ed;box-shadow:0 5px 16px #2549680a}
+.rate-in{background:linear-gradient(145deg,#f2fcf6 0%,#ffffff 72%)}
+.rate-out{background:linear-gradient(145deg,#fff8e9 0%,#ffffff 72%)}
+.rate-in:before{left:0;right:0;height:4px;background:linear-gradient(90deg,#15966c,#52c5a1,#b4edcf)}
+.rate-out:before{left:0;right:0;height:4px;background:linear-gradient(90deg,#d48a18,#f1bd4e,#f7dfa1)}
+.rate-status-in{background:linear-gradient(135deg,#d6f7e5,#c0f0d7);color:#105c40;border:1px solid #a5e2c2}
+.rate-status-out{background:linear-gradient(135deg,#fff0c9,#ffe3a2);color:#81510c;border:1px solid #f0d18a}
+.rate-effective{color:#536b7f}
+.rate-effective b{color:#173b58}
+.rate-value{position:relative;background:linear-gradient(160deg,#fff,#f3f7fc);border-color:#dce6ef;border-radius:10px;box-shadow:0 3px 8px #274b690a}
+.rate-value:nth-child(3n+1){background:linear-gradient(145deg,#eaf8f0,#fff 80%);border-color:#d0eadd}
+.rate-value:nth-child(3n+2){background:linear-gradient(145deg,#eef3ff,#fff 80%);border-color:#d8e2fa}
+.rate-value:nth-child(3n){background:linear-gradient(145deg,#f5efff,#fff 80%);border-color:#e3d8f7}
+.rate-value span{color:#52677d;font-weight:750}
+.rate-value strong{color:#172f48;font-weight:850}
+.rate-total{border-top-color:#d8e5eb;color:#425b70}
+.rate-total-icon{background:linear-gradient(135deg,#dff7eb,#ccefe0);color:#146c4e;box-shadow:inset 0 0 0 1px #bce5d2}
+.rate-total strong{color:#126d50}
+.rate-add-inline{background:linear-gradient(110deg,#e8f1ff,#f1eaff);border-color:#cbd8f6;color:#345ca5;box-shadow:0 3px 9px #4d70b40e}
+.rate-edit-inline{background:linear-gradient(110deg,#e0f7ec,#c9f0de);border-color:#a7ddc2;color:#145e43;box-shadow:0 3px 9px #1e8b6012}
+.rate-add-inline:hover,.rate-edit-inline:hover{filter:saturate(1.15);transform:translateY(-1px);box-shadow:0 6px 14px #23496818}
+.rate-month-label{color:#354d65}
+.rate-month-label input{background:linear-gradient(135deg,#edf4ff,#fff);color:#172f48;border-color:#c8d7eb;box-shadow:0 3px 10px #315f8e12}
+.rate-intro{background:linear-gradient(110deg,#dff6ec 0%,#e8efff 52%,#f2eaff 100%);border-color:#c9d9ec;box-shadow:0 5px 18px #305b7910}
+.rate-intro-icon{background:linear-gradient(145deg,#236eaf,#6b62c9 55%,#198d72);box-shadow:0 5px 12px #315a8b2b}
+.rate-intro strong{color:#172f48;font-weight:850}
+.rate-intro p{color:#425e75}
+.rate-editor{background:linear-gradient(145deg,#fff 0%,#f5f8ff 58%,#f2fbf6 100%);border:1px solid #cddbe8;box-shadow:0 28px 90px #102a4366}
+.rate-editor-top{background:linear-gradient(100deg,#e8f1ff,#f1eaff 52%,#dff7ed);border-radius:12px;padding:11px 12px}
+.rate-editor-kicker{color:#345777;font-weight:850}
+.rate-editor-symbol{background:linear-gradient(145deg,#2875bb,#8063c7 58%,#15966c);color:#fff;box-shadow:0 4px 12px #345c8a35}
+.rate-editor h2{color:#172f48;font-weight:900}
+.rate-editor-subtitle{color:#526b80}
+.rate-editor-field input:focus{border-color:#6b8ed8;background:#fff;box-shadow:0 0 0 3px #dce8ff}
+.rate-editor-total{background:linear-gradient(110deg,#dff7e9 0%,#e7efff 55%,#f3eaff 100%);border-color:#c6d8eb}
+.rate-editor-total>div{color:#294b67}
+.rate-editor-total strong{color:#145d83}
+.rate-close{background:linear-gradient(145deg,#fff0f1,#ffdfe3);border-color:#f1b9c1;color:#a72e46;box-shadow:0 3px 9px #ad405015}
+.rate-close:hover{background:linear-gradient(145deg,#ffe1e5,#ffcbd3);transform:rotate(4deg) scale(1.04)}
+@media(max-width:700px){.rate-rank>summary{background:linear-gradient(100deg,#f2f7ff,#fff 55%,#f0faf5)}.rate-living-card{padding:14px}.rate-value{box-shadow:0 2px 6px #274b6909}}
+
+
+/* DD sample insignia: silver crescent and star inside the existing rank bubble */
+.rank-mark-dd{display:grid;place-items:center;padding:0;background:linear-gradient(135deg,#929ca7 0%,#929ca7 50%,#111820 50%,#111820 100%)!important;box-shadow:inset 0 0 0 1px #596572,0 6px 16px #10182030!important;color:#fff!important;overflow:hidden}
+.rank-mark-dd:after,.rank-mark-ad:after,.rank-mark-junior:after{display:none}
+.rank-mark-ad,.rank-mark-junior{display:grid;place-items:center;padding:0;background:linear-gradient(135deg,#929ca7 0%,#929ca7 50%,#111820 50%,#111820 100%)!important;box-shadow:inset 0 0 0 1px #596572,0 6px 16px #10182030!important;color:#fff!important;overflow:hidden}
+.rank-ad-insignia,.rank-junior-insignia{display:block;width:100%;height:100%}
+.rank-dd-insignia{display:block;width:34px;height:34px;overflow:visible;filter:drop-shadow(0 0 2px #ffffff80)}
+.rank-summary-copy strong em{display:none}
+
 </style></head><body><div id="app">Loading…</div>
 <script>
 const $=s=>document.querySelector(s);let user=null,employees=[],page="Dashboard",month=new Date().toISOString().slice(0,7);
@@ -208,8 +412,40 @@ function reports(){let ts=[["nominal-role","Nominal Roll"],["driving-license","D
   $("#result").innerHTML='<div class="panel report-sheet"><div class="panelhead noprint"><div><h2>'+esc(reportTitle)+'</h2><div class="muted">'+rs.length+' records · '+esc(period)+'</div></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="csv" class="btn">Download CSV</button><button id="pdf" class="btn primary">Download PDF / Print</button></div></div><div class="report-heading"><h1>TARIQ COY</h1><h2>'+esc(reportTitle)+'</h2><div class="report-subtitle">'+esc(period)+'</div><div class="report-meta">Generated on: '+esc(dateText)+' · Total records: '+rs.length+'</div></div><div class="tablewrap"><table class="report-table"><thead><tr>'+cs.map(k=>'<th>'+esc(labels[k]||k)+'</th>').join("")+'</tr></thead><tbody>'+(rs.length?rs.map((r,i)=>'<tr>'+cs.map(k=>'<td>'+esc(reportValue(k,r[k],i))+'</td>').join("")+'</tr>').join(""):'<tr><td colspan="'+cs.length+'" style="text-align:center;padding:24px">No records found for this report.</td></tr>')+'</tbody>'+contributionFooter+'</table></div><div class="report-foot">Tariq Coy · '+esc(reportTitle)+' · '+esc(period)+'</div></div>';
   $("#csv").onclick=()=>{let s=[cs.map(k=>q(labels[k]||k)).join(","),...rs.map((r,i)=>cs.map(k=>q(reportValue(k,r[k],i))).join(",")),...summaryRows.map(row=>row.map(q).join(","))].join("\r\n"),a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+s],{type:"text/csv;charset=utf-8"}));a.download=reportId+"-"+month+".csv";a.click();URL.revokeObjectURL(a.href)};
   $("#pdf").onclick=()=>window.print();
- }catch(e){notify(e.message,"error")}})}async function rates(){let d=await api("/rates?month="+month),rs=d.rates||[];layout(title("Contribution Rates","Rank and living status rates",'<input id="month" class="field" type="month" value="'+month+'"> <button id="newrate" class="btn primary">+ Add rate</button>')+'<div class="panel"><div class="tablewrap"><table><tr><th>Rank</th><th>Living</th><th>Welfare</th><th>MOD</th><th>MED</th><th>Barber</th><th>Waiter</th><th>W.Man</th><th>Total</th></tr>'+ratesRankSorted(rs).map(r=>{let total=["welfare","mod_amount","med","barber","waiter","wman"].reduce((s,k)=>s+Number(r[k]||0),0);return '<tr>'+["rank","living_status"].map(k=>'<td>'+esc(r[k])+'</td>').join("")+["welfare","mod_amount","med","barber","waiter","wman"].map(k=>'<td>'+money(r[k])+'</td>').join("")+'<td><b>Rs '+money(total)+'</b></td></tr>'}).join("")+'</table></div></div>');$("#month").onchange=e=>{month=e.target.value;render()};$("#newrate").onclick=rateForm}
-function rateForm(){layout(title("Add Contribution Rate","Rate effective month",'<button id="back" class="btn">Cancel</button>')+'<div class="panel"><form id="rf"><div class="formgrid"><label>Rank<select name="rank">'+["DD","AD","INSP","SI","ASI","SGT","CPL"].map(x=>'<option>'+x+'</option>').join("")+'</select></label><label>Living<select name="living_status"><option>IN</option><option>OUT</option></select></label><label>Effective month<input name="effective_from" type="month" value="'+month+'" required></label>'+["welfare","mod_amount","med","barber","waiter","wman"].map(k=>'<label>'+k+'<input name="'+k+'" type="number" min="0" step=".01" value="0" required></label>').join("")+'</div><div class="panelhead"><button class="btn primary">Save Rate</button></div></form></div>');$("#back").onclick=()=>{page="Contribution Rates";render()};$("#rf").onsubmit=async e=>{e.preventDefault();let b=Object.fromEntries(new FormData(e.currentTarget).entries());for(let k of ["welfare","mod_amount","med","barber","waiter","wman"])b[k]=Number(b[k]);try{await post("/rates",b);render();notify("Contribution rate saved successfully.")}catch(x){notify(x.message,"error")}}}
+ }catch(e){notify(e.message,"error")}})}async function rates(){
+ let d=await api("/rates?month="+month),rs=d.rates||[];
+ const categories=[["welfare","Welfare"],["mod_amount","MOD"],["med","MED"],["barber","Barber"],["waiter","Waiter"],["wman","W.Man"]];
+ const rankCards=RANK_ORDER.map((rank,index)=>{
+  const rankRows=ratesRankSorted(rs.filter(r=>String(r.rank||"").toUpperCase()===rank));
+  const configuredIn=rankRows.some(r=>String(r.living_status||"").toUpperCase()==="IN");
+  const configuredOut=rankRows.some(r=>String(r.living_status||"").toUpperCase()==="OUT");
+  const livingCards=["IN","OUT"].map(living=>{
+   const r=rankRows.find(x=>String(x.living_status||"").toUpperCase()===living);
+   if(!r)return '<div class="rate-living-card '+(living==="IN"?"rate-in":"rate-out")+'"><div class="rate-living-head"><span class="rate-status '+(living==="IN"?"rate-status-in":"rate-status-out")+'">'+living+' Living</span><span class="rate-unset"><span class="rate-state-dot"></span>Not configured</span></div><div class="rate-empty">No rate saved for this living status in the selected month.</div><button class="btn rate-add-inline" data-add-rate="'+rank+'|'+living+'"><span>＋</span> Configure '+living+' rate</button></div>';
+   const total=categories.reduce((sum,[key])=>sum+Number(r[key]||0),0);
+   return '<div class="rate-living-card '+(living==="IN"?"rate-in":"rate-out")+'"><div class="rate-living-head"><span class="rate-status '+(living==="IN"?"rate-status-in":"rate-status-out")+'"><span class="rate-state-dot"></span>'+living+' Living</span><span class="rate-effective">Effective <b>'+esc(r.effective_from||month)+'</b></span></div><div class="rate-values">'+categories.map(([key,label],i)=>'<div class="rate-value"><span>'+label+'</span><strong><small>Rs</small> '+money(r[key])+'</strong></div>').join("")+'</div><div class="rate-total"><span><span class="rate-total-icon">Σ</span> Total contribution</span><strong>Rs '+money(total)+'</strong></div><button class="btn rate-edit-inline" data-add-rate="'+rank+'|'+living+'">Edit monthly rate <span aria-hidden="true">↗</span></button></div>';
+  }).join("");
+  return '<details class="rate-rank" '+(index===0?'open':'')+'><summary><span class="rank-mark rank-mark-'+index+(rank==="DD"?' rank-mark-dd':rank==="AD"?' rank-mark-ad':['INSP','SI','ASI'].includes(rank)?' rank-mark-junior':'')+'">'+(rank==="DD"?'<svg class="rank-dd-insignia" viewBox="0 0 46 46" role="img" aria-label="Centered white crescent and star"><path d="M22.5 7.5a15.5 15.5 0 1 0 14.2 24.2A13.2 13.2 0 0 1 22.5 7.5Z" fill="#fff" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/><path transform="translate(12 0) scale(.72)" d="m22.5 14.8 2.55 5.15 5.68.83-4.11 4 .97 5.65-5.09-2.68-5.09 2.68.97-5.65-4.11-4 5.68-.83Z" fill="#fff" stroke="#fff" stroke-width=".8" stroke-linejoin="round"/></svg>':rank==="AD"?'<svg class="rank-ad-insignia" viewBox="0 0 46 46" role="img" aria-label="Three silver-white senior pips in one horizontal row"><g fill="#fff" stroke="#fff" stroke-width=".65" stroke-linejoin="round"><path d="M8 23 12.5 18.5 17 23 12.5 27.5Z"/><path d="M18.5 23 23 18.5 27.5 23 23 27.5Z"/><path d="M29 23 33.5 18.5 38 23 33.5 27.5Z"/></g></svg>':['INSP','SI','ASI'].includes(rank)?'<svg class="rank-junior-insignia" viewBox="0 0 46 46" role="img" aria-label="'+(rank==="INSP"?'Three':rank==="SI"?'Two':'One')+' silver-white cross-shaped junior pips stacked vertically"><g fill="#fff" stroke="#aab2bb" stroke-width=".65" stroke-linejoin="round">'+(rank==="INSP"?[8,23,38]:rank==="SI"?[15.5,30.5]:[23]).map(y=>'<path d="M20 '+(y-6)+' H26 V'+(y-2.5)+' H30 V'+(y+2.5)+' H26 V'+(y+6)+' H20 V'+(y+2.5)+' H16 V'+(y-2.5)+' H20 Z"/>').join('')+'</g><g>'+(rank==="INSP"?[8,23,38]:rank==="SI"?[15.5,30.5]:[23]).map(y=>'<circle cx="23" cy="'+y+'" r="2.5" fill="#e8ebee" stroke="#9ba4ad" stroke-width=".6"/><path d="M22 '+(y-1)+' L23 '+(y-2)+' L24 '+(y-1)+' L23 '+(y+1.5)+' Z" fill="#fff"/>').join('')+'</g></svg>':'<span class="rank-mark-code">'+rank+'</span><i></i>')+'</span><span class="rank-summary-copy"><strong>'+rank+'</strong><small>'+rankRows.length+' configured rate '+(rankRows.length===1?'set':'sets')+'</small></span><span class="rank-quick-status"><span class="'+(configuredIn?'is-configured':'is-missing')+'"><i></i>IN</span><span class="'+(configuredOut?'is-configured':'is-missing')+'"><i></i>OUT</span></span><span class="rank-chevron" aria-hidden="true"><svg viewBox="0 0 20 20" width="17" height="17" fill="none" focusable="false"><path d="m5.5 7.5 4.5 4.5 4.5-4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></summary><div class="rate-living-grid">'+livingCards+'</div></details>';
+ }).join("");
+ layout(title("Contribution Rates","Monthly contribution rates by rank and living status",'<label class="rate-month-label"><span>MONTH</span><input id="month" class="field" type="month" value="'+month+'"></label> <button id="newrate" class="btn primary"><span>＋</span> Add rate</button>')+'<div class="rate-rank-list">'+rankCards+'</div>');
+ $("#month").onchange=e=>{month=e.target.value;render()};
+ $("#newrate").onclick=()=>rateForm();
+ document.querySelectorAll("[data-add-rate]").forEach(b=>b.onclick=()=>{const [rank,living]=b.dataset.addRate.split("|");const existing=rs.find(x=>String(x.rank||"").toUpperCase()===rank&&String(x.living_status||"").toUpperCase()===living);rateForm(rank,living,existing||null)});
+}
+function rateForm(selectedRank="DD",selectedLiving="IN",existing=null){
+ const categories=[["welfare","Welfare"],["mod_amount","MOD"],["med","MED"],["barber","Barber"],["waiter","Waiter"],["wman","W.Man"]];
+ const host=document.createElement("div");host.className="modalback rate-modalback";host.setAttribute("role","presentation");
+ const total=()=>categories.reduce((sum,[key])=>sum+Math.round(Number(host.querySelector('[name="'+key+'"]')?.value)||0),0);
+ host.innerHTML='<section class="modal rate-editor" role="dialog" aria-modal="true" aria-labelledby="rate-editor-title"><div class="rate-editor-top"><div class="rate-editor-kicker"><span class="rate-editor-symbol">↗</span> CONTRIBUTION SETTINGS</div><button type="button" class="rate-close" aria-label="Close editor">×</button></div><h2 id="rate-editor-title">'+(existing?'Edit':'Configure')+' '+esc(selectedRank)+' rates</h2><p class="rate-editor-subtitle">Set the monthly contribution by living status. Changes take effect from the selected month.</p><form id="rf"><div class="rate-editor-meta"><label>Rank<select name="rank">'+["DD","AD","INSP","SI","ASI","SGT","CPL"].map(x=>'<option value="'+x+'"'+(x===selectedRank?' selected':'')+'>'+x+'</option>').join("")+'</select></label><label>Living status<div class="rate-segment"><button type="button" data-living="IN" class="'+(selectedLiving==="IN"?'selected in':'')+'">IN Living</button><button type="button" data-living="OUT" class="'+(selectedLiving==="OUT"?'selected out':'')+'">OUT Living</button></div><input type="hidden" name="living_status" value="'+esc(selectedLiving)+'"></label><label class="rate-effective-field">Effective month<input name="effective_from" type="month" value="'+esc(existing?.effective_from||month)+'" required></label></div><div class="rate-fields-heading"><span>Contribution categories</span><span>Monthly amount · PKR</span></div><div class="rate-editor-fields">'+categories.map(([key,label],i)=>'<label class="rate-editor-field"><span class="rate-category-icon rate-category-'+i+'">'+["W","M","M","B","W","W"][i]+'</span><span class="rate-category-name">'+label+'</span><span class="rate-currency">Rs</span><input name="'+key+'" aria-label="'+label+' amount" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" value="'+esc(existing?.[key]??0)+'" required></label>').join("")+'</div><div class="rate-editor-total"><div><span>Combined monthly total</span><small>Sum of all six categories</small></div><strong id="rate-live-total">Rs '+money(categories.reduce((sum,[key])=>sum+Math.round(Number(existing?.[key])||0),0))+'</strong></div><div class="rate-editor-actions"><button type="button" class="btn rate-cancel">Cancel</button><button type="submit" class="btn primary rate-save"><span>Save changes</span><span aria-hidden="true">↗</span></button></div></form><div class="rate-editor-foot"><span class="rate-foot-dot"></span> Rates are saved to the selected effective month</div></section>';
+ const finish=()=>{host.classList.add("is-closing");document.removeEventListener("keydown",onKey);setTimeout(()=>host.remove(),190)};
+ const onKey=e=>{if(e.key==="Escape")finish()};
+ host.addEventListener("click",e=>{if(e.target===host)finish()});
+ host.querySelector(".rate-close").onclick=finish;host.querySelector(".rate-cancel").onclick=finish;
+ host.querySelectorAll("[data-living]").forEach(btn=>btn.onclick=()=>{host.querySelector('[name="living_status"]').value=btn.dataset.living;host.querySelectorAll("[data-living]").forEach(b=>b.classList.toggle("selected",b===btn));host.querySelectorAll("[data-living]").forEach(b=>{b.classList.toggle("in",b.dataset.living==="IN"&&b===btn);b.classList.toggle("out",b.dataset.living==="OUT"&&b===btn)})});
+ host.querySelectorAll('.rate-editor-fields input').forEach(input=>{input.addEventListener("focus",()=>{const end=input.value.length;try{input.setSelectionRange(end,end)}catch{}});input.addEventListener("input",()=>{host.querySelector("#rate-live-total").textContent="Rs "+money(total())})});
+ host.querySelector("#rf").onsubmit=async e=>{e.preventDefault();const form=e.currentTarget,save=form.querySelector(".rate-save");let b=Object.fromEntries(new FormData(form).entries());for(let k of categories.map(x=>x[0]))b[k]=Math.round(Number(b[k])||0);save.disabled=true;save.innerHTML='<span class="rate-spinner"></span> Saving…';try{await post("/rates",b);finish();await render();notify("Contribution rate saved successfully.")}catch(x){save.disabled=false;save.innerHTML='<span>Save changes</span><span aria-hidden="true">↗</span>';notify(x.message,"error")}};
+ document.addEventListener("keydown",onKey);document.body.appendChild(host);requestAnimationFrame(()=>host.classList.add("is-visible"));host.querySelector('select[name="rank"]').focus();
+}
 function settings(){layout(title("Settings","Application and account information")+'<div class="cards"><div class="card"><label>Account</label><strong style="font-size:18px">'+esc(user.username)+'</strong></div><div class="card"><label>Role</label><strong style="font-size:18px">'+esc(user.role)+'</strong></div><div class="card"><label>Session</label><strong style="font-size:18px">Secure</strong></div><div class="card"><label>Storage</label><strong style="font-size:18px">Cloudflare D1</strong></div></div>')}
 async function load(){employees=(await api("/employees")).employees||[]}async function render(){try{if(page==="Dashboard"){layout(home());$("#add").onclick=()=>employeeForm();wireEmployeeActions()}else if(page==="Collection")await collection();else if(page==="History")await history();else if(page==="Reports")reports();else if(page==="Contribution Rates")await rates();else settings()}catch(e){layout(title(page,"Unable to load section")+'<p>'+esc(e.message)+'</p>')}}
 function wireEmployeeActions(){document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openEmployee(b.dataset.open))}
