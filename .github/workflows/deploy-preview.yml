@@ -1,0 +1,32 @@
+name: Deploy Tariq-Coy Preview
+
+on:
+  push:
+    branches:
+      - feature/contribution-rates-visual-refresh
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm install
+
+      # Deliberately do not run D1 migrations from the preview workflow.
+      # This deploys a separate Worker name, but it uses the D1 binding in wrangler.toml.
+      - name: Deploy preview Worker only
+        run: npx wrangler deploy --name feature-contribution-rates-visual-refresh-tariq-coy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
