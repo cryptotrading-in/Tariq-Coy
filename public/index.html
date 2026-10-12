@@ -261,6 +261,64 @@
 @media(max-width:760px){.dashboard-cards{gap:8px}.dashboard-stat{padding:10px;gap:8px}.dashboard-stat-icon{width:31px;height:31px;flex-basis:31px}.dashboard-stat strong{font-size:19px}.employee-register-head{padding:14px}.employee-register-tools{padding:11px 12px}.employee-list{padding:9px;gap:8px}.employee-card{grid-template-columns:22px 38px minmax(0,1fr) auto 20px;gap:8px;padding:10px}.employee-insignia{width:38px;height:38px;border-radius:11px}.employee-insignia svg{width:31px;height:31px}.employee-name{font-size:12px}.employee-meta{font-size:10px}.employee-status{padding:5px 7px;font-size:9px}}
 @media(max-width:440px){.dashboard-stat{display:block;padding:10px 10px 9px}.dashboard-stat-icon{width:28px;height:28px;margin-bottom:7px}.dashboard-stat label{font-size:9px}.dashboard-stat strong{font-size:19px}.employee-card{grid-template-columns:18px 34px minmax(0,1fr) 19px;gap:7px;padding:9px}.employee-insignia{width:34px;height:34px}.employee-insignia svg{width:28px;height:28px}.employee-status{grid-column:3;justify-self:start;margin-top:2px}.employee-arrow{grid-column:4;grid-row:1;width:24px;height:24px}.employee-meta{gap:4px 6px}}
 @media(prefers-reduced-motion:reduce){.employee-card,.employee-arrow,.btn.detail-edit,.btn.detail-delete,.btn.detail-close{animation:none;transition:none}}
+ 
+/* Command Ledger: match the approved forest-green, ivory and brass prototype */
+:root{color-scheme:light;--ledger-green:#173f32;--ledger-green-deep:#102f26;--ledger-green-mid:#245746;--ledger-ivory:#f6f2e8;--ledger-paper:#fffdf7;--ledger-brass:#c5a15a;--ledger-brass-soft:#f2e7c9;--ledger-ink:#23372f;--ledger-muted:#7c877d}
+body{background:var(--ledger-ivory);color:var(--ledger-ink)}
+.shell{background:var(--ledger-ivory)}
+.side{background:linear-gradient(180deg,var(--ledger-green-deep),var(--ledger-green));color:#f8f3e6;border-right:1px solid #c5a15a35}
+.side .muted{color:#d0d8ce}
+.nav button{color:#e3e8dd;border-radius:9px}
+.nav button.active{background:linear-gradient(100deg,#c5a15a2e,#c5a15a12);box-shadow:inset 3px 0 var(--ledger-brass);color:#fff7e5}
+.nav button:hover{background:#ffffff12}
+.top,.panelhead{background:var(--ledger-paper);border-color:#e6ddc8}
+.content{max-width:1400px}
+h1,.employee-register-title{color:var(--ledger-green-deep)}
+.muted,.employee-register-sub{color:var(--ledger-muted)}
+.btn.primary,.primary{background:var(--ledger-green);border-color:var(--ledger-green);color:#fff8e9}
+.btn.primary:hover,.primary:hover{background:var(--ledger-green-mid)}
+.card,.panel,.modal,.employee-register{background:var(--ledger-paper);border-color:#e2d9c3}
+.cards .card{box-shadow:0 3px 12px #173f320b}
+.dashboard-cards{gap:10px;margin:14px 0 22px}
+.dashboard-stat{background:linear-gradient(145deg,#fffdf7,#f1ead9);border-color:#dfd2b2;box-shadow:0 4px 13px #173f320b}
+.dashboard-stat:after{background:var(--ledger-brass)}
+.dashboard-stat-icon{background:linear-gradient(145deg,#e9d8ad,#d6bd7e);color:var(--ledger-green-deep);border:1px solid #c5a15a66}
+.dashboard-stat label{color:#7c806e}
+.dashboard-stat strong{color:var(--ledger-green-deep)}
+.stat-total,.stat-in,.stat-out,.stat-unset{--stat-accent:#c5a15a;--stat-tint:#f2e7c9}
+.employee-register{border-color:#d9cba9;box-shadow:0 8px 25px #173f320d}
+.employee-register-head{background:linear-gradient(110deg,#fffdf7,#f0e8d6);border-color:#e4d7b9}
+.employee-register-tools{background:#f6f0e2;border-color:#e7dcc3}
+.employee-search{background:#fffdf7;border-color:#d8c9a7;color:var(--ledger-ink)}
+.employee-search:focus{border-color:var(--ledger-green-mid);box-shadow:0 0 0 3px #d7e6d8}
+.employee-count{color:#737c6e}
+.employee-list{gap:8px}
+.employee-card{background:linear-gradient(110deg,#fffdf7,#faf5e8);border-color:#e5dbc5;color:var(--ledger-ink);animation:none}
+.employee-card:hover{background:linear-gradient(110deg,#fffdf7,#f0e7d1);border-color:#c5a15a;box-shadow:0 6px 18px #173f3214}
+.employee-card:focus-visible{outline-color:#c5a15a}
+.employee-sr{color:#9a8b69}
+.employee-insignia{width:44px;height:44px;border-radius:10px;border:1px solid #4b5961;background:linear-gradient(135deg,#929ca7 0%,#929ca7 50%,#111820 50%,#111820 100%);box-shadow:inset 0 0 0 1px #596572,0 4px 10px #10182024;color:#fff;overflow:hidden}
+.employee-insignia svg{width:40px;height:40px;filter:drop-shadow(0 0 1.5px #ffffff70)}
+.employee-insignia .rank-mark-code{color:#fff;font-size:10px}
+.employee-name{color:var(--ledger-green-deep)}
+.employee-meta{color:#777e70}
+.employee-rank{background:#eee5d0;color:var(--ledger-green);border:1px solid #dfcfaa}
+.employee-force{color:#655d4b}
+.employee-status{border:1px solid transparent}
+.employee-status-in{background:#e1ecdf;color:#1e5b40;border-color:#c5d9c3}
+.employee-status-out{background:#f3e6c8;color:#79591e;border-color:#e2cea0}
+.employee-status-unset{background:#ece7d9;color:#6f6654;border-color:#ded3ba}
+.employee-arrow{background:#e9e0ca;color:var(--ledger-green);border:1px solid #dfd0ad}
+.employee-card:hover .employee-arrow{background:var(--ledger-green);color:#fff4dc}
+.btn.detail-edit{border-color:#c5a15a;background:linear-gradient(135deg,#f6ebce,#ead8a8);color:var(--ledger-green-deep)}
+.btn.detail-delete{border-color:#e6b8a9;background:#fff0e9;color:#a6372a}
+.btn.detail-close{border-color:#d9cba9;background:linear-gradient(145deg,#fffdf7,#eee4cc);color:var(--ledger-green)}
+.modalback{background:#102f26a8}
+.confirm-modal .confirm-details{background:#f6f0e2;border-color:#e4d7b9}
+.rate-in{border-top-color:var(--ledger-green-mid)}.rate-out{border-top-color:var(--ledger-brass)}
+.rate-status-in{background:#e1ecdf;color:#1e5b40}.rate-status-out{background:#f3e6c8;color:#79591e}
+@media(max-width:760px){.dashboard-cards{gap:7px}.dashboard-stat{padding:9px;gap:7px}.dashboard-stat-icon{width:29px;height:29px;flex-basis:29px}.dashboard-stat strong{font-size:18px}.employee-card{grid-template-columns:20px 38px minmax(0,1fr) auto 18px;gap:7px;padding:9px}.employee-insignia{width:38px;height:38px}.employee-insignia svg{width:35px;height:35px}}
+@media(max-width:440px){.employee-card{grid-template-columns:17px 32px minmax(0,1fr) 18px;gap:6px;padding:8px}.employee-insignia{width:32px;height:32px;border-radius:8px}.employee-insignia svg{width:30px;height:30px}.employee-status{grid-column:3;justify-self:start;margin-top:2px}.employee-arrow{grid-column:4;grid-row:1;width:22px;height:22px}.dashboard-stat{display:block;padding:9px}.dashboard-stat-icon{width:25px;height:25px;margin-bottom:6px}.dashboard-stat label{font-size:9px}.dashboard-stat strong{font-size:17px}}
 </style></head><body><div id="app">Loading…</div>
 <script>
 const $=s=>document.querySelector(s);let user=null,employees=[],page="Dashboard",month=new Date().toISOString().slice(0,7);
@@ -297,7 +355,15 @@ function post(p,b){return api(p,{method:"POST",body:JSON.stringify(b)})}function
 function nav(){return ["Dashboard","Collection","History","Reports","Contribution Rates","Settings"].map(x=>'<button class="'+(page===x?"active":"")+'" data-page="'+x+'">'+x+"</button>").join("")}
 function layout(body){$("#app").innerHTML='<div class="shell"><aside class="side"><b>TARIQ COY</b><p class="muted">Personnel Management</p><nav class="nav">'+nav()+'</nav></aside><main class="main"><header class="top"><div><b>'+page+'</b><div class="muted">'+month+'</div></div><div>'+esc(user.username)+' <button id="logout" class="btn">Log out</button></div></header><section class="content">'+body+'</section></main></div>';document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>{page=b.dataset.page;render()});$("#logout").onclick=logout}
 function title(t,s,action=""){return '<div class="panelhead"><div><h1>'+t+'</h1><div class="muted">'+s+'</div></div>'+action+"</div>"}
-function rankInsignia(rank){const r=String(rank||"").toUpperCase();let inner="";if(r==="DD"){inner='<path d="M20 7a10 10 0 1 0 10 15A9 9 0 0 1 20 7Z" fill="#fff"/><path d="M30 8l1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5Z" fill="#fff"/>'}else if(r==="AD"){inner=[8,20,32].map(y=>'<path d="M20 '+(y-4)+' l4 4 -4 4 -4 -4Z" fill="#fff" stroke="#7d9789" stroke-width=".8"/>').join("")}else if(["INSP","SI","ASI"].includes(r)){const n=r==="INSP"?3:r==="SI"?2:1;inner=Array.from({length:n},(_,i)=>{const y=20-(n-1)*5+i*10;return '<path d="M20 '+(y-4)+' l4 4 -4 4 -4 -4Z" fill="#fff" stroke="#7d9789" stroke-width=".8"/>'}).join("")}else{const n=r==="SGT"?3:3;inner=Array.from({length:n},(_,i)=>{const y=11+i*8;return '<path d="M7 '+y+' L20 '+(y+5)+' L33 '+y+' L30 '+(y+5)+' L20 '+(y+10)+' L10 '+(y+5)+' Z" fill="#fff" stroke="#7d9789" stroke-width=".6"/>'}).join("");if(r==="SGT")inner='<path d="M15 4a5 5 0 1 0 8 5 4.5 4.5 0 0 1-8-5Z" fill="#fff"/><path d="M28 3l1.3 2.5 2.8.4-2 2 .5 2.8-2.6-1.3-2.5 1.3.5-2.8-2-2 2.8-.4Z" fill="#fff"/>'+inner}return '<svg viewBox="0 0 40 40" role="img" aria-label="'+esc(r)+' insignia" xmlns="http://www.w3.org/2000/svg">'+inner+'</svg>'}
+function rankInsignia(rank){
+ const r=String(rank||"").toUpperCase();
+ if(r==="DD")return '<svg viewBox="0 0 46 46" role="img" aria-label="DD insignia" xmlns="http://www.w3.org/2000/svg"><g fill="#fff" stroke="#fff" stroke-linejoin="round"><path d="M19.2 5.8a14.2 14.2 0 1 0 13.1 22.1A12.2 12.2 0 0 1 19.2 5.8Z" stroke-width=".8"/><path d="m29.4 9.1 2.1 4.25 4.7.68-3.4 3.31.8 4.68-4.2-2.21-4.2 2.21.8-4.68-3.4-3.31 4.7-.68Z" stroke-width=".55" transform="translate(-1.4 1.3) scale(.91)"/></g></svg>';
+ if(r==="AD")return '<svg viewBox="0 0 46 46" role="img" aria-label="AD insignia: three vertically aligned diamond pips" xmlns="http://www.w3.org/2000/svg"><g fill="#fff" stroke="#dfe5eb" stroke-width=".65" stroke-linejoin="round"><path d="M23 3 28 8 23 13 18 8Z"/><path d="M23 18 28 23 23 28 18 23Z"/><path d="M23 33 28 38 23 43 18 38Z"/></g></svg>';
+ if(["INSP","SI","ASI"].includes(r)){const ys=r==="INSP"?[8,23,38]:r==="SI"?[15.5,30.5]:[23];return '<svg viewBox="0 0 46 46" role="img" aria-label="'+(r==="INSP"?"Three":r==="SI"?"Two":"One")+' silver-white cross-shaped pips stacked vertically" xmlns="http://www.w3.org/2000/svg"><g fill="#fff" stroke="#aab2bb" stroke-width=".65" stroke-linejoin="round">'+ys.map(y=>'<path d="M20 '+(y-6)+' H26 V'+(y-2.5)+' H30 V'+(y+2.5)+' H26 V'+(y+6)+' H20 V'+(y+2.5)+' H16 V'+(y-2.5)+' H20 Z"/>').join("")+'</g><g>'+ys.map(y=>'<circle cx="23" cy="'+y+'" r="2.5" fill="#e8ebee" stroke="#9ba4ad" stroke-width=".6"/><path d="M22 '+(y-1)+' L23 '+(y-2)+' L24 '+(y-1)+' L23 '+(y+1.5)+' Z" fill="#fff"/>').join("")+'</g></svg>'}
+ if(r==="SGT")return '<svg viewBox="0 0 46 46" role="img" aria-label="SGT insignia: three chevrons with centered crescent moon and star" xmlns="http://www.w3.org/2000/svg"><g transform="translate(11.5 0) scale(.5)" fill="#fff" stroke="#fff" stroke-linejoin="round"><path d="M19.2 5.8a14.2 14.2 0 1 0 13.1 22.1A12.2 12.2 0 0 1 19.2 5.8Z" stroke-width=".8"/><path d="m29.4 9.1 2.1 4.25 4.7.68-3.4 3.31.8 4.68-4.2-2.21-4.2 2.21.8-4.68-3.4-3.31 4.7-.68Z" stroke-width=".55" transform="translate(-1.4 1.3) scale(.91)"/></g><g fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="square" stroke-linejoin="miter"><path d="M7 18.5 23 26 39 18.5"/><path d="M7 26 23 33.5 39 26"/><path d="M7 33.5 23 41 39 33.5"/></g></svg>';
+ if(r==="CPL")return '<svg viewBox="0 0 46 46" role="img" aria-label="CPL insignia: three evenly spaced chevrons" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="square" stroke-linejoin="miter"><path d="M7 18.5 23 26 39 18.5"/><path d="M7 26 23 33.5 39 26"/><path d="M7 33.5 23 41 39 33.5"/></g></svg>';
+ return '<span class="rank-mark-code">'+esc(r)+'</span>';
+}
 function employeeStatus(s){const v=String(s||"UNSET").toUpperCase();return '<span class="employee-status '+(v==="IN"?"employee-status-in":v==="OUT"?"employee-status-out":"employee-status-unset")+'">'+(v==="UNSET"?"Unconfirmed":v==="IN"?"IN Living":"OUT Living")+'</span>'}
 function list(){const ordered=rankSorted(employees);return '<section class="employee-register"><div class="employee-register-head"><div><div class="employee-register-title">Employee Register <span style="color:#8a98a6;font-weight:650">('+employees.length+')</span></div><div class="employee-register-sub">Personnel directory · Select a record to view full details</div></div><button id="add" class="btn primary">+ Add Employee</button></div><div class="employee-register-tools"><div class="employee-search-wrap"><span class="employee-search-icon" aria-hidden="true">⌕</span><input id="employee-search" class="employee-search" type="search" placeholder="Search name, rank or force number…" autocomplete="off" aria-label="Search employee register"></div><span id="employee-count" class="employee-count">'+ordered.length+' records</span></div><div id="employee-list" class="employee-list">'+ordered.map((e,i)=>'<div class="employee-card" role="button" tabindex="0" data-open="'+esc(e.id)+'" data-search="'+esc([e.name,e.rank,e.force_no,e.living_status].join(" ").toLowerCase())+'" aria-label="Open '+esc(e.name)+' details"><span class="employee-sr">'+(i+1).toString().padStart(2,"0")+'</span><span class="employee-insignia">'+rankInsignia(e.rank)+'</span><span class="employee-copy"><span class="employee-name">'+esc(e.name||"Unnamed employee")+'</span><span class="employee-meta"><span class="employee-rank">'+esc(e.rank||"—")+'</span><span class="employee-force">'+esc(e.force_no||"No force number")+'</span></span></span>'+employeeStatus(e.living_status)+'<span class="employee-arrow" aria-hidden="true">›</span></div>').join("")+'<div id="employee-empty" class="employee-empty" hidden>No employees match your search.</div></div></section>'}function home(){let ins=employees.filter(e=>e.living_status==="IN").length,outs=employees.filter(e=>e.living_status==="OUT").length,unset=employees.length-ins-outs;return title("Dashboard","Personnel overview and employee register")+'<div class="dashboard-cards"><div class="dashboard-stat stat-total"><span class="dashboard-stat-icon">▦</span><div class="dashboard-stat-copy"><label>Total Employees</label><strong>'+employees.length+'</strong></div></div><div class="dashboard-stat stat-in"><span class="dashboard-stat-icon">↗</span><div class="dashboard-stat-copy"><label>IN Living</label><strong>'+ins+'</strong></div></div><div class="dashboard-stat stat-out"><span class="dashboard-stat-icon">↘</span><div class="dashboard-stat-copy"><label>OUT Living</label><strong>'+outs+'</strong></div></div><div class="dashboard-stat stat-unset"><span class="dashboard-stat-icon">◌</span><div class="dashboard-stat-copy"><label>Unconfirmed</label><strong>'+unset+'</strong></div></div></div>'+list()}const fields=[["force_no","Force No."],["rank","Rank"],["name","Name"],["father_name","Father Name"],["date_of_birth","Date of Birth"],["education","Education"],["religion","Religion"],["caste","Caste"],["joining_date","Joining Date"],["current_rank_date","Current Rank Date"],["fsd_joining_date","FSD Joining Date"],["blood_group","Blood Group"],["mobile_no","Mobile No."],["emergency_no","Emergency No."],["living_status","Living Status"],["marital_status","Marital Status"],["no_of_children","No. of Children"],["spouse_no","Spouse Contact"],["courses","Courses"],["present_address","Present Address"],["permanent_address","Permanent Address"],["domicile","Domicile"],["cnic","CNIC"],["tariq_coy_joining_date","Tariq Coy Joining Date"],["driving_license","Driving License"]];
 function dateField(k,l,v=""){const iso=String(v||"").match(/^\\d{4}-\\d{2}-\\d{2}$/)?String(v):parseDateInput(v);return '<label>'+l+'<div class="date-input-wrap"><input class="date-text" id="date-text-'+k+'" name="'+k+'" type="text" placeholder="DD-MM-YYYY" inputmode="numeric" value="'+esc(fmtDate(v))+'"><button type="button" class="calendar-btn" aria-label="Choose '+esc(l)+' date">📅</button><input class="date-picker" id="date-picker-'+k+'" data-date-picker data-text-target="date-text-'+k+'" type="date" value="'+esc(iso||"")+'" aria-label="Choose '+esc(l)+' date"></div></label>'}
