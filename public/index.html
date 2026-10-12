@@ -437,6 +437,9 @@
 }
 
 .employee-card[hidden]{display:none!important}
+
+/* Search filtering must override employee-card display styles. */
+.employee-card[hidden],.employee-empty[hidden]{display:none!important}
 </style></head><body><div id="app">Loading…</div>
 <script>
 const $=s=>document.querySelector(s);let user=null,employees=[],page="Dashboard",month=new Date().toISOString().slice(0,7);
