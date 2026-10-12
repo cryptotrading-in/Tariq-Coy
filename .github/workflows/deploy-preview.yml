@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - feature/contribution-rates-visual-refresh
+      - feature/premium-dashboard-employee-register
 
 permissions:
   contents: read
