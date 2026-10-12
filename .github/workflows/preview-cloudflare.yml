@@ -18,6 +18,7 @@ jobs:
           node-version: 24
       - run: npm install
       - name: Resolve pull request number
+        id: resolve-pr
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -27,6 +28,7 @@ jobs:
           fi
           if [ -z "$PR_NUMBER" ] || [ "$PR_NUMBER" = "null" ]; then echo "Could not resolve PR number for preview"; exit 1; fi
           echo "PR_NUMBER=$PR_NUMBER" >> "$GITHUB_ENV"
+          echo "number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
       - name: Create isolated preview database
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -91,7 +93,7 @@ jobs:
         with:
           script: |
             const url = '${{ steps.deploy.outputs.preview_url }}';
-            const prNumber = Number(process.env.PR_NUMBER || '${{ github.event.pull_request.number }}');
+            const prNumber = Number('${{ steps.resolve-pr.outputs.number }}');
             if (!prNumber) throw new Error('Could not resolve pull request number for preview comment');
             await github.rest.issues.createComment({
               owner: context.repo.owner,
@@ -99,5 +101,3 @@ jobs:
               issue_number: prNumber,
               body: 'UI preview URL: ' + url + '\n\nThis is an isolated Worker with a separate D1 database containing fictional sample records only. It does not use production records. Production is unchanged.'
             });
-        env:
-          PR_NUMBER: ${{ env.PR_NUMBER }}
