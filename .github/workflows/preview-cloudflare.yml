@@ -3,6 +3,8 @@ on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
+  push:
+    branches: [fix/nominal-roll-pdf-layout]
 permissions:
   contents: read
   pull-requests: write
@@ -15,11 +17,20 @@ jobs:
         with:
           node-version: 24
       - run: npm install
+      - name: Resolve pull request number
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          if [ -z "$PR_NUMBER" ]; then
+            PR_NUMBER="$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$GITHUB_REF_NAME" --state open --json number --jq '.[0].number')"
+          fi
+          if [ -z "$PR_NUMBER" ] || [ "$PR_NUMBER" = "null" ]; then echo "Could not resolve PR number for preview"; exit 1; fi
+          echo "PR_NUMBER=$PR_NUMBER" >> "$GITHUB_ENV"
       - name: Create isolated preview database
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           set -euo pipefail
           DB_NAME="tariqcoy-preview-pr-$PR_NUMBER"
@@ -34,8 +45,6 @@ jobs:
           echo "PREVIEW_DB_NAME=$DB_NAME" >> "$GITHUB_ENV"
           echo "PREVIEW_DB_ID=$DB_ID" >> "$GITHUB_ENV"
       - name: Build isolated config
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           mkdir -p preview-migrations
           cp migrations/0001_schema.sql preview-migrations/
@@ -82,9 +91,13 @@ jobs:
         with:
           script: |
             const url = '${{ steps.deploy.outputs.preview_url }}';
+            const prNumber = Number(process.env.PR_NUMBER || '${{ github.event.pull_request.number }}');
+            if (!prNumber) throw new Error('Could not resolve pull request number for preview comment');
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: 'UI preview URL: ' + url + '\n\nThis is an isolated Worker with a separate empty D1 database; it does not use production records. Create a preview-only admin account on first visit. Production is unchanged.'
+              issue_number: prNumber,
+              body: 'UI preview URL: ' + url + '\n\nThis is an isolated Worker with a separate D1 database containing fictional sample records only. It does not use production records. Production is unchanged.'
             });
+        env:
+          PR_NUMBER: ${{ env.PR_NUMBER }}
