@@ -224,7 +224,7 @@ function reports(){let ts=[["nominal-role","Nominal Roll"],["driving-license","D
   }).join("");
   return '<details class="rate-rank" '+(index===0?'open':'')+'><summary><span class="rank-mark rank-mark-'+index+'">'+rank+'</span><span class="rank-summary-copy"><strong>'+rank+' Contribution</strong><small>'+rankRows.length+' saved rate set'+(rankRows.length===1?'':'s')+'</small></span><span class="rank-chevron" aria-hidden="true">⌄</span></summary><div class="rate-living-grid">'+livingCards+'</div></details>';
  }).join("");
- layout(title("Contribution Rates","Monthly contribution rates by rank and living status",'<label class="rate-month-label">Select month <input id="month" class="field" type="month" value="'+month+'"></label> <button id="newrate" class="btn primary">+ Add rate</button>')+'<div class="rate-intro"><span class="rate-intro-icon">Rs</span><div><strong>Contribution structure</strong><p>Expand a rank to review its IN and OUT rates. Totals are calculated from the six contribution categories.</p></div></div><div class="rate-rank-list">'+rankCards+'</div>');
+ layout(title("Contribution Rates","Monthly contribution rates by rank and living status",'<label class="rate-month-label">Select month <input id="month" class="field" type="month" value="'+month+'"></label> <button id="newrate" class="btn primary">+ Add rate</button>')+'<div class="rate-rank-list">'+rankCards+'</div>');
  $("#month").onchange=e=>{month=e.target.value;render()};
  $("#newrate").onclick=()=>rateForm();
  document.querySelectorAll("[data-add-rate]").forEach(b=>b.onclick=()=>{const [rank,living]=b.dataset.addRate.split("|");rateForm(rank,living)});
