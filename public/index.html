@@ -212,6 +212,230 @@
 .rank-mark-sgt:after,.rank-mark-cpl:after{display:none}
 .rank-summary-copy strong em{display:none}
 
+
+/* Premium dashboard + employee register, scoped to the personnel views */
+.dashboard-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0 22px}
+.dashboard-stat{position:relative;display:flex;align-items:center;gap:11px;min-width:0;padding:12px 14px;border:1px solid #dfe7ed;border-radius:13px;background:linear-gradient(145deg,#fff,#f8fafc);box-shadow:0 3px 12px #17324a08;overflow:hidden}
+.dashboard-stat:after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--stat-accent,#2d8a67)}
+.dashboard-stat-icon{display:grid;place-items:center;width:35px;height:35px;flex:0 0 35px;border-radius:10px;background:var(--stat-tint,#e3f3ea);color:var(--stat-accent,#176b57);font-size:15px;font-weight:800}
+.dashboard-stat-copy{min-width:0}
+.dashboard-stat label{display:block;color:#748395;font-size:10px;font-weight:800;letter-spacing:.045em;line-height:1.35}
+.dashboard-stat strong{display:block;margin-top:3px;font-size:21px;line-height:1.1;letter-spacing:-.035em;color:#183047}
+.stat-total{--stat-accent:#3476b9;--stat-tint:#e8f1fc}.stat-in{--stat-accent:#24805b;--stat-tint:#e2f4e9}.stat-out{--stat-accent:#b67a20;--stat-tint:#fff1d8}.stat-unset{--stat-accent:#8a63b4;--stat-tint:#f0eafa}
+.employee-register{border:1px solid #dfe7ed;border-radius:16px;background:#fff;overflow:hidden;box-shadow:0 6px 24px #17324a08}
+.employee-register-head{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:17px 18px;border-bottom:1px solid #e8edf2;background:linear-gradient(135deg,#fff,#f9fbfc)}
+.employee-register-title{font-size:16px;font-weight:800;color:#183047;letter-spacing:-.02em}
+.employee-register-sub{font-size:11px;color:#7b8998;margin-top:4px}
+.employee-register-tools{display:flex;align-items:center;gap:9px;padding:13px 18px;border-bottom:1px solid #edf1f5;background:#fbfcfd}
+.employee-search-wrap{position:relative;flex:1;min-width:0}
+.employee-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:#8291a0;pointer-events:none}
+.employee-search{width:100%;min-height:42px;padding:10px 12px 10px 36px;border:1px solid #d8e2e9;border-radius:11px;background:#fff;color:#183047;outline:none;transition:border-color .18s,box-shadow .18s}
+.employee-search:focus{border-color:#63a88c;box-shadow:0 0 0 3px #dff2e8}
+.employee-count{flex:0 0 auto;color:#728293;font-size:11px;font-weight:700}
+.employee-list{display:grid;gap:9px;padding:12px}
+.employee-card{position:relative;display:grid;grid-template-columns:27px 44px minmax(0,1fr) auto 24px;align-items:center;gap:12px;width:100%;padding:12px 13px;border:1px solid #e4eaf0;border-radius:13px;background:linear-gradient(120deg,#fff,#fcfdfe);text-align:left;color:#183047;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s,background .18s;animation:employeeCardIn .28s ease both}
+.employee-card:hover{transform:translateY(-1px);border-color:#b7d7c8;box-shadow:0 7px 20px #173c2b0c;background:linear-gradient(120deg,#fff,#f7fbf8)}
+.employee-card:focus-visible{outline:3px solid #9ed4bb;outline-offset:2px}
+.employee-sr{font-size:11px;font-weight:800;color:#94a0ad;text-align:center;font-variant-numeric:tabular-nums}
+.employee-insignia{display:grid;place-items:center;width:44px;height:44px;border-radius:13px;border:1px solid #d9e5e0;background:linear-gradient(145deg,#eef7f2,#e2efe8);box-shadow:inset 0 1px #fff;color:#456d5a}
+.employee-insignia svg{width:35px;height:35px;display:block;filter:drop-shadow(0 1px 1px #102a431c)}
+.employee-copy{min-width:0;display:grid;gap:4px}
+.employee-name{font-size:13px;font-weight:800;line-height:1.35;white-space:normal;overflow-wrap:anywhere}
+.employee-meta{display:flex;align-items:center;flex-wrap:wrap;gap:5px 8px;color:#738294;font-size:11px}
+.employee-rank{display:inline-flex;align-items:center;justify-content:center;border-radius:6px;padding:3px 6px;background:#edf3f7;color:#3c566a;font-size:10px;font-weight:850;letter-spacing:.04em}
+.employee-force{font-variant-numeric:tabular-nums;font-weight:700;color:#5d6f80}
+.employee-status{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:6px 9px;font-size:10px;font-weight:850;white-space:nowrap}
+.employee-status:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 0 3px #ffffff80}
+.employee-status-in{background:#e3f5e9;color:#20754e}.employee-status-out{background:#fff0d7;color:#93601a}.employee-status-unset{background:#f0eafa;color:#7750a5}
+.employee-arrow{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:#f1f5f7;color:#617a8b;font-size:20px;transition:transform .18s,background .18s,color .18s}
+.employee-card:hover .employee-arrow{transform:translateX(2px);background:#e2f3e9;color:#176b57}
+.employee-empty{padding:30px 16px;text-align:center;color:#788898;font-size:13px}
+.detail-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.btn.detail-edit{border:1px solid #c7d8f0;background:linear-gradient(135deg,#edf4ff,#dfeaff);color:#245c9b;border-radius:10px;font-weight:800;padding:9px 14px;box-shadow:0 2px 5px #315c9a0c;transition:transform .16s,box-shadow .16s}
+.btn.detail-edit:hover{transform:translateY(-1px);box-shadow:0 5px 12px #315c9a20}
+.btn.detail-delete{border:1px solid #f0c7c7;background:linear-gradient(135deg,#fff4f3,#fee8e6);color:#b42318;border-radius:10px;font-weight:800;padding:9px 14px;transition:transform .16s,box-shadow .16s}
+.btn.detail-delete:hover{transform:translateY(-1px);box-shadow:0 5px 12px #b4231818}
+.btn.detail-close{display:grid;place-items:center;width:38px;height:38px;padding:0;border:1px solid #dce4ea;border-radius:12px;background:linear-gradient(145deg,#fff,#edf2f5);color:#465b6d;font-size:21px;font-weight:500;box-shadow:0 2px 5px #102a430c;transition:transform .18s,background .18s}
+.btn.detail-close:hover{transform:rotate(5deg);background:#e9f5ee;color:#176b57;border-color:#c4e0d0}
+@keyframes employeeCardIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:760px){.dashboard-cards{gap:8px}.dashboard-stat{padding:10px;gap:8px}.dashboard-stat-icon{width:31px;height:31px;flex-basis:31px}.dashboard-stat strong{font-size:19px}.employee-register-head{padding:14px}.employee-register-tools{padding:11px 12px}.employee-list{padding:9px;gap:8px}.employee-card{grid-template-columns:22px 38px minmax(0,1fr) auto 20px;gap:8px;padding:10px}.employee-insignia{width:38px;height:38px;border-radius:11px}.employee-insignia svg{width:31px;height:31px}.employee-name{font-size:12px}.employee-meta{font-size:10px}.employee-status{padding:5px 7px;font-size:9px}}
+@media(max-width:440px){.dashboard-stat{display:block;padding:10px 10px 9px}.dashboard-stat-icon{width:28px;height:28px;margin-bottom:7px}.dashboard-stat label{font-size:9px}.dashboard-stat strong{font-size:19px}.employee-card{grid-template-columns:18px 34px minmax(0,1fr) 19px;gap:7px;padding:9px}.employee-insignia{width:34px;height:34px}.employee-insignia svg{width:28px;height:28px}.employee-status{grid-column:3;justify-self:start;margin-top:2px}.employee-arrow{grid-column:4;grid-row:1;width:24px;height:24px}.employee-meta{gap:4px 6px}}
+@media(prefers-reduced-motion:reduce){.employee-card,.employee-arrow,.btn.detail-edit,.btn.detail-delete,.btn.detail-close{animation:none;transition:none}}
+ 
+
+/* Approved prototype palette: deep teal, emerald, indigo and warm amber */
+.dashboard-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0 22px}
+.dashboard-stat{position:relative;display:flex;align-items:center;gap:11px;min-width:0;padding:12px 14px;border:1px solid transparent;border-radius:13px;box-shadow:0 4px 13px #17233a0c;overflow:hidden}
+.dashboard-stat:after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:currentColor;opacity:.9}
+.stat-total{--stat-accent:#0f766e;--stat-tint:#d8f0ed;background:linear-gradient(135deg,#e4f4f1,#d1ebe6);border-color:#b6ded7;color:#115e59}
+.stat-in{--stat-accent:#16835f;--stat-tint:#d9f3e7;background:linear-gradient(135deg,#e4f7ed,#d0efdf);border-color:#b6e3cd;color:#116344}
+.stat-out{--stat-accent:#5b56c9;--stat-tint:#e5e3ff;background:linear-gradient(135deg,#eeedff,#dfddff);border-color:#cecbfb;color:#4338a8}
+.stat-unset{--stat-accent:#b7791f;--stat-tint:#fff0cf;background:linear-gradient(135deg,#fff7e5,#ffedc2);border-color:#f0d99f;color:#8b5a12}
+.dashboard-stat-icon{display:grid;place-items:center;width:37px;height:37px;flex:0 0 37px;border-radius:11px;background:var(--stat-tint);color:var(--stat-accent);font-size:15px;font-weight:800}
+.dashboard-stat-icon svg{width:20px;height:20px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.dashboard-stat label{display:block;color:currentColor;opacity:.8;font-size:10px;font-weight:800;letter-spacing:.035em;line-height:1.35}
+.dashboard-stat strong{display:block;margin-top:3px;font-size:21px;line-height:1.1;letter-spacing:-.035em;color:currentColor}
+.employee-register{border:1px solid #dfe5ec;border-radius:15px;background:#fff;overflow:hidden;box-shadow:0 6px 22px #15263b0a}
+.employee-register-head{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid #e8edf2;background:linear-gradient(135deg,#fff,#f8fafc)}
+.employee-register-title{font-size:16px;font-weight:800;color:#172b45;letter-spacing:-.02em}
+.employee-register-sub{font-size:11px;color:#7b8998;margin-top:4px}
+.employee-register-tools{display:flex;align-items:center;gap:9px;padding:12px 18px;border-bottom:1px solid #edf1f5;background:#fafbfd}
+.employee-search-wrap{position:relative;flex:1;min-width:0}
+.employee-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:#8291a0;pointer-events:none}
+.employee-search{width:100%;min-height:40px;padding:9px 12px 9px 36px;border:1px solid #d8e2e9;border-radius:10px;background:#fff;color:#183047;outline:none}
+.employee-search:focus{border-color:#16835f;box-shadow:0 0 0 3px #d9f3e7}
+.employee-count{flex:0 0 auto;color:#728293;font-size:11px;font-weight:700}
+.employee-list{display:grid;gap:8px;padding:11px}
+.employee-card{grid-template-columns:25px 42px minmax(0,1fr) 22px;gap:10px;padding:10px 12px;border:1px solid #e4eaf0;border-radius:12px;background:#fff;color:#172b45;animation:none}
+.employee-card:hover{transform:translateY(-1px);border-color:#a9d9ca;box-shadow:0 5px 16px #173c2b0c;background:#fbfefd}
+.employee-insignia{width:42px;height:42px;border-radius:11px;border:1px solid #d8e0e8;background:linear-gradient(145deg,#edf1f6,#dfe6ee);box-shadow:inset 0 1px #fff;color:#40536a;overflow:hidden}
+.employee-insignia svg{width:37px;height:37px;filter:none}
+.employee-copy{display:grid;gap:4px;min-width:0}
+.employee-name-line{display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap}
+.employee-name{font-size:13px;font-weight:800;line-height:1.3;color:#172b45}
+.employee-meta{display:flex;align-items:center;flex-wrap:wrap;gap:5px 8px;color:#738294;font-size:11px}
+.employee-rank{background:#edf2f8;color:#40536a}
+.employee-force{color:#5d6f80}
+.employee-status{display:inline-flex;align-items:center;gap:5px;border-radius:6px;padding:4px 7px;font-size:9px;font-weight:850;white-space:nowrap;border:1px solid transparent;line-height:1.1}
+.employee-status:before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;box-shadow:none}
+.employee-status-in{background:#e0f5e9;color:#16734f;border-color:#c1e8d1}
+.employee-status-out{background:#eeedff;color:#5147b7;border-color:#d7d4ff}
+.employee-status-unset{background:#fff1d4;color:#946217;border-color:#f0dcae}
+.employee-arrow{width:25px;height:25px;border-radius:8px;background:#f0f3f8;color:#63758b}
+.employee-card:hover .employee-arrow{background:#d8f0ed;color:#0f766e}
+@media(max-width:760px){.dashboard-cards{gap:7px}.dashboard-stat{padding:10px;gap:8px}.dashboard-stat-icon{width:31px;height:31px;flex-basis:31px}.dashboard-stat-icon svg{width:18px;height:18px}.dashboard-stat strong{font-size:19px}.employee-card{grid-template-columns:21px 36px minmax(0,1fr) 20px;gap:8px;padding:9px}.employee-insignia{width:36px;height:36px}.employee-insignia svg{width:32px;height:32px}.employee-name{font-size:12px}}
+@media(max-width:440px){.dashboard-stat{display:block;padding:9px 8px}.dashboard-stat-icon{width:27px;height:27px;margin-bottom:6px}.dashboard-stat-icon svg{width:16px;height:16px}.dashboard-stat label{font-size:9px}.dashboard-stat strong{font-size:18px}.employee-card{grid-template-columns:17px 31px minmax(0,1fr) 18px;gap:6px;padding:8px}.employee-insignia{width:31px;height:31px;border-radius:8px}.employee-insignia svg{width:28px;height:28px}.employee-name-line{gap:5px}.employee-status{padding:4px 6px;font-size:9px}.employee-arrow{width:22px;height:22px}}
+
+/* Approved prototype finish: compact four-color stats + dark premium employee surfaces */
+.dashboard-cards{gap:9px;margin:12px 0 18px}
+.dashboard-stat{padding:10px 12px;gap:9px;border-radius:11px;box-shadow:0 4px 12px #10243a12}
+.dashboard-stat-icon{width:33px;height:33px;flex-basis:33px;border-radius:9px}
+.dashboard-stat-icon svg{width:18px;height:18px}
+.dashboard-stat strong{font-size:20px}
+.employee-register{background:#101e30;border:1px solid #263950;border-radius:15px;box-shadow:0 12px 28px #07111f20}
+.employee-register-head{background:linear-gradient(120deg,#16283d,#122237);border-bottom-color:#293c52}
+.employee-register-title{color:#f1f5fa}
+.employee-register-title span{color:#91a4b9!important}
+.employee-register-sub{color:#91a4b9}
+.employee-register-tools{background:#122237;border-bottom-color:#263950}
+.employee-search{background:#0d1a2b;color:#edf3fa;border-color:#34485e}
+.employee-search::placeholder{color:#8295aa}
+.employee-search:focus{border-color:#0f9b88;box-shadow:0 0 0 3px #0f9b8830}
+.employee-search-icon,.employee-count{color:#91a4b9}
+.employee-list{background:#101e30;gap:7px;padding:10px}
+.employee-card{background:linear-gradient(115deg,#1b2d43,#17283d);border-color:#2c4057;color:#eaf0f7;border-radius:11px;padding:9px 11px;box-shadow:inset 0 1px #ffffff05}
+.employee-card:hover{background:linear-gradient(115deg,#213750,#1b3047);border-color:#3c6b69;box-shadow:0 5px 16px #07111f40}
+.employee-card:focus-visible{outline-color:#34b59d}
+.employee-sr{color:#8499af}
+.employee-insignia{background:linear-gradient(145deg,#263b53,#1c2d43);border-color:#40536a;box-shadow:inset 0 1px #ffffff12;color:#e8eef6}
+.employee-insignia svg{filter:drop-shadow(0 1px 1px #0005)}
+.employee-name{color:#f3f6fb}
+.employee-meta{color:#9aacc0}
+.employee-rank{background:#263a51;color:#c5d5e5;border:1px solid #344b63}
+.employee-force{color:#b1c0d0}
+.employee-status{padding:4px 6px;border-radius:6px;font-size:9px;line-height:1.1;flex:0 0 auto}
+.employee-status-in{background:#123e36;color:#66dfb0;border-color:#236d5a}
+.employee-status-out{background:#282653;color:#b7b3ff;border-color:#4c4690}
+.employee-status-unset{background:#4b3519;color:#ffd38a;border-color:#785322}
+.employee-arrow{background:#26384d;color:#a9bdd1}
+.employee-card:hover .employee-arrow{background:#164d48;color:#7ce4ca}
+.employee-empty{color:#9aacc0}
+@media(max-width:760px){
+ .dashboard-cards{gap:7px;margin:10px 0 15px}
+ .dashboard-stat{padding:9px;gap:7px}
+ .dashboard-stat-icon{width:29px;height:29px;flex-basis:29px}
+ .dashboard-stat strong{font-size:18px}
+ .employee-list{padding:8px;gap:7px}
+ .employee-card{padding:8px;gap:7px}
+}
+@media(max-width:440px){
+ .dashboard-stat{padding:8px 7px}
+ .dashboard-stat-icon{width:26px;height:26px;margin-bottom:5px}
+ .dashboard-stat label{font-size:8px}
+ .dashboard-stat strong{font-size:17px}
+ .employee-card{grid-template-columns:17px 31px minmax(0,1fr) 18px;gap:6px;padding:8px}
+ .employee-name-line{flex-wrap:nowrap;gap:5px;align-items:flex-start}
+ .employee-name{min-width:0;font-size:11px;overflow-wrap:anywhere}
+ .employee-status{padding:3px 5px;font-size:8px;margin-top:1px}
+ .employee-insignia{width:31px;height:31px}
+ .employee-insignia svg{width:27px;height:27px}
+ .employee-arrow{width:22px;height:22px}
+}
+
+
+/* Prototype match: saturated premium dashboard cards */
+.dashboard-stat{border:1px solid transparent!important;box-shadow:0 7px 18px #10243a20!important;color:#fff!important}
+.dashboard-stat:after{background:#ffffff!important;opacity:.2!important;width:3px!important}
+.stat-total{background:linear-gradient(135deg,#0f766e 0%,#115e59 100%)!important;border-color:#238c83!important;color:#fff!important}
+.stat-in{background:linear-gradient(135deg,#16835f 0%,#116344 100%)!important;border-color:#24966f!important;color:#fff!important}
+.stat-out{background:linear-gradient(135deg,#5b56c9 0%,#4338a8 100%)!important;border-color:#7771e0!important;color:#fff!important}
+.stat-unset{background:linear-gradient(135deg,#b7791f 0%,#8b5a12 100%)!important;border-color:#d49a39!important;color:#fff!important}
+.dashboard-stat .dashboard-stat-icon{background:#ffffff20!important;color:#fff!important;border:1px solid #ffffff24!important}
+.dashboard-stat .dashboard-stat-copy label{color:#ffffffc9!important}
+.dashboard-stat .dashboard-stat-copy strong{color:#fff!important;text-shadow:0 1px 1px #0002}
+
+/* Employee details opened from a register card: premium, readable dark profile */
+.employee-profile-view{padding:14px;background:#0b1726;border:1px solid #24384e;border-radius:16px;box-shadow:0 14px 34px #08132124}
+.employee-profile-view>.panelhead{background:linear-gradient(120deg,#15283d,#101e30);border:1px solid #2a4058;border-radius:12px;margin-bottom:12px;padding:16px}
+.employee-profile-view>.panelhead h1{color:#f4f7fb;font-size:22px;letter-spacing:-.035em}
+.employee-profile-view>.panelhead .muted{color:#9aadc1}
+.employee-profile-view .panel{background:#132338;border-color:#2a4058;border-radius:12px;box-shadow:0 3px 10px #07111c24}
+.employee-profile-view .panelhead{background:#172a40;border-bottom-color:#2a4058;padding:13px 16px}
+.employee-profile-view .panelhead h2{color:#eaf1f8;font-size:13px;letter-spacing:.01em}
+.employee-profile-view .profilegrid{gap:10px;padding:14px}
+.employee-profile-view .profilegrid label{color:#9fb2c7;font-size:11px;font-weight:650;gap:6px}
+.employee-profile-view .profilegrid label>div{background:#0e1c2d!important;border-color:#344a61!important;color:#edf4fb!important;border-radius:9px!important;min-height:40px!important;padding:10px!important}
+.employee-profile-view .profilegrid .muted{color:#72869c!important}
+.employee-profile-view .tablewrap{background:#132338}
+.employee-profile-view table{color:#e7eef6}
+.employee-profile-view th{background:#1a2d43;color:#9eb3c8;border-bottom-color:#30465c}
+.employee-profile-view td{border-bottom-color:#2a3d52;color:#dbe5ef}
+.employee-profile-view .empty{color:#8da2b8}
+.employee-profile-view .detail-edit{background:linear-gradient(135deg,#176e61,#11584f);border-color:#278b7d;color:#fff;box-shadow:0 3px 9px #07111c30}
+.employee-profile-view .detail-delete{background:#3a2029;border-color:#74404b;color:#ffb9bd}
+.employee-profile-view .detail-close{background:#1c3046;border-color:#3a5067;color:#e5edf5;box-shadow:none}
+.employee-profile-view .detail-close:hover{background:#263f58;color:#fff;border-color:#5b748c}
+.employee-profile-view .btn.primary{background:#13785d;border-color:#24916f;color:#fff}
+.employee-profile-view .detail-actions{gap:7px}
+.employee-profile-view .detail-actions .btn{min-height:38px}
+
+/* Add/Edit employee form: same visual language, with clear section hierarchy */
+.employee-form-shell{padding:14px;background:#0b1726;border:1px solid #24384e;border-radius:16px;box-shadow:0 14px 34px #08132124}
+.employee-form-shell>.panelhead{background:linear-gradient(120deg,#15283d,#101e30);border:1px solid #2a4058;border-radius:12px;margin-bottom:12px;padding:16px}
+.employee-form-shell>.panelhead h1{color:#f4f7fb;font-size:22px;letter-spacing:-.035em}
+.employee-form-shell>.panelhead .muted{color:#9aadc1}
+.employee-form-view .panel{background:#132338;border-color:#2a4058;border-radius:12px;box-shadow:0 3px 10px #07111c24}
+.employee-form-view .panelhead{background:#172a40;border-bottom-color:#2a4058;padding:13px 16px}
+.employee-form-view .panelhead h2{color:#eaf1f8;font-size:13px}
+.employee-form-view .formgrid{gap:13px;padding:15px}
+.employee-form-view .formgrid label{color:#a9bbce;font-size:11px;font-weight:650}
+.employee-form-view .formgrid input,.employee-form-view .formgrid select{background:#0e1c2d!important;border-color:#344a61!important;color:#edf4fb!important;border-radius:9px!important;min-height:40px}
+.employee-form-view .formgrid input::placeholder{color:#748aa1}
+.employee-form-view .date-input-wrap .calendar-btn{background:#1b3046;border-color:#344a61;color:#edf4fb}
+.employee-form-view .employee-form-save{justify-content:flex-end;background:#132338;border-top:1px solid #2a4058;border-radius:0 0 12px 12px}
+.employee-form-shell .employee-form-cancel{background:#1b3046;border-color:#3a5067;color:#e5edf5}
+.employee-form-shell .btn.primary{background:linear-gradient(135deg,#16835f,#116344);border-color:#24966f;color:#fff;font-weight:750}
+.employee-form-view .formgrid .field{background:#0e1c2d!important}
+@media(max-width:700px){
+ .employee-profile-view,.employee-form-shell{padding:8px;border-radius:12px}
+ .employee-profile-view>.panelhead,.employee-form-shell>.panelhead{padding:12px;align-items:flex-start}
+ .employee-profile-view>.panelhead h1,.employee-form-shell>.panelhead h1{font-size:18px}
+ .employee-profile-view .detail-actions{gap:5px}
+ .employee-profile-view .detail-actions .btn{padding:7px 9px;min-height:34px}
+ .employee-profile-view .profilegrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px}
+ .employee-profile-view .profilegrid label>div{padding:8px!important;font-size:11px!important}
+ .employee-form-view .formgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:10px}
+}
+@media(max-width:440px){
+ .employee-profile-view>.panelhead,.employee-form-shell>.panelhead{display:flex;flex-wrap:wrap}
+ .employee-profile-view>.panelhead>div:first-child,.employee-form-shell>.panelhead>div:first-child{min-width:0;flex:1 1 100%}
+ .employee-profile-view .detail-actions{width:100%;justify-content:flex-end}
+ .employee-profile-view .profilegrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .employee-form-view .formgrid{grid-template-columns:1fr}
+ .dashboard-stat{min-height:94px;align-items:flex-start}
+ .dashboard-stat .dashboard-stat-copy label{font-size:9px;letter-spacing:.01em}
+}
+
 </style></head><body><div id="app">Loading…</div>
 <script>
 const $=s=>document.querySelector(s);let user=null,employees=[],page="Dashboard",month=new Date().toISOString().slice(0,7);
@@ -248,9 +472,17 @@ function post(p,b){return api(p,{method:"POST",body:JSON.stringify(b)})}function
 function nav(){return ["Dashboard","Collection","History","Reports","Contribution Rates","Settings"].map(x=>'<button class="'+(page===x?"active":"")+'" data-page="'+x+'">'+x+"</button>").join("")}
 function layout(body){$("#app").innerHTML='<div class="shell"><aside class="side"><b>TARIQ COY</b><p class="muted">Personnel Management</p><nav class="nav">'+nav()+'</nav></aside><main class="main"><header class="top"><div><b>'+page+'</b><div class="muted">'+month+'</div></div><div>'+esc(user.username)+' <button id="logout" class="btn">Log out</button></div></header><section class="content">'+body+'</section></main></div>';document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>{page=b.dataset.page;render()});$("#logout").onclick=logout}
 function title(t,s,action=""){return '<div class="panelhead"><div><h1>'+t+'</h1><div class="muted">'+s+'</div></div>'+action+"</div>"}
-function list(){return '<div class="panel"><div class="panelhead"><h2>Employee Register ('+employees.length+')</h2><button id="add" class="btn primary">+ Add employee</button></div><div class="tablewrap"><table><thead><tr><th>Sr. No.</th><th>Force No.</th><th>Rank</th><th>Name</th><th>Living</th></tr></thead><tbody>'+rankSorted(employees).map((e,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(e.force_no)+'</td><td>'+esc(e.rank)+'</td><td><button class="name-link" data-open="'+e.id+'" style="border:0;background:none;padding:0;font:inherit;font-weight:600;color:var(--primary,#2563eb);cursor:pointer;text-align:left">'+esc(e.name)+'</button></td><td>'+pill(e.living_status)+'</td></tr>').join("")+'</tbody></table></div></div>'}
-function home(){let ins=employees.filter(e=>e.living_status==="IN").length,outs=employees.filter(e=>e.living_status==="OUT").length;return title("Dashboard","Personnel overview and employee register")+'<div class="cards"><div class="card"><label>Total Employees</label><strong>'+employees.length+'</strong></div><div class="card"><label>IN Living</label><strong>'+ins+'</strong></div><div class="card"><label>OUT Living</label><strong>'+outs+'</strong></div><div class="card"><label>Unconfirmed</label><strong>'+(employees.length-ins-outs)+'</strong></div></div>'+list()}
-const fields=[["force_no","Force No."],["rank","Rank"],["name","Name"],["father_name","Father Name"],["date_of_birth","Date of Birth"],["education","Education"],["religion","Religion"],["caste","Caste"],["joining_date","Joining Date"],["current_rank_date","Current Rank Date"],["fsd_joining_date","FSD Joining Date"],["blood_group","Blood Group"],["mobile_no","Mobile No."],["emergency_no","Emergency No."],["living_status","Living Status"],["marital_status","Marital Status"],["no_of_children","No. of Children"],["spouse_no","Spouse Contact"],["courses","Courses"],["present_address","Present Address"],["permanent_address","Permanent Address"],["domicile","Domicile"],["cnic","CNIC"],["tariq_coy_joining_date","Tariq Coy Joining Date"],["driving_license","Driving License"]];
+function rankInsignia(rank){
+ const r=String(rank||"").toUpperCase();
+ if(r==="DD")return '<svg viewBox="0 0 46 46" role="img" aria-label="DD insignia" xmlns="http://www.w3.org/2000/svg"><g fill="#fff" stroke="#fff" stroke-linejoin="round"><path d="M19.2 5.8a14.2 14.2 0 1 0 13.1 22.1A12.2 12.2 0 0 1 19.2 5.8Z" stroke-width=".8"/><path d="m29.4 9.1 2.1 4.25 4.7.68-3.4 3.31.8 4.68-4.2-2.21-4.2 2.21.8-4.68-3.4-3.31 4.7-.68Z" stroke-width=".55" transform="translate(-1.4 1.3) scale(.91)"/></g></svg>';
+ if(r==="AD")return '<svg viewBox="0 0 46 46" role="img" aria-label="AD insignia: three vertically aligned diamond pips" xmlns="http://www.w3.org/2000/svg"><g fill="#fff" stroke="#dfe5eb" stroke-width=".65" stroke-linejoin="round"><path d="M23 3 28 8 23 13 18 8Z"/><path d="M23 18 28 23 23 28 18 23Z"/><path d="M23 33 28 38 23 43 18 38Z"/></g></svg>';
+ if(["INSP","SI","ASI"].includes(r)){const ys=r==="INSP"?[8,23,38]:r==="SI"?[15.5,30.5]:[23];return '<svg viewBox="0 0 46 46" role="img" aria-label="'+(r==="INSP"?"Three":r==="SI"?"Two":"One")+' silver-white cross-shaped pips stacked vertically" xmlns="http://www.w3.org/2000/svg"><g fill="#fff" stroke="#aab2bb" stroke-width=".65" stroke-linejoin="round">'+ys.map(y=>'<path d="M20 '+(y-6)+' H26 V'+(y-2.5)+' H30 V'+(y+2.5)+' H26 V'+(y+6)+' H20 V'+(y+2.5)+' H16 V'+(y-2.5)+' H20 Z"/>').join("")+'</g><g>'+ys.map(y=>'<circle cx="23" cy="'+y+'" r="2.5" fill="#e8ebee" stroke="#9ba4ad" stroke-width=".6"/><path d="M22 '+(y-1)+' L23 '+(y-2)+' L24 '+(y-1)+' L23 '+(y+1.5)+' Z" fill="#fff"/>').join("")+'</g></svg>'}
+ if(r==="SGT")return '<svg viewBox="0 0 46 46" role="img" aria-label="SGT insignia: three chevrons with centered crescent moon and star" xmlns="http://www.w3.org/2000/svg"><g transform="translate(11.5 0) scale(.5)" fill="#fff" stroke="#fff" stroke-linejoin="round"><path d="M19.2 5.8a14.2 14.2 0 1 0 13.1 22.1A12.2 12.2 0 0 1 19.2 5.8Z" stroke-width=".8"/><path d="m29.4 9.1 2.1 4.25 4.7.68-3.4 3.31.8 4.68-4.2-2.21-4.2 2.21.8-4.68-3.4-3.31 4.7-.68Z" stroke-width=".55" transform="translate(-1.4 1.3) scale(.91)"/></g><g fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="square" stroke-linejoin="miter"><path d="M7 18.5 23 26 39 18.5"/><path d="M7 26 23 33.5 39 26"/><path d="M7 33.5 23 41 39 33.5"/></g></svg>';
+ if(r==="CPL")return '<svg viewBox="0 0 46 46" role="img" aria-label="CPL insignia: three evenly spaced chevrons" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="square" stroke-linejoin="miter"><path d="M7 18.5 23 26 39 18.5"/><path d="M7 26 23 33.5 39 26"/><path d="M7 33.5 23 41 39 33.5"/></g></svg>';
+ return '<span class="rank-mark-code">'+esc(r)+'</span>';
+}
+function employeeStatus(s){const v=String(s||"UNSET").toUpperCase();if(v==="IN")return '<span class="employee-status employee-status-in">IN Living</span>';if(v==="OUT")return '<span class="employee-status employee-status-out">OUT Living</span>';return '<span class="employee-status employee-status-unset">Unconfirmed</span>'}
+function list(){const ordered=rankSorted(employees);return '<section class="employee-register"><div class="employee-register-head"><div><div class="employee-register-title">Employee Register <span style="color:#8a98a6;font-weight:650">('+employees.length+')</span></div><div class="employee-register-sub">Personnel directory · Select a record to view full details</div></div><button id="add" class="btn primary">+ Add Employee</button></div><div class="employee-register-tools"><div class="employee-search-wrap"><span class="employee-search-icon" aria-hidden="true">⌕</span><input id="employee-search" class="employee-search" type="search" placeholder="Search name, rank or force number…" autocomplete="off" aria-label="Search employee register"></div><span id="employee-count" class="employee-count">'+ordered.length+' records</span></div><div id="employee-list" class="employee-list">'+ordered.map((e,i)=>'<div class="employee-card" role="button" tabindex="0" data-open="'+esc(e.id)+'" data-search="'+esc([e.name,e.rank,e.force_no,e.living_status].join(" ").toLowerCase())+'" aria-label="Open '+esc(e.name)+' details"><span class="employee-sr">'+(i+1).toString().padStart(2,"0")+'</span><span class="employee-insignia">'+rankInsignia(e.rank)+'</span><span class="employee-copy"><span class="employee-name-line"><span class="employee-name">'+esc(e.name||"Unnamed employee")+'</span>'+employeeStatus(e.living_status)+'</span><span class="employee-meta"><span class="employee-rank">'+esc(e.rank||"—")+'</span><span class="employee-force">'+esc(e.force_no||"No force number")+'</span></span></span><span class="employee-arrow" aria-hidden="true">›</span></div>').join("")+'<div id="employee-empty" class="employee-empty" hidden>No employees match your search.</div></div></section>'}function home(){let ins=employees.filter(e=>e.living_status==="IN").length,outs=employees.filter(e=>e.living_status==="OUT").length,unset=employees.length-ins-outs;return title("Dashboard","Personnel overview and employee register")+'<div class="dashboard-cards"><div class="dashboard-stat stat-total"><span class="dashboard-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M8 8h8M8 12h8M8 16h4"/></svg></span><div class="dashboard-stat-copy"><label>Total Employees</label><strong>'+employees.length+'</strong></div></div><div class="dashboard-stat stat-in"><span class="dashboard-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7"/><path d="M5.5 9v11h13V9M9 20v-7h6v7"/></svg></span><div class="dashboard-stat-copy"><label>IN Living</label><strong>'+ins+'</strong></div></div><div class="dashboard-stat stat-out"><span class="dashboard-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V4h11v16M8 8h3M8 12h3M15 12h5m-3-3 3 3-3 3"/></svg></span><div class="dashboard-stat-copy"><label>OUT Living</label><strong>'+outs+'</strong></div></div><div class="dashboard-stat stat-unset"><span class="dashboard-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6m0 4h.01"/></svg></span><div class="dashboard-stat-copy"><label>Unconfirmed</label><strong>'+unset+'</strong></div></div></div>'+list()}const fields=[["force_no","Force No."],["rank","Rank"],["name","Name"],["father_name","Father Name"],["date_of_birth","Date of Birth"],["education","Education"],["religion","Religion"],["caste","Caste"],["joining_date","Joining Date"],["current_rank_date","Current Rank Date"],["fsd_joining_date","FSD Joining Date"],["blood_group","Blood Group"],["mobile_no","Mobile No."],["emergency_no","Emergency No."],["living_status","Living Status"],["marital_status","Marital Status"],["no_of_children","No. of Children"],["spouse_no","Spouse Contact"],["courses","Courses"],["present_address","Present Address"],["permanent_address","Permanent Address"],["domicile","Domicile"],["cnic","CNIC"],["tariq_coy_joining_date","Tariq Coy Joining Date"],["driving_license","Driving License"]];
 function dateField(k,l,v=""){const iso=String(v||"").match(/^\\d{4}-\\d{2}-\\d{2}$/)?String(v):parseDateInput(v);return '<label>'+l+'<div class="date-input-wrap"><input class="date-text" id="date-text-'+k+'" name="'+k+'" type="text" placeholder="DD-MM-YYYY" inputmode="numeric" value="'+esc(fmtDate(v))+'"><button type="button" class="calendar-btn" aria-label="Choose '+esc(l)+' date">📅</button><input class="date-picker" id="date-picker-'+k+'" data-date-picker data-text-target="date-text-'+k+'" type="date" value="'+esc(iso||"")+'" aria-label="Choose '+esc(l)+' date"></div></label>'}
 function wireDatePickers(root=document){root.querySelectorAll("[data-date-picker]").forEach(p=>{if(p.dataset.wired)return;p.dataset.wired="1";p.addEventListener("change",()=>{const t=document.getElementById(p.dataset.textTarget);if(t&&p.value){const a=p.value.split("-");t.value=a[2]+"-"+a[1]+"-"+a[0]}});const wrap=p.closest(".date-input-wrap"),btn=wrap&&wrap.querySelector(".calendar-btn");if(btn)btn.addEventListener("click",()=>{try{if(typeof p.showPicker==="function")p.showPicker();else p.click()}catch(_){p.click()}})})}
 function field(k,l,v=""){let val=v||"";if(["date_of_birth","joining_date","current_rank_date","fsd_joining_date","tariq_coy_joining_date"].includes(k))return dateField(k,l,val);if(k==="force_no"){const m=String(val).match(/^(SF-|US-|S-|C-)?(.*)$/i),prefix=(m?.[1]||"SF-").toUpperCase(),serial=m?.[2]||"";return '<label>'+l+'<div style="display:flex;gap:6px"><select name="force_prefix" class="field" style="width:100px;flex-shrink:0">'+["SF-","US-","S-","C-"].map(x=>'<option value="'+x+'" '+(x===prefix?"selected":"")+'>'+x+'</option>').join("")+'</select><input name="force_serial" type="text" inputmode="numeric" placeholder="Number" value="'+esc(serial)+'" required></div></label>'}if(k==="rank")return '<label>'+l+'<select name="'+k+'">'+["DD","AD","INSP","SI","ASI","SGT","CPL"].map(x=>'<option '+(x===val?"selected":"")+'>'+x+"</option>").join("")+"</select></label>";if(k==="living_status")return '<label>'+l+'<select name="'+k+'">'+["UNSET","IN","OUT"].map(x=>'<option '+(x===val?"selected":"")+'>'+x+"</option>").join("")+"</select></label>";if(k==="blood_group")return '<label>'+l+'<select name="'+k+'"><option value="">Select blood group</option>'+["A+","A-","B+","B-","AB+","AB-","O+","O-"].map(x=>'<option '+(x===val?"selected":"")+'>'+x+"</option>").join("")+"</select></label>";if(k==="marital_status")return '<label>'+l+'<select name="'+k+'"><option value="">Select status</option>'+["Single","Married","Divorced","Widowed"].map(x=>'<option '+(x===val?"selected":"")+'>'+x+"</option>").join("")+"</select></label>";if(k==="domicile")return '<label>'+l+'<select name="'+k+'"><option value="">Select domicile</option>'+["Punjab","Sindh","Khyber Pakhtunkhwa","Balochistan","Islamabad Capital Territory","Azad Jammu and Kashmir","Gilgit-Baltistan"].map(x=>'<option '+(x===val?"selected":"")+'>'+x+"</option>").join("")+"</select></label>";if(k==="cnic")return '<label>'+l+'<input id="cnicInput" name="cnic" type="text" inputmode="numeric" maxlength="15" placeholder="12345-1234567-1" value="'+esc(val)+'"></label>';if(k==="driving_license")return '<label>'+l+'<select name="'+k+'"><option>Yes</option><option '+(val==="No"?"selected":"")+'>'+ "No" +'</option></select></label>';return '<label>'+l+'<input name="'+k+'" type="text" value="'+esc(val)+'" '+(k==="name"?"required":"")+'></label>'}
@@ -270,8 +502,8 @@ function groupedFields(group,e,readOnly=false){
  }).join("")+'</div></div>';
 }
 function employeeForm(e=null){
- const body='<form id="ef">'+employeeFieldGroups.map(g=>groupedFields(g,e,false)).join("")+'<div class="panelhead"><button class="btn primary">Save Employee</button></div></form>';
- layout(title(e?"Edit Employee":"Add New Employee","Employee information arranged by section",'<button class="btn" id="back">Cancel</button>')+body);
+ const body='<div class="employee-form-view"><form id="ef">'+employeeFieldGroups.map(g=>groupedFields(g,e,false)).join("")+'<div class="panelhead employee-form-save"><button class="btn primary">Save Employee</button></div></form></div>';
+ layout('<div class="employee-form-shell">'+title(e?"Edit Employee":"Add New Employee","Employee information arranged by section",'<button class="btn employee-form-cancel" id="back">Cancel</button>')+body+'</div>');
  wireDatePickers();
  $("#back").onclick=()=>{if(e){openEmployee(e.id)}else{page="Dashboard";render()}};
  const cnic=$("#cnicInput");
@@ -298,10 +530,10 @@ async function openEmployee(id){
   const rows=records.length?records.map((l,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(fmtDate(l.from_date))+'</td><td>'+esc(fmtDate(l.to_date))+'</td><td>'+esc(l.days??"")+'</td>'+(g.hasBalance?'<td>'+esc(l.balance||"")+'</td>':'')+'<td>'+esc(l.reason||"")+'</td></tr>').join(""):'<tr><td colspan="'+(g.hasBalance?6:5)+'" class="empty">No records yet.</td></tr>';
   return '<div class="panel"><div class="panelhead"><h2>'+g.title+'</h2></div><div class="tablewrap"><table><thead><tr>'+cols+'</tr></thead><tbody>'+rows+'</tbody></table></div></div>';
  };
- layout(title(esc(e.name),esc(e.rank+" · "+e.force_no),'<button id="edit" class="btn">Edit</button> <button id="delete-employee" class="btn danger">Delete Employee</button> <button id="back" class="btn">Back</button>')+
+ layout('<div class="employee-profile-view">'+title(esc(e.name),esc(e.rank+" · "+e.force_no),'<div class="detail-actions"><button id="edit" class="btn detail-edit">Edit</button><button id="delete-employee" class="btn detail-delete">Delete</button><button id="back" class="btn detail-close" aria-label="Close employee details" title="Close">×</button></div>')+
  employeeFieldGroups.map(g=>groupedFields(g,e,true)).join("")+
  '<div class="panel"><div class="panelhead"><h2>Leave Records</h2><button id="addleave" class="btn primary">+ Add record</button></div></div>'+
- leaveTypes.map(leaveTable).join(""));
+ leaveTypes.map(leaveTable).join("")+'</div>');
  $("#back").onclick=()=>{page="Dashboard";render()};
  $("#edit").onclick=()=>employeeForm(e);
  $("#delete-employee").onclick=async()=>{
@@ -311,7 +543,7 @@ async function openEmployee(id){
  };
  $("#addleave").onclick=()=>leaveForm(e.id);
 }
-function leaveForm(id){layout(title("Add Leave / Medical Record","C/Leave, E/Leave or Medical",'<button id="back" class="btn">Cancel</button>')+'<div class="panel"><form id="lf"><div class="formgrid"><label>Type<select name="leave_type"><option value="C_LEAVE">C/Leave</option><option value="E_LEAVE">E/Leave</option><option value="MEDICAL">Medical</option></select></label>'+dateField("from_date","From")+dateField("to_date","To")+'<label>Days<input id="leave-days" type="number" min="1" name="days" required readonly></label><label>Balance<input name="balance"></label><label>Remarks<input name="reason"></label></div><div class="panelhead"><button class="btn primary">Save record</button></div></form></div>');wireDatePickers();const updateLeaveDays=()=>{const from=parseDateInput($("#date-text-from_date").value),to=parseDateInput($("#date-text-to_date").value),out=$("#leave-days");if(!from||!to){out.value="";return}const a=Date.parse(from+"T00:00:00Z"),b=Date.parse(to+"T00:00:00Z");out.value=b>=a?String(Math.floor((b-a)/86400000)+1):""};["from_date","to_date"].forEach(k=>{const t=$("#date-text-"+k),p=$("#date-picker-"+k);t.addEventListener("input",updateLeaveDays);t.addEventListener("change",updateLeaveDays);p.addEventListener("change",updateLeaveDays)});$("#back").onclick=()=>openEmployee(id);$("#lf").onsubmit=async ev=>{ev.preventDefault();let b=Object.fromEntries(new FormData(ev.currentTarget).entries());for(let k of ["from_date","to_date"]){const parsed=parseDateInput(b[k]);if(!parsed){notify(k==="from_date"?"From date must be DD-MM-YYYY.":"To date must be DD-MM-YYYY.","error");return}b[k]=parsed}if(!b.days||Number(b.days)<1){notify("Please select a valid From and To date.","error");return}b.days=Number(b.days);try{await post("/employees/"+id+"/leaves",b);await openEmployee(id);notify("Leave / medical record saved successfully.")}catch(e){notify(e.message,"error")}}}
+function leaveForm(id){layout(title("Add Leave / Medical Record","C/Leave, E/Leave or Medical",'<button id="back" class="btn detail-close" aria-label="Close" title="Close">×</button>')+'<div class="panel"><form id="lf"><div class="formgrid"><label>Type<select name="leave_type"><option value="C_LEAVE">C/Leave</option><option value="E_LEAVE">E/Leave</option><option value="MEDICAL">Medical</option></select></label>'+dateField("from_date","From")+dateField("to_date","To")+'<label>Days<input id="leave-days" type="number" min="1" name="days" required readonly></label><label>Balance<input name="balance"></label><label>Remarks<input name="reason"></label></div><div class="panelhead"><button class="btn primary">Save record</button></div></form></div>');wireDatePickers();const updateLeaveDays=()=>{const from=parseDateInput($("#date-text-from_date").value),to=parseDateInput($("#date-text-to_date").value),out=$("#leave-days");if(!from||!to){out.value="";return}const a=Date.parse(from+"T00:00:00Z"),b=Date.parse(to+"T00:00:00Z");out.value=b>=a?String(Math.floor((b-a)/86400000)+1):""};["from_date","to_date"].forEach(k=>{const t=$("#date-text-"+k),p=$("#date-picker-"+k);t.addEventListener("input",updateLeaveDays);t.addEventListener("change",updateLeaveDays);p.addEventListener("change",updateLeaveDays)});$("#back").onclick=()=>openEmployee(id);$("#lf").onsubmit=async ev=>{ev.preventDefault();let b=Object.fromEntries(new FormData(ev.currentTarget).entries());for(let k of ["from_date","to_date"]){const parsed=parseDateInput(b[k]);if(!parsed){notify(k==="from_date"?"From date must be DD-MM-YYYY.":"To date must be DD-MM-YYYY.","error");return}b[k]=parsed}if(!b.days||Number(b.days)<1){notify("Please select a valid From and To date.","error");return}b.days=Number(b.days);try{await post("/employees/"+id+"/leaves",b);await openEmployee(id);notify("Leave / medical record saved successfully.")}catch(e){notify(e.message,"error")}}}
 async function collection(){
  let d=await api("/collections?month="+month),rows=d.collections||[];
  const byId=new Map(rows.map(r=>[r.employee_id,r]));
@@ -451,7 +683,7 @@ function rateForm(selectedRank="DD",selectedLiving="IN",existing=null){
 }
 function settings(){layout(title("Settings","Application and account information")+'<div class="cards"><div class="card"><label>Account</label><strong style="font-size:18px">'+esc(user.username)+'</strong></div><div class="card"><label>Role</label><strong style="font-size:18px">'+esc(user.role)+'</strong></div><div class="card"><label>Session</label><strong style="font-size:18px">Secure</strong></div><div class="card"><label>Storage</label><strong style="font-size:18px">Cloudflare D1</strong></div></div>')}
 async function load(){employees=(await api("/employees")).employees||[]}async function render(){try{if(page==="Dashboard"){layout(home());$("#add").onclick=()=>employeeForm();wireEmployeeActions()}else if(page==="Collection")await collection();else if(page==="History")await history();else if(page==="Reports")reports();else if(page==="Contribution Rates")await rates();else settings()}catch(e){layout(title(page,"Unable to load section")+'<p>'+esc(e.message)+'</p>')}}
-function wireEmployeeActions(){document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openEmployee(b.dataset.open))}
+function wireEmployeeActions(){document.querySelectorAll("[data-open]").forEach(b=>{const open=()=>openEmployee(b.dataset.open);b.onclick=open;b.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}}});const search=$("#employee-search"),items=[...document.querySelectorAll(".employee-card")],count=$("#employee-count"),empty=$("#employee-empty");if(search)search.addEventListener("input",()=>{const q=search.value.trim().toLowerCase();let visible=0;items.forEach(item=>{const show=item.dataset.search.includes(q);item.hidden=!show;if(show)visible++});if(count)count.textContent=visible+" record"+(visible===1?"":"s");if(empty)empty.hidden=visible!==0})}
 async function login(){
  let status=null,statusError="";
  try{status=await api("/setup-status")}catch(e){statusError=e.message||"Unable to check first-time setup."}
