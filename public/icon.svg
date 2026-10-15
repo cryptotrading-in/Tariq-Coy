@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Tariq Coy">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#102c27"/><stop offset=".55" stop-color="#031511"/><stop offset="1" stop-color="#07100f"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#fff0ad"/><stop offset=".28" stop-color="#f5c65b"/><stop offset=".62" stop-color="#bd8124"/><stop offset="1" stop-color="#ffe8a0"/></linearGradient>
+ <linearGradient id="silver" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset=".55" stop-color="#d5dde0"/><stop offset="1" stop-color="#89999a"/></linearGradient>
+ <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5"/></filter>
+</defs>
+<rect width="512" height="512" rx="112" fill="#101817"/>
+<rect x="13" y="13" width="486" height="486" rx="100" fill="url(#bg)" stroke="url(#gold)" stroke-width="5"/>
+<rect x="24" y="24" width="464" height="464" rx="90" fill="none" stroke="#fff0ad" stroke-opacity=".14" stroke-width="1.5"/>
+<path d="M95 184 153 126 183 146 246 73 300 131 322 115 383 184 348 165 321 143 300 158 246 99 193 159 177 147 142 174Z" fill="url(#gold)"/>
+<path d="M110 202H263L239 226H207V315H166V226H125Z" fill="url(#gold)"/>
+<path d="M298 200c-43 0-76 31-76 72 0 40 33 71 76 71 23 0 43-9 57-25l-24-24c-8 10-19 15-32 15-22 0-38-16-38-37s16-37 38-37c13 0 24 5 32 15l24-24c-14-16-34-26-57-26Z" fill="url(#silver)"/>
+<path d="M266 249c13-18 36-28 58-24l-8 12 18 7-12 6 4 11-13 3-5 15-16-6-5-13-12-4Z" fill="#061a15"/>
+<path d="M272 246c12-14 29-20 49-18l-6 8 16 6-11 5-6 8-16-3-9 5-14-4Z" fill="url(#gold)"/>
+<path d="M276 269c9 8 20 11 32 10l-4 17-13 9-8-12Z" fill="url(#gold)"/>
+<path d="M102 342Q188 286 274 284L248 301Q178 318 123 367Z" fill="url(#gold)"/>
+<text x="256" y="409" font-family="Arial,Helvetica,sans-serif" font-size="43" font-weight="800" letter-spacing="2.2" text-anchor="middle" fill="url(#gold)">TARIQ <tspan fill="url(#silver)">COY</tspan></text>
+<path d="M106 435H218M294 435H406" stroke="url(#gold)" stroke-width="2.5" stroke-linecap="round"/>
+<path d="m256 424 4 8 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1Z" fill="url(#gold)"/>
+</svg>

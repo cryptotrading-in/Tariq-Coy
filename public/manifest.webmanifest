@@ -1,0 +1,16 @@
+{
+  "id": "/",
+  "name": "Tariq Coy",
+  "short_name": "Tariq Coy",
+  "description": "Tariq Coy Personnel Record Management System",
+  "lang": "en-PK",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#071512",
+  "theme_color": "#0b211c",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
