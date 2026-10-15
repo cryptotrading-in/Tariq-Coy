@@ -717,5 +717,20 @@ async function login(){
  $("#firstsetup").onclick=async()=>{statusError="";await showSetup()};
  $("#login").onsubmit=async e=>{e.preventDefault();try{user=(await post("/login",Object.fromEntries(new FormData(e.currentTarget).entries()))).user;await load();page="Dashboard";appView={type:"main",page:"Dashboard"};history.replaceState(viewState(),"",location.pathname+location.search);render()}catch(x){$("#err").textContent=x.message}}
 }
-async function logout(){try{await api("/logout",{method:"POST"})}finally{user=null;appView={type:"main",page:"Dashboard"};history.replaceState(viewState(),"",location.pathname+location.search);login()}}async function start(){history.replaceState(viewState(),"",location.pathname+location.search);try{user=(await api("/me")).user;appView={type:"main",page:"Dashboard"};render();load().then(()=>render()).catch(()=>{});}catch{login()}}start();
+async function logout(){try{await api("/logout",{method:"POST"})}finally{user=null;appView={type:"main",page:"Dashboard"};history.replaceState(viewState(),"",location.pathname+location.search);login()}}async function start(){
+  try{
+    if("serviceWorker" in navigator){navigator.serviceWorker.register("/service-worker.js").catch(()=>{});}
+    window.addEventListener("unhandledrejection",event=>{const app=$("#app");if(app&&app.querySelector("#app-loading")){app.innerHTML='<div class="login"><h1>Tariq Coy</h1><p class="error">App startup failed. Please reload and try again.</p><button class="btn primary" onclick="location.reload()">Reload app</button></div>';}});
+    if(!history.state||!history.state.tariqCoyApp)history.replaceState(viewState(),"",location.pathname+location.search);
+    const session=await api("/me");
+    user=session.user;
+    appView={type:"main",page:"Dashboard"};page="Dashboard";
+    await load();
+    await render();
+  }catch(error){
+    if(!user){await login();return;}
+    const app=$("#app");
+    if(app)app.innerHTML='<div class="login"><h1>Tariq Coy</h1><p class="error">Unable to load the application: '+esc(error?.message||"Please reload and try again.")+'</p><button class="btn primary" onclick="location.reload()">Reload app</button></div>';
+  }
+}start();
 </script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/service-worker.js").catch(()=>{}));}</script></body></html>
