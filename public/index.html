@@ -444,6 +444,7 @@
 </style></head><body><div id="app"><div id="app-loading" role="status" aria-live="polite"><div class="loading-card"><div class="loading-emblem" aria-hidden="true">TC</div><div class="loading-title">TARIQ COY</div><div class="loading-subtitle">Personnel Record Management System</div><div class="loading-track" aria-hidden="true"></div></div></div></div>
 <script>
 const $=s=>document.querySelector(s);let user=null,employees=[],page="Dashboard",month=new Date().toISOString().slice(0,7);
+function restoreStartupViewport(){const active=document.activeElement;if(active&&active!==document.body&&typeof active.blur==="function")active.blur();const viewport=document.querySelector('meta[name="viewport"]');if(viewport)viewport.setAttribute("content","width=device-width, initial-scale=1");window.scrollTo(0,0)}
 let appView={type:"main",page:"Dashboard"},restoringAppHistory=false;
 function viewState(){return {tariqCoyApp:true,...appView}}
 function sameView(a,b){return Boolean(a&&b&&a.tariqCoyApp&&a.type===b.type&&a.page===b.page&&String(a.id||"")===String(b.id||""))}
@@ -715,16 +716,18 @@ async function login(){
  if(!status||status.setupRequired){await showSetup();return;}
  $("#app").innerHTML='<div class="login"><form id="login"><h1>Tariq Coy</h1><p class="muted">Personnel Record Management System</p><label>Username<input name="username" required autocomplete="username"></label><label>Password<input type="password" name="password" required autocomplete="current-password"></label><button class="btn primary">Sign in</button><p id="err" class="error"></p><button type="button" id="firstsetup" class="btn">First-time account setup</button></form></div>';
  $("#firstsetup").onclick=async()=>{statusError="";await showSetup()};
- $("#login").onsubmit=async e=>{e.preventDefault();try{user=(await post("/login",Object.fromEntries(new FormData(e.currentTarget).entries()))).user;await load();page="Dashboard";appView={type:"main",page:"Dashboard"};history.replaceState(viewState(),"",location.pathname+location.search);render()}catch(x){$("#err").textContent=x.message}}
+ $("#login").onsubmit=async e=>{e.preventDefault();try{user=(await post("/login",Object.fromEntries(new FormData(e.currentTarget).entries()))).user;restoreStartupViewport();await load();page="Dashboard";appView={type:"main",page:"Dashboard"};history.replaceState(viewState(),"",location.pathname+location.search);await render();requestAnimationFrame(restoreStartupViewport)}catch(x){$("#err").textContent=x.message}}
 }
 async function logout(){try{await api("/logout",{method:"POST"})}finally{user=null;appView={type:"main",page:"Dashboard"};history.replaceState(viewState(),"",location.pathname+location.search);login()}}async function start(){
   try{
     if(!history.state||!history.state.tariqCoyApp)history.replaceState(viewState(),"",location.pathname+location.search);
     const session=await api("/me");
     user=session.user;
+    restoreStartupViewport();
     appView={type:"main",page:"Dashboard"};page="Dashboard";
     await load();
     await render();
+    requestAnimationFrame(restoreStartupViewport);
   }catch(error){
     if(!user){await login();return;}
     const app=$("#app");
