@@ -441,6 +441,26 @@
 
 /* Search filtering must override employee-card display styles. */
 .employee-card[hidden],.employee-empty[hidden]{display:none!important}
+/* Final mobile Dashboard override: earlier responsive rules were being overridden by later dashboard theme rules. */
+@media(max-width:760px){
+ .content{min-width:0;width:100%;max-width:100%;padding:10px}
+ .dashboard-cards{grid-template-columns:repeat(2,minmax(0,1fr))!important;width:100%;min-width:0;gap:8px;margin:10px 0 16px}
+ .dashboard-stat{display:flex;align-items:center;gap:8px;min-width:0;padding:9px 8px}
+ .dashboard-stat-copy{min-width:0;overflow-wrap:anywhere}
+ .dashboard-stat .dashboard-stat-copy label{font-size:10px;line-height:1.25;letter-spacing:0}
+ .dashboard-stat strong{font-size:20px}
+ .employee-register,.employee-register-head,.employee-register-tools,.employee-list,.employee-card{min-width:0;max-width:100%}
+ .employee-card{grid-template-columns:18px 34px minmax(0,1fr) 18px;gap:7px;padding:9px}
+ .employee-copy,.employee-name-line,.employee-meta{min-width:0}
+ .employee-name{overflow-wrap:anywhere}
+}
+@media(max-width:360px){
+ .dashboard-cards{gap:6px}
+ .dashboard-stat{padding:8px 6px}
+ .dashboard-stat-icon{width:25px;height:25px;flex-basis:25px}
+ .dashboard-stat strong{font-size:18px}
+ .employee-card{grid-template-columns:16px 30px minmax(0,1fr) 16px;gap:5px;padding:8px}
+}
 </style></head><body><div id="app"><div id="app-loading" role="status" aria-live="polite"><div class="loading-card"><div class="loading-emblem" aria-hidden="true">TC</div><div class="loading-title">TARIQ COY</div><div class="loading-subtitle">Personnel Record Management System</div><div class="loading-track" aria-hidden="true"></div></div></div></div>
 <script>
 const $=s=>document.querySelector(s);let user=null,employees=[],page="Dashboard",month=new Date().toISOString().slice(0,7);
