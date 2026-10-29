@@ -587,7 +587,9 @@ async function openCollectionPopup(employeeId){
   '<div class="amountline"><span>Leave Deduction</span><b>Rs '+money(r.leave_deduction)+'</b></div>'+
   '<div class="amountline"><span>Mess / Ration</span><b>Rs '+money(r.mess_amount)+'</b></div>'+
   '<div class="amountline total"><span>Total Amount</span><span>Rs '+money(r.total_due)+'</span></div>'+
-  '<p class="muted" id="pop-note">'+(r&&r.last_reversal_reason?"Previous receipt reversed: "+esc(r.last_reversal_reason):(r?"Amount saved for this month.":esc(initialError||"Enter leave days and select Calculate Amount.")))+'</p><div class="modalactions"><button id="pop-close" class="btn">Close</button>'+
+  '<p class="muted" id="pop-note">'+(r&&r.last_reversal_reason?"Previous receipt reversed: "+esc(r.last_reversal_reason):(r?"Amount saved for this month.":esc(initialError||"Enter leave days and select Calculate Amount.")))+'</p>'+
+  (isPaid?'<div class="amountline"><span>Payment Received Via</span><b>'+esc(r.payment_method||"Not recorded")+'</b></div>':(r?'<label style="display:grid;gap:6px;margin-top:12px">Payment Method<select id="pop-payment-method" class="field"><option value="Cash" '+((r.payment_method||"Cash")==="Cash"?'selected':'')+'>Cash</option><option value="Account" '+(r.payment_method==="Account"?'selected':'')+'>Account</option></select></label>':''))+
+  '<div class="modalactions"><button id="pop-close" class="btn">Close</button>'+
   (!isPaid?'<button id="pop-calc" class="btn">'+(r?'Update Amount':'Calculate Amount')+'</button>':'')+
   (r&&!isPaid?'<button id="pop-receive" class="btn primary">Receive</button>':'')+(isPaid?'<button id="pop-reverse" class="btn" style="border-color:#b42318;color:#b42318">Reverse Receipt</button>':'')+'</div></div>';
   $("#pop-close").onclick=()=>host.remove();
@@ -600,9 +602,10 @@ async function openCollectionPopup(employeeId){
    catch(e){const note=$("#pop-note");if(note)note.textContent=e.message;calc.disabled=false;calc.textContent=r?'Update Amount':'Calculate Amount'}
   };
   const receive=$("#pop-receive");if(receive)receive.onclick=async()=>{
-   const approved=await confirmAction({title:"Confirm Payment",message:"Receive the full payment for "+employee.name+"?",details:"Force Number: "+esc(employee.force_no)+"<br>Month: "+esc(month)+"<br><b>Amount: Rs "+money(r.total_due)+"</b>",confirmLabel:"Confirm Receive"});if(!approved)return;
+   const paymentMethod=$("#pop-payment-method")?.value||"Cash";
+   const approved=await confirmAction({title:"Confirm Payment",message:"Receive the full payment for "+employee.name+"?",details:"Force Number: "+esc(employee.force_no)+"<br>Month: "+esc(month)+"<br><b>Amount: Rs "+money(r.total_due)+"</b><br>Payment Method: <b>"+esc(paymentMethod)+"</b>",confirmLabel:"Confirm Receive"});if(!approved)return;
    receive.disabled=true;
-   try{await post("/collections/"+r.id+"/receive",{payment_date:new Date().toISOString().slice(0,10),payment_method:"Cash"});host.remove();await collection();notify("Payment received successfully.")}
+   try{await post("/collections/"+r.id+"/receive",{payment_date:new Date().toISOString().slice(0,10),payment_method:paymentMethod});host.remove();await collection();notify("Payment received successfully.")}
    catch(e){const note=$("#pop-note");if(note)note.textContent=e.message;receive.disabled=false}
   };
   const reverse=$("#pop-reverse");if(reverse)reverse.onclick=()=>{
@@ -629,7 +632,7 @@ async function openCollectionPopup(employeeId){
  document.body.appendChild(host);draw();
 }
 function daysInSelectedMonth(){const [y,m]=month.split("-").map(Number);return new Date(y,m,0).getDate()}
-async function loadHistoryPage(){let d=await api("/history?limit=500"),rows=(d.collections||[]).filter(r=>r.month_key===month);layout(title("Collection History","Monthly saved records",'<input id="month" class="field" type="month" value="'+month+'">')+'<div class="panel"><div class="tablewrap"><table><tr><th>Sr.</th><th>Month</th><th>Force No.</th><th>Rank / Name</th><th>Contribution</th><th>Mess</th><th>Total</th><th>Status</th></tr>'+rows.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+r.month_key+'</td><td>'+esc(r.force_no)+'</td><td>'+esc(r.rank+" "+r.name)+'</td><td>'+money(r.contribution_total)+'</td><td>'+money(r.mess_amount)+'</td><td>'+money(r.total_due)+'</td><td>'+pill(r.payment_status)+'</td></tr>').join("")+'</table></div></div>');$("#month").onchange=e=>{month=e.target.value;render()}}
+async function loadHistoryPage(){let d=await api("/history?limit=500"),rows=(d.collections||[]).filter(r=>r.month_key===month);layout(title("Collection History","Monthly saved records",'<input id="month" class="field" type="month" value="'+month+'">')+'<div class="panel"><div class="tablewrap"><table><tr><th>Sr.</th><th>Month</th><th>Force No.</th><th>Rank / Name</th><th>Contribution</th><th>Mess</th><th>Total</th><th>Payment Method</th><th>Status</th></tr>'+rows.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+r.month_key+'</td><td>'+esc(r.force_no)+'</td><td>'+esc(r.rank+" "+r.name)+'</td><td>'+money(r.contribution_total)+'</td><td>'+money(r.mess_amount)+'</td><td>'+money(r.total_due)+'</td><td>'+esc(r.payment_method||"—")+'</td><td>'+pill(r.payment_status)+'</td></tr>').join("")+'</table></div></div>');$("#month").onchange=e=>{month=e.target.value;render()}}
 function reports(){let ts=[["nominal-role","Nominal Roll"],["driving-license","Driving License"],["monthly-contribution","Monthly Contribution"],["mess","Ration Money / Mess"],["full-collection","Full Collection"],["leave-medical","C/Leave + E/Leave + Medical"]];layout(title("Reports","Select a report, then export CSV or save a print-ready PDF",'<input id="month" class="field noprint" type="month" value="'+month+'">')+'<div class="cards noprint">'+ts.map(t=>'<button class="card" data-report="'+t[0]+'"><label>REPORT</label><strong style="font-size:16px">'+t[1]+'</strong></button>').join("")+'</div><div id="result"></div>');$("#month").onchange=e=>{month=e.target.value};document.querySelectorAll("[data-report]").forEach(b=>b.onclick=async()=>{try{let reportId=b.dataset.report,d=await api("/reports/"+reportId+(['monthly-contribution','mess','full-collection'].includes(reportId)?"?month="+month:"")),rs=d.rows||[];
  let cols={
   "nominal-role":["sr_no","force_no","rank","name","remarks"],
