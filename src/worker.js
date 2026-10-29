@@ -411,7 +411,7 @@ async function handle(request, env) {
     let body; try { body = await readJson(request); } catch { return json({ error: "Invalid JSON request" }, 400); }
     const paymentDate = body.payment_date;
     const paymentMethod = String(body.payment_method || "");
-    if (!validDate(paymentDate) || !["Cash", "Bank Transfer", "Other"].includes(paymentMethod)) return json({ error: "Payment date and a valid payment method are required." }, 400);
+    if (!validDate(paymentDate) || !["Cash", "Account"].includes(paymentMethod)) return json({ error: "Payment date and a valid payment method are required." }, 400);
     if (Object.prototype.hasOwnProperty.call(body, "amount")) return json({ error: "Partial payments are not supported. The full due amount is received only." }, 400);
     const id = receiveMatch[1];
     const record = await env.DB.prepare("SELECT * FROM monthly_collections WHERE id=?").bind(id).first();
